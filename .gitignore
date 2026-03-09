@@ -6,3 +6,5 @@ a.out
 templates/*
 examples/*
 .qmake.stash
+
+**/.DS_Store
