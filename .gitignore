@@ -1,0 +1,8 @@
+*.pro.user
+build*/
+*.exe
+*.o
+a.out
+templates/*
+examples/*
+.qmake.stash
