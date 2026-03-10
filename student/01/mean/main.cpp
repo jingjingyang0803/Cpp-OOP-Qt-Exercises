@@ -97,13 +97,11 @@ int main()
     {
         // Error occurs if stod fails to convert a string to double
         cout << error.what() << endl;
-        return EXIT_FAILURE;
     }
     catch(const domain_error& error)
     {
         // Error occurs if no numbers were given
         cout << error.what() << endl;
-        return EXIT_FAILURE;
     }
 
     return EXIT_SUCCESS;
