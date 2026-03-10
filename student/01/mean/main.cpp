@@ -33,8 +33,42 @@ vector<string> split(const string& str, const char delimiter)
 // counts the mean of these values.
 double mean(const string& input)  // Don't change the function definition!
 {
-    // TODO: Write the functionality for counting mean here.
-    // Must throw invalid_argument and domain_error on applicaple errors
+    // Split the input string into separate number strings
+    vector<string> numbers = split(input, ' ');
+
+    double sum = 0.0;   // Sum of all numbers
+    int count = 0;      // Number of valid numbers
+
+    // Go through all tokens returned by split
+    for(const string& num : numbers)
+    {
+            try
+        {
+            // Try converting string to double
+            double value = stod(num);
+
+        // Add value to total sum
+        sum += value;
+
+        // Increase number count
+        ++count;
+        }
+        catch(const invalid_argument&)
+        {
+            // Throws invalid_argument exception with customized message if conversion fails
+            throw invalid_argument("invalid_argument: stod");
+        }
+
+    }
+
+    // Throws domain_error if no numbers are given
+    if(count == 0)
+    {
+        throw domain_error("No numbers given");
+    }
+
+    // Return the average value
+    return sum / count;
 }
 
 
@@ -44,9 +78,35 @@ double mean(const string& input)  // Don't change the function definition!
 // Main function
 int main()
 {
-    // TODO: Write main function code here
-    //       (including try-catch block to catch the thrown exceptions)
-    return 0;
+    // Prompt user for input
+    cout << "Enter numbers:";
+
+    // Read the whole line containing numbers
+    string input_line;
+    getline(cin, input_line);
+
+    try
+    {
+        // Call mean function to calculate the average
+        double result = mean(input_line);
+
+        // Print the calculated mean
+        cout << "Mean: " << result << endl;
+    }
+    catch(const invalid_argument& error)
+    {
+        // Error occurs if stod fails to convert a string to double
+        cout << error.what() << endl;
+        return EXIT_FAILURE;
+    }
+    catch(const domain_error& error)
+    {
+        // Error occurs if no numbers were given
+        cout << error.what() << endl;
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
 }
 // Don't remove! Needed for tests.
 #endif // MEAN_TEST
