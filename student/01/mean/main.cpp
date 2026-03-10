@@ -64,7 +64,7 @@ double mean(const string& input)  // Don't change the function definition!
     // Throws domain_error if no numbers are given
     if(count == 0)
     {
-        throw domain_error("No numbers given");
+        throw domain_error("domain_error: No numbers");
     }
 
     // Return the average value
@@ -79,7 +79,7 @@ double mean(const string& input)  // Don't change the function definition!
 int main()
 {
     // Prompt user for input
-    cout << "Enter numbers:";
+    cout << "Enter numbers: ";
 
     // Read the whole line containing numbers
     string input_line;
