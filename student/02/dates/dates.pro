@@ -5,8 +5,10 @@ CONFIG -= qt
 
 SOURCES += \
         date.cpp \
+        dateperiod.cpp \
         main.cpp
 
 HEADERS += \
-    date.hh
+    date.hh \
+    dateperiod.hh
 
