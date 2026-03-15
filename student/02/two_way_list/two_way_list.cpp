@@ -171,3 +171,47 @@ bool TwoWayList::insert_in_numerical_order(int insertable_item) {
 
     return true;
 }
+
+
+void TwoWayList::remove_duplicates() {
+    // If the list is empty, there cannot be duplicates.
+    if ( first_ == nullptr ) {
+        return;
+    }
+
+    // Start scanning from the first element of the list.
+    shared_ptr<List_item> current_ptr = first_;
+
+    // Continue as long as there is a next element to compare with.
+    while ( current_ptr->next != nullptr ) {
+
+        // If two consecutive elements have the same value,
+        // the second one is a duplicate and must be removed.
+        if ( current_ptr->data == current_ptr->next->data ) {
+
+            // Pointer to the duplicate element.
+            shared_ptr<List_item> duplicate_ptr = current_ptr->next;
+
+            // Bypass the duplicate element.
+            current_ptr->next = duplicate_ptr->next;
+
+            // If the duplicate element was not the last element,
+            // update the prev pointer of the next element.
+            if ( duplicate_ptr->next != nullptr ) {
+                duplicate_ptr->next->prev = current_ptr.get();
+
+            // If the duplicate element was the last element,
+            // update the last_ pointer.
+            } else {
+                last_ = current_ptr.get();
+            }
+
+            // One element removed -> decrease element count.
+            --count_;
+
+        } else {
+            // Move to the next element if no duplicate was found.
+            current_ptr = current_ptr->next;
+        }
+    }
+}

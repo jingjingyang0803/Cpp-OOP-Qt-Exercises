@@ -24,6 +24,11 @@ int main() {
 
     test_list.print_reverse();
 
+    // Removing duplicates from the list
+    test_list.remove_duplicates();
+    test_list.print();
+    test_list.print_reverse();
+
     test_list.remove_value(1);  test_list.print();
     test_list.remove_value(9);  test_list.print();
     test_list.remove_value(0);  test_list.print();

@@ -14,6 +14,7 @@ public:
     void print_reverse() const;
     bool remove_value(int removable_item);
     bool insert_in_numerical_order(int insertable_item);
+    void remove_duplicates();
     // No destructor (!)
 
 private:
