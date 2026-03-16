@@ -63,9 +63,38 @@ shared_ptr<Card> Deck::get_next_study_card(unsigned int& cards_studied)
 
 }
 
+// Prints deck size, selected fields and all cards of the deck.
 bool Deck::print_deck(const Fields &requested_fields)
 {
+    // Handle the case when there are no cards in the deck.
+    if (cards_.empty())
+    {
+        cout << NO_CARDS << endl;
+        return true;
+    }
 
+    // Print the deck name and the number of cards in the deck.
+    cout << name_ << " (" << cards_.size() << " cards)" << endl << endl;
+
+    // Print the header with requested fields.
+    cout << "   |";
+    for (const string& field : requested_fields)
+    {
+        cout << " " << field << " |";
+    }
+    cout << endl;
+
+
+    // Displays all cards using only the selected requested_fields.
+    for (const auto& card : cards_)
+    {
+        if (not card->print_card(requested_fields))
+        {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 // Returns the field types of the deck.
