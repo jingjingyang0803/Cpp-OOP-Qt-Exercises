@@ -36,9 +36,21 @@ DeckManager::DeckManager() {}
 
 DeckManager::~DeckManager() {}
 
+// Prints all deck names and the number of cards they contain.
 void DeckManager::print_decks() const
 {
+    if ( decks_.empty() )
+    {
+        cout << NO_DECKS << endl;
+        return;
+    }
 
+    for ( const auto& deck_pair : decks_ )
+    {
+        cout << "- " << deck_pair.first
+             << " (" << deck_pair.second->get_deck_size()
+             << " cards)" << endl;
+    }
 }
 
 shared_ptr<Deck> DeckManager::add_deck(string deck_name)
