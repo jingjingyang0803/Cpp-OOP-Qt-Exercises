@@ -59,10 +59,25 @@ bool Card::has_fields(const Fields& fields) const
     return true;
 }
 
+// Fetches definitions of chosen field types
 bool Card::get_definitions(const Fields &requested_fields,
                            Fields &return_definitions)
 {
+    return_definitions.clear();
 
+    for (const string& field : requested_fields)
+    {
+        auto it = definitions_.find(field);
+
+        if (it == definitions_.end())
+        {
+            return false;
+        }
+
+        return_definitions.push_back(it->second);
+    }
+
+    return true;
 }
 
 double Card::check_answers(const Fields& answer_fields,
@@ -71,9 +86,37 @@ double Card::check_answers(const Fields& answer_fields,
 
 }
 
+// Prints the card ID and requested field definitions.
 bool Card::print_card(const Fields& print_fields) const
 {
+    Fields definitions;
 
+    // Check if all requested fields exist and gather their definitions.
+
+    for (const string& field : print_fields)
+    {
+        // can't call non-const get_definitions in a const function,
+        // so we manually retrieve definitions here
+        auto it = definitions_.find(field);
+
+        if (it == definitions_.end())
+        {
+            return false;
+        }
+
+        definitions.push_back(it->second);
+    }
+
+    cout << " " << ID_ << " |";
+
+    for (const string& def : definitions)
+    {
+        cout << " " << def << " |";
+    }
+
+    cout << endl;
+
+    return true;
 }
 
 bool Card::operator==(const Card &other) const
