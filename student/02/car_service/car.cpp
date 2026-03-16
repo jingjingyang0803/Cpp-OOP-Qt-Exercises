@@ -47,9 +47,9 @@ Car::~Car() = default;
 
 
 // Assignment operator
-// Copies brand, model and color.
-// Register number is cleared, kilometres reset to 0,
-// and a new ServiceData object is created.
+// Copies brand, model and color from the other car.
+// Register number is copied as well, and kilometres driven.
+// and a new independent ServiceData object is created with the same services as the other car.
 Car& Car::operator=(const Car& other)
 {
     if (this != &other) {
