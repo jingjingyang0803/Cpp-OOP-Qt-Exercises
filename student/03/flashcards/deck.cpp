@@ -29,9 +29,23 @@ Deck::~Deck()
 
 }
 
+// Adds a new card to the deck.
 bool Deck::add_card(const Fields &card_fields, const Fields &definitions)
 {
+    if ( card_fields.size() != definitions.size() )
+    {
+        return false;
+    }
 
+    shared_ptr<Card> new_card = make_shared<Card>();
+
+    if ( not new_card->add_new_definitions(card_fields, definitions) )
+    {
+        return false;
+    }
+
+    cards_.push_back(new_card);
+    return true;
 }
 
 bool Deck::add_card(shared_ptr<Card> card)
@@ -53,7 +67,6 @@ bool Deck::print_deck(const Fields &requested_fields)
 {
 
 }
-
 shared_ptr<Fields> Deck::get_fields()
 {
 
