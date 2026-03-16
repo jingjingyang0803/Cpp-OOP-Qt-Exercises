@@ -78,9 +78,27 @@ bool DeckManager::add_card(string deck_name)
 
 }
 
+// Prints the deck name, size, and card information of a deck.
 void DeckManager::overview(const string& deck_name)
 {
+    // Check if the deck exists before proceeding with the overview.
+    if (not deck_exists(deck_name))
+    {
+        return;
+    }
 
+    Fields requested_fields;
+
+    // Ask the user for fields to print
+    ask_fields(deck_name, PROMPT_FIELDS_PRINT, requested_fields, true);
+
+    shared_ptr<Deck> deck = decks_.at(deck_name);
+
+    // Handle the case when user inputted nonexisting fields
+    if (not deck->print_deck(requested_fields))
+    {
+        cout << "Error: Incorrect field information." << endl;
+    }
 }
 
 bool DeckManager::copy(string source_deck_name,
