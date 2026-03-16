@@ -46,10 +46,19 @@ shared_ptr<Deck> DeckManager::add_deck(string deck_name)
 
 }
 
+// Creates a new empty deck.
+// Initializes a deck with the given name and field structure.
 shared_ptr<Deck> DeckManager::add_deck(string deck_name,
                                        const Fields &field_types)
 {
+    if ( deck_exists(deck_name) )
+    {
+        return nullptr;
+    }
 
+    shared_ptr<Deck> new_deck = make_shared<Deck>(deck_name, field_types);
+    decks_[deck_name] = new_deck;
+    return new_deck;
 }
 
 bool DeckManager::add_card(string deck_name)
@@ -75,12 +84,17 @@ bool DeckManager::run_study(const string &deck_name)
 
 bool DeckManager::deck_exists(const string &deck_name) const
 {
-
+    return decks_.find(deck_name) != decks_.end();
 }
 
 shared_ptr<Fields> DeckManager::get_deck_fields(const string &deck_name) const
 {
+    if ( not deck_exists(deck_name) )
+    {
+        return nullptr;
+    }
 
+    return decks_.at(deck_name)->get_fields();
 }
 
 void DeckManager::ask_fields(const string& deck_name,
