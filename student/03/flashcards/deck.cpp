@@ -67,14 +67,17 @@ bool Deck::print_deck(const Fields &requested_fields)
 {
 
 }
+
+// Returns the field types of the deck.
 shared_ptr<Fields> Deck::get_fields()
 {
-
+    return deck_fields_;
 }
 
+// Returns the number of cards in the deck.
 size_t Deck::get_deck_size()
 {
-
+    return cards_.size();
 }
 
 
