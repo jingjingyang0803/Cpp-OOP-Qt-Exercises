@@ -40,6 +40,7 @@ void ServiceData::print() const
             std::cout << "  --- " << op << std::endl;
         }
     }
+    std::cout << "\n";
 }
 
 

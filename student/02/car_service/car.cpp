@@ -56,11 +56,13 @@ Car& Car::operator=(const Car& other)
         brand_ = other.brand_;
         model_ = other.model_;
         color_ = other.color_;
-        registerNum_.clear();
-        kilometresDriven_ = 0;
+        registerNum_ = other.registerNum_;
+        kilometresDriven_ = other.kilometresDriven_;
 
-        // Create a new service data (unique_ptr cannot be copied)
         service_data_ = std::make_unique<ServiceData>();
+        for (const auto& item : other.serviceData().getServices()) {
+            service_data_->makeService(item.second, item.first);
+        }
     }
     return *this;
 }
