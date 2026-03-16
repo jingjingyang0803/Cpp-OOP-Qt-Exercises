@@ -73,6 +73,12 @@ bool Deck::print_deck(const Fields &requested_fields)
         return true;
     }
 
+    // Check if all requested fields exist in the deck before printing.
+    if ( not fields_overlap(*deck_fields_, requested_fields) )
+    {
+        return false;
+    }
+
     // Print the deck name and the number of cards in the deck.
     cout << name_ << " (" << cards_.size() << " cards)" << endl << endl;
 
