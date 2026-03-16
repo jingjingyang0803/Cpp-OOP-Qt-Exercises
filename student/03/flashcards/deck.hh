@@ -126,7 +126,10 @@ public:
     size_t get_deck_size();
 
 private:
-    // Declare more attributes and/or methods here
+    // Deck stores deck name, field types and cards
+    string name_;
+    shared_ptr<Fields> deck_fields_;
+    vector<shared_ptr<Card>> cards_;
 };
 
 #endif // DECK_HH

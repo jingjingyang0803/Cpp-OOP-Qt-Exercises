@@ -135,7 +135,7 @@ public:
     bool deck_exists(const string& deck_name) const;
 
 private:
-    // Declare more attributes and/or methods here
+    map<string, shared_ptr<Deck>> decks_;// DeckManager stores decks in a map, where the key is the deck name and the value is a shared pointer to the Deck object.
 
     /**
      * @brief returns Deck fields

@@ -20,6 +20,7 @@
 #include "utils.hh"
 
 #include <string>
+#include <map>
 
 using namespace std;
 
@@ -119,8 +120,8 @@ public:
 private:
     static unsigned int NEXT_ID;
     unsigned int ID_;
+    map<string, string> definitions_;// Card store definitions in a map, where the key is the field type and the value is the definition.
 
-    // Declare more attributes and/or methods here
 };
 
 #endif // CARD_HH
