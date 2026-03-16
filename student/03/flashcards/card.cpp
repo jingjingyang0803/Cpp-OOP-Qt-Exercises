@@ -28,15 +28,35 @@ Card::~Card()
 
 }
 
+// Assigns definitions to card field types.
 bool Card::add_new_definitions(const Fields &field_types,
                                const Fields &definitions)
 {
+    if ( field_types.size() != definitions.size() )
+    {
+        return false;
+    }
 
+    for ( size_t i = 0; i < field_types.size(); ++i )
+    {
+        definitions_[field_types.at(i)] = definitions.at(i);
+    }
+
+    return true;
 }
 
-bool Card::has_fields(const Fields &fields) const
+// Checks if the card contains the specified fields.
+bool Card::has_fields(const Fields& fields) const
 {
+    for ( const string& field : fields )
+    {
+        if ( definitions_.find(field) == definitions_.end() )
+        {
+            return false;
+        }
+    }
 
+    return true;
 }
 
 bool Card::get_definitions(const Fields &requested_fields,
