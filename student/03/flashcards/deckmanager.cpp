@@ -164,7 +164,7 @@ void DeckManager::overview(const string& deck_name)
     // Handle the case when the deck has no cards to print
     if (not deck->get_deck_size())
     {
-        cout << "No cards have been added." << endl;
+        cout << NO_CARDS << endl;
         return;
     }
 
