@@ -4,10 +4,32 @@
 # Project: Opettelukortit / Flashcards                                      #
 # File: deckmanager.cpp                                                     #
 # Description: Implements DeckManager functionality.                        #
+#
+# The DeckManager class is responsible for managing all decks in the         #
+# program. It acts as an abstraction layer between the command line          #
+# interface (CLI) and the Deck objects.                                      #
 #                                                                           #
+# The class provides functionality for:                                      #
+# - Creating new decks                                                       #
+# - Adding cards to decks                                                    #
+# - Listing all decks                                                        #
+# - Printing deck contents (overview)                                        #
+# - Copying cards between decks                                              #
+# - Running study sessions                                                   #
+#                                                                           #
+# It also handles user interaction related to field selection and ensures    #
+# that operations are performed only on valid decks.
+#                                                                          #
 # Notes:                                                                    #
+# - Stores decks using smart pointers (shared_ptr)                           #
+# - Ensures unique deck names                                                #
+# - Delegates card-related operations to Deck and Card classes                                                                    #
 #                                                                           #
-# Author information:                                                       #
+# Author information:
+# - Name: Jingjing Yang
+# - Student number: 154016843
+# - Gitlab user name: ptjiya
+# - Tuni email: jingjing.yang@tuni.fi                                                        #
 #                                                                           #
 #############################################################################
 */

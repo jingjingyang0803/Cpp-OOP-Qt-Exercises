@@ -4,11 +4,23 @@
 # Project: Opettelukortit / Flashcards                                      #
 # File: card.cpp                                                            #
 # Description: Implements Card class functionality.                         #
+#
+# The Card class represents a single flashcard containing multiple           #
+# field definitions (e.g., translations between languages). It provides      #
+# functionality for storing definitions, retrieving them, printing card      #
+# content, and checking user answers during study sessions.                                                                         #                                             #
 #                                                                           #
 # Notes:                                                                    #
-#                                                                           #
+# - Each card has a unique ID.                                               #
+# - Definitions are stored by field type.                                    #
+# - Used by Deck and DeckManager classes.                                    #
+#
 # Author information:                                                       #
-#                                                                           #
+# - Name: Jingjing Yang
+# - Student number: 154016843
+# - Gitlab user name: ptjiya
+# - Tuni email: jingjing.yang@tuni.fi
+#
 #############################################################################
 */
 
