@@ -99,9 +99,34 @@ shared_ptr<Deck> DeckManager::add_deck(string deck_name,
     return new_deck;
 }
 
+// Adds a new card to an existing deck.
+// Prompts the user to fill out definitions for all field types of the deck.
+// Accepts empty definitions.
+// Returns false if deck doesn't exist, false if the card can't be
+// added successfully to the deck, true otherwise.
 bool DeckManager::add_card(string deck_name)
 {
+    if ( not deck_exists(deck_name) )
+    {
+        return false;
+    }
 
+    shared_ptr<Fields> deck_fields = get_deck_fields(deck_name);
+    Fields definitions;
+
+    cout << PROMPT_TYPE_DEFINITIONS << endl;
+
+    for ( const string& field : *deck_fields )
+    {
+        cout << field << ": ";
+        string definition = "";
+        getline(cin, definition);
+        definitions.push_back(definition);
+    }
+
+    cout << endl;
+
+    return decks_.at(deck_name)->add_card(*deck_fields, definitions);
 }
 
 // Prints the deck name, size, and card information of a deck.
