@@ -48,14 +48,52 @@ bool Deck::add_card(const Fields &card_fields, const Fields &definitions)
     return true;
 }
 
+// Adds an existing card to the deck.
+//
+// The card must contain all field types required by the deck.
+// If the same card already exists in the deck, it is not added again.
+//
+// @param card Shared pointer to the card to be added
+// @return false if the card does not contain all required fields,
+//         true if the card was added successfully or already exists
 bool Deck::add_card(shared_ptr<Card> card)
 {
+    if ( not card->has_fields(*deck_fields_) )
+    {
+        return false;
+    }
 
+    for ( const auto& existing_card : cards_ )
+    {
+        if ( *existing_card == *card )
+        {
+            return true;
+        }
+    }
+
+    cards_.push_back(card);
+    return true;
 }
 
+// Copies all cards from this deck into the destination deck.
+//
+// Cards are added in their original insertion order.
+// Existing cards are not duplicated in the destination deck.
+//
+// @param destination The deck where cards are copied to
+// @return false if any card could not be added,
+//         true otherwise
 bool Deck::copy_cards(shared_ptr<Deck> destination)
 {
+    for ( const auto& card : cards_ )
+    {
+        if ( not destination->add_card(card) )
+        {
+            return false;
+        }
+    }
 
+    return true;
 }
 
 shared_ptr<Card> Deck::get_next_study_card(unsigned int& cards_studied)

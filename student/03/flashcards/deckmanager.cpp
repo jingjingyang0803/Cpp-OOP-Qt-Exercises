@@ -152,10 +152,52 @@ void DeckManager::overview(const string& deck_name)
     }
 }
 
+/**
+ * @brief Copies all cards from the source deck into the destination deck.
+ *
+ * If the destination deck does not exist, it is created using the same
+ * field structure as the source deck. Cards are copied without duplication.
+ *
+ * @param source_deck_name Name of the source deck
+ * @param destination_deck_name Name of the destination deck
+ * @return false if the source deck does not exist,
+ *         false if both decks exist and their fields do not match,
+ *         false if the destination deck could not be created or cards
+ *         could not be copied, true otherwise
+ */
 bool DeckManager::copy(string source_deck_name,
                        string destination_deck_name)
 {
+    if ( not deck_exists(source_deck_name) )
+    {
+        return false;
+    }
 
+    shared_ptr<Deck> source = decks_.at(source_deck_name);
+    shared_ptr<Fields> source_fields = source->get_fields();
+
+    shared_ptr<Deck> destination = nullptr;
+
+    if ( not deck_exists(destination_deck_name) )
+    {
+        destination = add_deck(destination_deck_name, *source_fields);
+
+        if ( destination == nullptr )
+        {
+            return false;
+        }
+    }
+    else
+    {
+        destination = decks_.at(destination_deck_name);
+
+        if ( not fields_match(*source_fields, *(destination->get_fields())) )
+        {
+            return false;
+        }
+    }
+
+    return source->copy_cards(destination);
 }
 
 bool DeckManager::run_study(const string &deck_name)
