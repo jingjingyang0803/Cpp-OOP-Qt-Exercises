@@ -42,7 +42,7 @@ public:
     /**
      * @brief Destructs the Deck object.
      */
-    ~Deck();
+    ~Deck()= default;
 
     /**
      * @brief Adds a new card to the deck.

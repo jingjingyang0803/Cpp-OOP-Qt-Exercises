@@ -37,7 +37,7 @@ public:
     /**
      * @brief Deconstructs the DeckManager object.
      */
-    ~DeckManager();
+    ~DeckManager()= default;
 
     /**
      * @brief Prints all deck names and the number of cards they contain.

@@ -41,7 +41,7 @@ public:
     /**
      * @brief Destructs the Card object.
      */
-    ~Card();
+    ~Card()= default;
 
     /**
      * @brief Assigns definitions to card field types.

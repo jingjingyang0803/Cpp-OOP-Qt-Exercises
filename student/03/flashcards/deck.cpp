@@ -41,13 +41,8 @@ const string NO_CARDS = "No cards have been added.";
 Deck::Deck(string deck_name, const Fields& fields) :
     name_(deck_name), deck_fields_(make_shared<Fields>(fields))
 {
-
 }
 
-Deck::~Deck()
-{
-
-}
 
 // Adds a new card to the deck.
 bool Deck::add_card(const Fields &card_fields, const Fields &definitions)

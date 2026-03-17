@@ -35,10 +35,6 @@ Card::Card() :
 
 }
 
-Card::~Card()
-{
-
-}
 
 // Assigns definitions to card field types.
 bool Card::add_new_definitions(const Fields &field_types,
