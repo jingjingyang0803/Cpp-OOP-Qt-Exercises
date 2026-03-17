@@ -96,9 +96,20 @@ bool Deck::copy_cards(shared_ptr<Deck> destination)
     return true;
 }
 
+// Returns the next card to be studied in insertion order.
+//
+// @param cards_studied Number of cards already studied (updated internally)
+// @return pointer to the next card, or nullptr if no more cards
 shared_ptr<Card> Deck::get_next_study_card(unsigned int& cards_studied)
 {
+    if ( cards_studied >= cards_.size() )
+    {
+        return nullptr;
+    }
 
+    shared_ptr<Card> next_card = cards_.at(cards_studied);
+    ++cards_studied;
+    return next_card;
 }
 
 // Prints deck size, selected fields and all cards of the deck.

@@ -80,10 +80,50 @@ bool Card::get_definitions(const Fields &requested_fields,
     return true;
 }
 
+/**
+ * @brief Checks user answers against stored definitions.
+ *
+ * Compares the given answers with the correct definitions of the card.
+ * Each card yields a score between 0 and 1.
+ * If multiple fields are checked, the score is divided equally between them.
+ *
+ * If a correct definition is empty, the user receives full points for that field
+ * regardless of the answer.
+ *
+ * @param answer_fields Fields that are being checked
+ * @param answers User-provided answers corresponding to the fields
+ * @return Score between 0 and 1 for this card
+ */
 double Card::check_answers(const Fields& answer_fields,
                            const Fields& answers) const
 {
+    if ( answer_fields.size() != answers.size() || answer_fields.empty() )
+    {
+        return 0.0;
+    }
 
+    double points_per_field = 1.0 / answer_fields.size();
+    double result = 0.0;
+
+    for ( size_t i = 0; i < answer_fields.size(); ++i )
+    {
+        auto it = definitions_.find(answer_fields.at(i));
+
+        if ( it == definitions_.end() )
+        {
+            return 0.0;
+        }
+
+        const string& correct_answer = it->second;
+        const string& user_answer = answers.at(i);
+
+        if ( correct_answer.empty() || correct_answer == user_answer )
+        {
+            result += points_per_field;
+        }
+    }
+
+    return result;
 }
 
 // Prints the card ID and requested field definitions.

@@ -200,9 +200,93 @@ bool DeckManager::copy(string source_deck_name,
     return source->copy_cards(destination);
 }
 
+/**
+ * @brief Runs a study session for a given deck.
+ *
+ * Prompts the user to select fields used as prompts and fields used as answers.
+ * Iterates through all cards in the deck, displays prompt definitions,
+ * collects user input, and evaluates answers.
+ *
+ * The total score is calculated based on correct answers and presented
+ * as a percentage at the end of the session.
+ *
+ * @param deck_name Name of the deck to be studied
+ * @return false if the deck does not exist or invalid fields are selected,
+ *         true otherwise
+ */
 bool DeckManager::run_study(const string &deck_name)
 {
+    if ( not deck_exists(deck_name) )
+    {
+        return false;
+    }
 
+    shared_ptr<Deck> deck = decks_.at(deck_name);
+    shared_ptr<Fields> deck_fields = deck->get_fields();
+
+    Fields prompt_fields;
+    Fields answer_fields;
+
+    ask_fields(deck_name, PROMPT_FIELDS_PRINT, prompt_fields, false);
+    ask_fields(deck_name, PROMPT_FIELDS_ANSWER, answer_fields, false);
+
+    if ( prompt_fields.empty() || answer_fields.empty() )
+    {
+        return false;
+    }
+
+    if ( not fields_overlap(*deck_fields, prompt_fields)
+         || not fields_overlap(*deck_fields, answer_fields) )
+    {
+        return false;
+    }
+
+    cout << "Study " << deck->get_deck_size() << " cards" << endl;
+
+    cout << MESSAGE_STUDY_PROMPTS;
+    print_field_line(prompt_fields, ' ', '\n');
+
+    cout << MESSAGE_STUDY_ANSWERS;
+    print_field_line(answer_fields, ' ', '\n');
+    cout << endl;
+
+    unsigned int cards_studied = 0;
+    double total_score = 0.0;
+
+    shared_ptr<Card> card = nullptr;
+
+    while ( (card = deck->get_next_study_card(cards_studied)) != nullptr )
+    {
+        Fields prompt_definitions;
+        if ( not card->get_definitions(prompt_fields, prompt_definitions) )
+        {
+            return false;
+        }
+
+        print_field_line(prompt_definitions, '/', ':');
+
+        string input = "";
+        getline(cin, input);
+        Fields answers = split(input, ' ');
+
+        if ( answers.size() == answer_fields.size() )
+        {
+            total_score += card->check_answers(answer_fields, answers);
+        }
+    }
+
+    double result = 0.0;
+    if ( deck->get_deck_size() > 0 )
+    {
+        result = total_score / deck->get_deck_size() * 100.0;
+    }
+
+    cout << endl
+         << MESSAGE_STUDY_RESULT
+         << fixed << setprecision(2)
+         << result << "%" << endl;
+
+    return true;
 }
 
 bool DeckManager::deck_exists(const string &deck_name) const
