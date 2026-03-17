@@ -5,30 +5,30 @@
 # File: deck.cpp                                                            #
 # Description: Implements the Deck class functionality.                     #
 #                                                                           #
-# The Deck class represents a collection of flashcards. It stores            #
-# shared pointers to Card objects and maintains a fixed set of field types   #
-# that define the structure of the deck.                                     #
+# The Deck class represents a collection of flashcards. It stores           #
+# shared pointers to Card objects and maintains a fixed set of field types  #
+# that define the structure of the deck.                                    #
 #                                                                           #
-# The class provides functionality for:                                      #
-# - Adding new cards to the deck                                             #
-# - Copying cards between decks                                              #
-# - Retrieving cards for study sessions                                      #
-# - Printing card information based on selected fields                       #
+# The class provides functionality for:                                     #
+# - Adding new cards to the deck                                            #
+# - Copying cards between decks                                             #
+# - Retrieving cards for study sessions                                     #
+# - Printing card information based on selected fields                      #
 #                                                                           #
-# Cards are stored in insertion order, and no duplicate cards (by ID)        #
-# are allowed within the same deck.                                                                         #                                             #
+# Cards are stored in insertion order, and no duplicate cards (by ID)       #
+# are allowed within the same deck.                                         #                               #                                             #
 #                                                                           #
 # Notes:                                                                    #
-# - Uses shared_ptr<Card> for memory management                              #
-# - Deck fields define valid card structure                                  #
-# - Cards can belong to multiple decks                                     #
-#
+# - Uses shared_ptr<Card> for memory management                             #
+# - Deck fields define valid card structure                                 #
+# - Cards can belong to multiple decks                                      #
+#                                                                           #
 # Author information:                                                       #
-# - Name: Jingjing Yang
-# - Student number: 154016843
-# - Gitlab user name: ptjiya
-# - Tuni email: jingjing.yang@tuni.fi
-#                                                                   #
+# - Name: Jingjing Yang                                                     #
+# - Student number: 154016843                                               #
+# - Gitlab user name: ptjiya                                                #
+# - Tuni email: jingjing.yang@tuni.fi                                       #
+#                                                                           #
 #############################################################################
 */
 
