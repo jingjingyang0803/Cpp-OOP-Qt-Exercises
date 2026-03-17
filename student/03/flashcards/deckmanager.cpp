@@ -53,9 +53,35 @@ void DeckManager::print_decks() const
     }
 }
 
+// Create and add the new deck with the provided name and fields
+// Returns nullptr if a deck with the same name already exists,
+// or if the provided fields are invalid (empty or contain empty fields),
+// otherwise returns a pointer to the created deck.
 shared_ptr<Deck> DeckManager::add_deck(string deck_name)
 {
+    // Check if a deck with the same name already exists
+    if ( deck_exists(deck_name) )
+    {
+        return nullptr;
+    }
 
+    // Asks user to type fields that will initialize the deck fields.
+    cout << PROMPT_TYPE_FIELDS << endl;
+    cout << FIELDS_PROMPT;
+
+    string input = "";
+    getline(cin, input);
+    cout << endl;
+
+    // Split the input into fields and check for empty fields
+    Fields input_fields = split(input, ' ');
+
+    if ( input_fields.empty() || check_empty_fields(input_fields) )
+    {
+        return nullptr;
+    }
+
+    return add_deck(deck_name, input_fields);
 }
 
 // Creates a new empty deck.
