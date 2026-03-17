@@ -10,6 +10,10 @@
 #        * Provides answer checking and prompt retrieval.                   #
 #                                                                           #
 # Author information:                                                       #
+# - Name: Jingjing Yang                                                     #
+# - Student number: 154016843                                               #
+# - Gitlab user name: ptjiya                                                #
+# - Tuni email: jingjing.yang@tuni.fi
 #                                                                           #
 #############################################################################
 */

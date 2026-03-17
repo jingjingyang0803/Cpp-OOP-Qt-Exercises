@@ -10,6 +10,10 @@
 #        * Acts as an abstraction layer between CLI and Deck objects.       #
 #                                                                           #
 # Author information:                                                       #
+# - Name: Jingjing Yang                                                     #
+# - Student number: 154016843                                               #
+# - Gitlab user name: ptjiya                                                #
+# - Tuni email: jingjing.yang@tuni.fi                                       #
 #                                                                           #
 #############################################################################
 */
