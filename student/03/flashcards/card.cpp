@@ -99,8 +99,8 @@ bool Card::get_definitions(const Fields &requested_fields,
  * Each card yields a score between 0 and 1.
  * If multiple fields are checked, the score is divided equally between them.
  *
- * If a correct definition is empty, the user receives full points for that field
- * regardless of the answer.
+ * If a correct definition is empty, the user receives full points for
+ * that field regardless of the answer.
  *
  * @param answer_fields Fields that are being checked
  * @param answers User-provided answers corresponding to the fields
