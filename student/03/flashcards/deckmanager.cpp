@@ -93,7 +93,6 @@ shared_ptr<Deck> DeckManager::add_deck(string deck_name)
 
     string input = "";
     getline(cin, input);
-    cout << endl;
 
     // Split the input into fields and check for empty fields
     Fields input_fields = split(input, ' ');
@@ -160,12 +159,19 @@ void DeckManager::overview(const string& deck_name)
         return;
     }
 
+    shared_ptr<Deck> deck = decks_.at(deck_name);
+
+    // Handle the case when the deck has no cards to print
+    if (not deck->get_deck_size())
+    {
+        cout << "No cards have been added." << endl;
+        return;
+    }
+
     Fields requested_fields;
 
     // Ask the user for fields to print
     ask_fields(deck_name, PROMPT_FIELDS_PRINT, requested_fields, true);
-
-    shared_ptr<Deck> deck = decks_.at(deck_name);
 
     // Handle the case when user inputted nonexisting fields
     if (not deck->print_deck(requested_fields))
