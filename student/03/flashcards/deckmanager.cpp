@@ -3,34 +3,13 @@
 # COMP.CS.115 Ohjelmointi 3: Rajapinnat / Programming 3: Interfaces         #
 # Project: Opettelukortit / Flashcards                                      #
 # File: deckmanager.cpp                                                     #
-# Description: Implements DeckManager functionality.                        #
-#                                                                           #
-# The DeckManager class is responsible for managing all decks in the        #
-# program. It acts as an abstraction layer between the command line         #
-# interface (CLI) and the Deck objects.                                     #
-#                                                                           #
-# The class provides functionality for:                                     #
-# - Creating new decks                                                      #
-# - Adding cards to decks                                                   #
-# - Listing all decks                                                       #
-# - Printing deck contents (overview)                                       #
-# - Copying cards between decks                                             #
-# - Running study sessions                                                  #
-#                                                                           #
-# It also handles user interaction related to field selection and ensures   #
-# that operations are performed only on valid decks.                        #
-#                                                                           #
-# Notes:                                                                    #
-# - Stores decks using smart pointers (shared_ptr)                          #
-# - Ensures unique deck names                                               #
-# - Delegates card-related operations to Deck and Card classes              #                                                      #
+# Description: Implements DeckManager functionality.                        #                                                 #
 #                                                                           #
 # Author information:                                                       #
 # - Name: Jingjing Yang                                                     #
 # - Student number: 154016843                                               #
 # - Gitlab user name: ptjiya                                                #
 # - Tuni email: jingjing.yang@tuni.fi                                       #
-#                                                                           #
 #############################################################################
 */
 
@@ -56,7 +35,7 @@ const string MESSAGE_STUDY_RESULT = "Final result of the study session: ";
 
 const string FIELDS_PROMPT = "FIELDS> ";
 
-// Prints all deck names and the number of cards they contain.
+
 void DeckManager::print_decks() const
 {
     if ( decks_.empty() )
@@ -73,10 +52,6 @@ void DeckManager::print_decks() const
     }
 }
 
-// Create and add the new deck with the provided name and fields
-// Returns nullptr if a deck with the same name already exists,
-// or if the provided fields are invalid (empty or contain empty fields),
-// otherwise returns a pointer to the created deck.
 shared_ptr<Deck> DeckManager::add_deck(string deck_name)
 {
     // Check if a deck with the same name already exists
@@ -103,8 +78,6 @@ shared_ptr<Deck> DeckManager::add_deck(string deck_name)
     return add_deck(deck_name, input_fields);
 }
 
-// Creates a new empty deck.
-// Initializes a deck with the given name and field structure.
 shared_ptr<Deck> DeckManager::add_deck(string deck_name,
                                        const Fields &field_types)
 {
@@ -118,11 +91,6 @@ shared_ptr<Deck> DeckManager::add_deck(string deck_name,
     return new_deck;
 }
 
-// Adds a new card to an existing deck.
-// Prompts the user to fill out definitions for all field types of the deck.
-// Accepts empty definitions.
-// Returns false if deck doesn't exist, false if the card can't be
-// added successfully to the deck, true otherwise.
 bool DeckManager::add_card(string deck_name)
 {
     if ( not deck_exists(deck_name) )
@@ -178,19 +146,6 @@ void DeckManager::overview(const string& deck_name) const
     }
 }
 
-/**
- * @brief Copies all cards from the source deck into the destination deck.
- *
- * If the destination deck does not exist, it is created using the same
- * field structure as the source deck. Cards are copied without duplication.
- *
- * @param source_deck_name Name of the source deck
- * @param destination_deck_name Name of the destination deck
- * @return false if the source deck does not exist,
- *         false if both decks exist and their fields do not match,
- *         false if the destination deck could not be created or cards
- *         could not be copied, true otherwise
- */
 bool DeckManager::copy(string source_deck_name,
                        string destination_deck_name)
 {
@@ -226,20 +181,6 @@ bool DeckManager::copy(string source_deck_name,
     return source->copy_cards(destination);
 }
 
-/**
- * @brief Runs a study session for a given deck.
- *
- * Prompts the user to select fields used as prompts and fields used as answers.
- * Iterates through all cards in the deck, displays prompt definitions,
- * collects user input, and evaluates answers.
- *
- * The total score is calculated based on correct answers and presented
- * as a percentage at the end of the session.
- *
- * @param deck_name Name of the deck to be studied
- * @return false if the deck does not exist or invalid fields are selected,
- *         true otherwise
- */
 bool DeckManager::run_study(const string &deck_name) const
 {
     if ( not deck_exists(deck_name) )

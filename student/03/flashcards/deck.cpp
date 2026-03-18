@@ -5,30 +5,11 @@
 # File: deck.cpp                                                            #
 # Description: Implements the Deck class functionality.                     #
 #                                                                           #
-# The Deck class represents a collection of flashcards. It stores           #
-# shared pointers to Card objects and maintains a fixed set of field types  #
-# that define the structure of the deck.                                    #
-#                                                                           #
-# The class provides functionality for:                                     #
-# - Adding new cards to the deck                                            #
-# - Copying cards between decks                                             #
-# - Retrieving cards for study sessions                                     #
-# - Printing card information based on selected fields                      #
-#                                                                           #
-# Cards are stored in insertion order, and no duplicate cards (by ID)       #
-# are allowed within the same deck.                                         #                               #                                             #
-#                                                                           #
-# Notes:                                                                    #
-# - Uses shared_ptr<Card> for memory management                             #
-# - Deck fields define valid card structure                                 #
-# - Cards can belong to multiple decks                                      #
-#                                                                           #
 # Author information:                                                       #
 # - Name: Jingjing Yang                                                     #
 # - Student number: 154016843                                               #
 # - Gitlab user name: ptjiya                                                #
 # - Tuni email: jingjing.yang@tuni.fi                                       #
-#                                                                           #
 #############################################################################
 */
 
@@ -43,8 +24,6 @@ Deck::Deck(string deck_name, const Fields& fields) :
 {
 }
 
-
-// Adds a new card to the deck.
 bool Deck::add_card(const Fields &card_fields, const Fields &definitions)
 {
     if ( card_fields.size() != definitions.size() )
@@ -63,14 +42,6 @@ bool Deck::add_card(const Fields &card_fields, const Fields &definitions)
     return true;
 }
 
-// Adds an existing card to the deck.
-//
-// The card must contain all field types required by the deck.
-// If the same card already exists in the deck, it is not added again.
-//
-// @param card Shared pointer to the card to be added
-// @return false if the card does not contain all required fields,
-//         true if the card was added successfully or already exists
 bool Deck::add_card(shared_ptr<Card> card)
 {
     if ( not card->has_fields(*deck_fields_) )
@@ -90,14 +61,6 @@ bool Deck::add_card(shared_ptr<Card> card)
     return true;
 }
 
-// Copies all cards from this deck into the destination deck.
-//
-// Cards are added in their original insertion order.
-// Existing cards are not duplicated in the destination deck.
-//
-// @param destination The deck where cards are copied to
-// @return false if any card could not be added,
-//         true otherwise
 bool Deck::copy_cards(shared_ptr<Deck> destination) const
 {
     for ( const auto& card : cards_ )
@@ -111,10 +74,6 @@ bool Deck::copy_cards(shared_ptr<Deck> destination) const
     return true;
 }
 
-// Returns the next card to be studied in insertion order.
-//
-// @param cards_studied Number of cards already studied (updated internally)
-// @return pointer to the next card, or nullptr if no more cards
 shared_ptr<Card> Deck::get_next_study_card(unsigned int& cards_studied)
 {
     if ( cards_studied >= cards_.size() )
@@ -127,7 +86,6 @@ shared_ptr<Card> Deck::get_next_study_card(unsigned int& cards_studied)
     return next_card;
 }
 
-// Prints deck size, selected fields and all cards of the deck.
 bool Deck::print_deck(const Fields &requested_fields) const
 {
     // Handle the case when there are no cards in the deck.
@@ -167,13 +125,11 @@ bool Deck::print_deck(const Fields &requested_fields) const
     return true;
 }
 
-// Returns the field types of the deck.
 shared_ptr<Fields> Deck::get_fields() const
 {
     return deck_fields_;
 }
 
-// Returns the number of cards in the deck.
 size_t Deck::get_deck_size() const
 {
     return cards_.size();

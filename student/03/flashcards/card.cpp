@@ -5,22 +5,11 @@
 # File: card.cpp                                                            #
 # Description: Implements Card class functionality.                         #
 #                                                                           #
-# The Card class represents a single flashcard containing multiple          #
-# field definitions (e.g., translations between languages). It provides     #
-# functionality for storing definitions, retrieving them, printing card     #
-# content, and checking user answers during study sessions.                 #                                                        #                                             #
-#                                                                           #
-# Notes:                                                                    #
-# - Each card has a unique ID.                                              #
-# - Definitions are stored by field type.                                   #
-# - Used by Deck and DeckManager classes.                                   #
-#                                                                           #
 # Author information:                                                       #
 # - Name: Jingjing Yang                                                     #
 # - Student number: 154016843                                               #
 # - Gitlab user name: ptjiya                                                #
 # - Tuni email: jingjing.yang@tuni.fi                                       #
-#                                                                           #
 #############################################################################
 */
 
@@ -35,8 +24,6 @@ Card::Card() :
 
 }
 
-
-// Assigns definitions to card field types.
 bool Card::add_new_definitions(const Fields &field_types,
                                const Fields &definitions)
 {
@@ -53,7 +40,6 @@ bool Card::add_new_definitions(const Fields &field_types,
     return true;
 }
 
-// Checks if the card contains the specified fields.
 bool Card::has_fields(const Fields& fields) const
 {
     for ( const string& field : fields )
@@ -67,7 +53,6 @@ bool Card::has_fields(const Fields& fields) const
     return true;
 }
 
-// Fetches definitions of chosen field types
 bool Card::get_definitions(const Fields &requested_fields,
                            Fields &return_definitions) const
 {
@@ -88,20 +73,6 @@ bool Card::get_definitions(const Fields &requested_fields,
     return true;
 }
 
-/**
- * @brief Checks user answers against stored definitions.
- *
- * Compares the given answers with the correct definitions of the card.
- * Each card yields a score between 0 and 1.
- * If multiple fields are checked, the score is divided equally between them.
- *
- * If a correct definition is empty, the user receives full points for
- * that field regardless of the answer.
- *
- * @param answer_fields Fields that are being checked
- * @param answers User-provided answers corresponding to the fields
- * @return Score between 0 and 1 for this card
- */
 double Card::check_answers(const Fields& answer_fields,
                            const Fields& answers) const
 {
@@ -134,7 +105,6 @@ double Card::check_answers(const Fields& answer_fields,
     return result;
 }
 
-// Prints the card ID and requested field definitions.
 bool Card::print_card(const Fields& print_fields) const
 {
     Fields definitions;
