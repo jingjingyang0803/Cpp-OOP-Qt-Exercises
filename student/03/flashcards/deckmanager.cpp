@@ -40,13 +40,15 @@
 #include <iostream>
 #include <iomanip>
 
+const string ERROR_INCORRECT_FIELDS = "Error: Incorrect field information.";
+
 const string PROMPT_FIELDS_PRINT = "Choose fields to print: ";
 const string PROMPT_FIELDS_ANSWER = "Choose fields to answer: ";
 const string PROMPT_TYPE_FIELDS = "Type all fields separated with spaces: ";
 const string PROMPT_TYPE_DEFINITIONS = "Type all definitions line by line: ";
 
-const string NO_DECKS = "No decks have been added.";
-const string NO_CARDS = "No cards have been added.";
+const string MESSAGE_NO_DECKS = "No decks have been added.";
+const string MESSAGE_NO_CARDS = "No cards have been added.";
 
 const string MESSAGE_STUDY_PROMPTS = "Prompts shown in: ";
 const string MESSAGE_STUDY_ANSWERS = "Type answers in: ";
@@ -61,7 +63,7 @@ void DeckManager::print_decks() const
 {
     if ( decks_.empty() )
     {
-        cout << NO_DECKS << endl;
+        cout << MESSAGE_NO_DECKS << endl;
         return;
     }
 
@@ -162,7 +164,7 @@ void DeckManager::overview(const string& deck_name) const
     // Handle the case when the deck has no cards to print
     if (not deck->get_deck_size())
     {
-        cout << NO_CARDS << endl;
+        cout << MESSAGE_NO_CARDS << endl;
         return;
     }
 
@@ -174,7 +176,7 @@ void DeckManager::overview(const string& deck_name) const
     // Handle the case when user inputted nonexisting fields
     if (not deck->print_deck(requested_fields))
     {
-        cout << "Error: Incorrect field information." << endl;
+        cout << ERROR_INCORRECT_FIELDS << endl;
     }
 }
 

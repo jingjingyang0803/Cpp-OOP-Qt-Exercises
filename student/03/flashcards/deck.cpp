@@ -36,7 +36,7 @@
 
 #include <iostream>
 
-const string NO_CARDS = "No cards have been added.";
+const string MESSAGE_NO_CARDS = "No cards have been added.";
 
 Deck::Deck(string deck_name, const Fields& fields) :
     name_(deck_name), deck_fields_(make_shared<Fields>(fields))
@@ -133,7 +133,7 @@ bool Deck::print_deck(const Fields &requested_fields) const
     // Handle the case when there are no cards in the deck.
     if (cards_.empty())
     {
-        cout << NO_CARDS << endl;
+        cout << MESSAGE_NO_CARDS << endl;
         return true;
     }
 
