@@ -54,20 +54,17 @@ void DeckManager::print_decks() const
 
 shared_ptr<Deck> DeckManager::add_deck(string deck_name)
 {
-    // Check if a deck with the same name already exists
     if ( deck_exists(deck_name) )
     {
         return nullptr;
     }
 
-    // Asks user to type fields that will initialize the deck fields.
     cout << PROMPT_TYPE_FIELDS << endl;
     cout << FIELDS_PROMPT;
 
     string input = "";
     getline(cin, input);
 
-    // Split the input into fields and check for empty fields
     Fields input_fields = split(input, ' ');
 
     if ( input_fields.empty() || check_empty_fields(input_fields) )
@@ -116,10 +113,8 @@ bool DeckManager::add_card(string deck_name)
     return decks_.at(deck_name)->add_card(*deck_fields, definitions);
 }
 
-// Prints the deck name, size, and card information of a deck.
 void DeckManager::overview(const string& deck_name) const
 {
-    // Check if the deck exists before proceeding with the overview.
     if (not deck_exists(deck_name))
     {
         return;
@@ -127,7 +122,6 @@ void DeckManager::overview(const string& deck_name) const
 
     shared_ptr<Deck> deck = decks_.at(deck_name);
 
-    // Handle the case when the deck has no cards to print
     if (not deck->get_deck_size())
     {
         cout << MESSAGE_NO_CARDS << endl;
@@ -135,11 +129,8 @@ void DeckManager::overview(const string& deck_name) const
     }
 
     Fields requested_fields;
-
-    // Ask the user for fields to print
     ask_fields(deck_name, PROMPT_FIELDS_PRINT, requested_fields, true);
 
-    // Handle the case when user inputted nonexisting fields
     if (not deck->print_deck(requested_fields))
     {
         cout << ERROR_INCORRECT_FIELDS << endl;
@@ -159,6 +150,8 @@ bool DeckManager::copy(string source_deck_name,
 
     shared_ptr<Deck> destination = nullptr;
 
+    // Create the destination deck if needed; otherwise require matching
+    // field structures before copying cards.
     if ( not deck_exists(destination_deck_name) )
     {
         destination = add_deck(destination_deck_name, *source_fields);
@@ -236,6 +229,7 @@ bool DeckManager::run_study(const string &deck_name) const
         getline(cin, input);
         Fields answers = split(input, ' ');
 
+        // Ignore answers if the number of given fields is incorrect.
         if ( answers.size() == answer_fields.size() )
         {
             total_score += card->check_answers(answer_fields, answers);
@@ -306,7 +300,7 @@ void DeckManager::ask_fields(const string& deck_name,
 
     if (allow_all and input_fields.size() == 1 and input_fields.at(0) == "all")
     {
+        // Special case: "all" selects every field in the deck.
         input_fields = *deck_fields;
     }
 }
-

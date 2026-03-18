@@ -51,6 +51,7 @@ bool Deck::add_card(shared_ptr<Card> card)
 
     for ( const auto& existing_card : cards_ )
     {
+        // Ignore duplicates when the same card is copied into the deck.
         if ( *existing_card == *card )
         {
             return true;
@@ -81,6 +82,7 @@ shared_ptr<Card> Deck::get_next_study_card(unsigned int& cards_studied)
         return nullptr;
     }
 
+    // Cards are returned in insertion order, one at a time.
     shared_ptr<Card> next_card = cards_.at(cards_studied);
     ++cards_studied;
     return next_card;
@@ -88,23 +90,20 @@ shared_ptr<Card> Deck::get_next_study_card(unsigned int& cards_studied)
 
 bool Deck::print_deck(const Fields &requested_fields) const
 {
-    // Handle the case when there are no cards in the deck.
     if (cards_.empty())
     {
         cout << MESSAGE_NO_CARDS << endl;
         return true;
     }
 
-    // Check if all requested fields exist in the deck before printing.
+    // Printing is allowed only if all requested fields belong to the deck.
     if ( not fields_overlap(*deck_fields_, requested_fields) )
     {
         return false;
     }
 
-    // Print the deck name and the number of cards in the deck.
     cout << name_ << " (" << cards_.size() << " cards)" << endl << endl;
 
-    // Print the header with requested fields.
     cout << "   |";
     for (const string& field : requested_fields)
     {
@@ -112,8 +111,7 @@ bool Deck::print_deck(const Fields &requested_fields) const
     }
     cout << endl;
 
-
-    // Displays all cards using only the selected requested_fields.
+    // Print each card using the selected field order.
     for (const auto& card : cards_)
     {
         if (not card->print_card(requested_fields))
@@ -124,7 +122,6 @@ bool Deck::print_deck(const Fields &requested_fields) const
 
     return true;
 }
-
 shared_ptr<Fields> Deck::get_fields() const
 {
     return deck_fields_;
