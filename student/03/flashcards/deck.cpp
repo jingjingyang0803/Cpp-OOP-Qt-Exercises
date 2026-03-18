@@ -98,7 +98,7 @@ bool Deck::add_card(shared_ptr<Card> card)
 // @param destination The deck where cards are copied to
 // @return false if any card could not be added,
 //         true otherwise
-bool Deck::copy_cards(shared_ptr<Deck> destination)
+bool Deck::copy_cards(shared_ptr<Deck> destination) const
 {
     for ( const auto& card : cards_ )
     {
@@ -128,7 +128,7 @@ shared_ptr<Card> Deck::get_next_study_card(unsigned int& cards_studied)
 }
 
 // Prints deck size, selected fields and all cards of the deck.
-bool Deck::print_deck(const Fields &requested_fields)
+bool Deck::print_deck(const Fields &requested_fields) const
 {
     // Handle the case when there are no cards in the deck.
     if (cards_.empty())
@@ -168,13 +168,13 @@ bool Deck::print_deck(const Fields &requested_fields)
 }
 
 // Returns the field types of the deck.
-shared_ptr<Fields> Deck::get_fields()
+shared_ptr<Fields> Deck::get_fields() const
 {
     return deck_fields_;
 }
 
 // Returns the number of cards in the deck.
-size_t Deck::get_deck_size()
+size_t Deck::get_deck_size() const
 {
     return cards_.size();
 }

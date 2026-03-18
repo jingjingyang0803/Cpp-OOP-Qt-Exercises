@@ -149,7 +149,7 @@ bool DeckManager::add_card(string deck_name)
 }
 
 // Prints the deck name, size, and card information of a deck.
-void DeckManager::overview(const string& deck_name)
+void DeckManager::overview(const string& deck_name) const
 {
     // Check if the deck exists before proceeding with the overview.
     if (not deck_exists(deck_name))
@@ -240,7 +240,7 @@ bool DeckManager::copy(string source_deck_name,
  * @return false if the deck does not exist or invalid fields are selected,
  *         true otherwise
  */
-bool DeckManager::run_study(const string &deck_name)
+bool DeckManager::run_study(const string &deck_name) const
 {
     if ( not deck_exists(deck_name) )
     {

@@ -69,7 +69,7 @@ bool Card::has_fields(const Fields& fields) const
 
 // Fetches definitions of chosen field types
 bool Card::get_definitions(const Fields &requested_fields,
-                           Fields &return_definitions)
+                           Fields &return_definitions) const
 {
     return_definitions.clear();
 
@@ -140,19 +140,9 @@ bool Card::print_card(const Fields& print_fields) const
     Fields definitions;
 
     // Check if all requested fields exist and gather their definitions.
-
-    for (const string& field : print_fields)
+    if ( !get_definitions(print_fields, definitions) )
     {
-        // can't call non-const get_definitions in a const function,
-        // so we manually retrieve definitions here
-        auto it = definitions_.find(field);
-
-        if (it == definitions_.end())
-        {
-            return false;
-        }
-
-        definitions.push_back(it->second);
+        return false;
     }
 
     cout << " " << ID_ << " |";

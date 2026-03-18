@@ -81,7 +81,7 @@ public:
      * false otherwise.
      */
     bool get_definitions(const Fields& requested_fields,
-                         Fields& return_definitions);
+                         Fields& return_definitions) const;
 
     /**
      * @brief Checks study answers against stored definitions.

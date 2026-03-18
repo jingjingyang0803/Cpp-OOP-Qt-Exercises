@@ -97,7 +97,7 @@ public:
      *
      * @param deck_name Deck name
      */
-    void overview(const string& deck_name);
+    void overview(const string& deck_name) const;
 
     /**
      * @brief Copies all cards from the source deck into the destination deck.
@@ -127,7 +127,7 @@ public:
      * @return False if user requests nonexisting fields,
      * true otherwise.
      */
-    bool run_study(const string& deck_name);
+    bool run_study(const string& deck_name) const;
 
     /**
      * @brief Checks if a deck exists.

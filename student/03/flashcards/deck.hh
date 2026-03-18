@@ -88,7 +88,7 @@ public:
      * true if it existed in the deck already,
      * true otherwise.
      */
-    bool copy_cards(shared_ptr<Deck> destination);
+    bool copy_cards(shared_ptr<Deck> destination) const;
 
     /**
      * @brief Fetches a new card to be studied.
@@ -113,21 +113,21 @@ public:
      * @return False if not all requested fields could be printed,
      * true otherwise.
      */
-    bool print_deck(const Fields& requested_fields);
+    bool print_deck(const Fields& requested_fields) const;
 
     /**
      * @brief Returns the field types of the deck.
      *
      * @return Shared pointer to deck fields
      */
-    shared_ptr<Fields> get_fields();
+    shared_ptr<Fields> get_fields() const;
 
     /**
      * @brief Returns the number of cards in the deck.
      *
      * @return Number of cards
      */
-    size_t get_deck_size();
+    size_t get_deck_size() const;
 
 private:
     // Deck stores deck name, field types and cards
