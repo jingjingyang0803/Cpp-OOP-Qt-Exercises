@@ -1,3 +1,24 @@
+/*
+#############################################################################
+# COMP.CS.115 Ohjelmointi 3: Rajapinnat / Programming 3: Interfaces         #
+# Project: Opettelukortit / Flashcards                                      #
+# File: tst_flashcardstest.cpp                                              #
+# Description: Unit tests for Card and Deck classes.                        #
+#                                                                           #
+# The tests verify core functionality such as:                              #
+# - Adding and retrieving card definitions                                  #
+# - Adding cards to a deck                                                  #
+# - Copying cards between decks                                             #
+# - Evaluating answers using data-driven tests                              #
+#                                                                           #
+# Author information:                                                       #
+# - Name: Jingjing Yang                                                     #
+# - Student number: 154016843                                               #
+# - Gitlab user name: ptjiya                                                #
+# - Tuni email: jingjing.yang@tuni.fi                                       #
+#############################################################################
+*/
+
 #include <QtTest>
 #include "../card.hh"
 #include "../deck.hh"
@@ -12,6 +33,7 @@ class FlashcardsTest : public QObject
 private slots:
     void test_card_definitions();
     void test_deck_add_card();
+    void test_deck_copy_cards();
     void test_check_answers_data();
     void test_check_answers();
 };
@@ -51,6 +73,25 @@ void FlashcardsTest::test_deck_add_card()
     QCOMPARE(deck.get_deck_size(), static_cast<size_t>(2));
 }
 
+void FlashcardsTest::test_deck_copy_cards()
+{
+    Fields fields = {"EN", "DE"};
+    auto source = std::make_shared<Deck>("Source", fields);
+    auto destination = std::make_shared<Deck>("Destination", fields);
+
+    QVERIFY(source->add_card({"EN", "DE"}, {"one", "eins"}));
+    QVERIFY(source->add_card({"EN", "DE"}, {"two", "zwei"}));
+    QCOMPARE(source->get_deck_size(), static_cast<size_t>(2));
+    QCOMPARE(destination->get_deck_size(), static_cast<size_t>(0));
+
+    QVERIFY(source->copy_cards(destination));
+    QCOMPARE(destination->get_deck_size(), static_cast<size_t>(2));
+
+    // Copying the same cards again should not duplicate them.
+    QVERIFY(source->copy_cards(destination));
+    QCOMPARE(destination->get_deck_size(), static_cast<size_t>(2));
+}
+
 void FlashcardsTest::test_check_answers_data()
 {
     qRegisterMetaType<Fields>("Fields");
@@ -83,6 +124,18 @@ void FlashcardsTest::test_check_answers_data()
             << Fields({"", "uno"})
             << Fields({"anything", "uno"})
             << 1.0;
+
+    QTest::newRow("empty answer fields")
+            << Fields({"EN", "ES"})
+            << Fields({"one", "uno"})
+            << Fields({"", ""})
+            << 0.0;
+
+    QTest::newRow("mismatching answer count")
+            << Fields({"EN", "ES"})
+            << Fields({"one", "uno"})
+            << Fields({"one"})
+            << 0.0;
 }
 
 void FlashcardsTest::test_check_answers()
