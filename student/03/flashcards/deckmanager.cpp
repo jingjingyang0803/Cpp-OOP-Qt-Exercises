@@ -56,8 +56,6 @@ const string MESSAGE_STUDY_RESULT = "Final result of the study session: ";
 
 const string FIELDS_PROMPT = "FIELDS> ";
 
-DeckManager::DeckManager() {}
-
 // Prints all deck names and the number of cards they contain.
 void DeckManager::print_decks() const
 {

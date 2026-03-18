@@ -32,7 +32,7 @@ public:
      *
      * Initializes an empty deck container.
      */
-    DeckManager();
+    DeckManager()= default;
 
     /**
      * @brief Deconstructs the DeckManager object.
