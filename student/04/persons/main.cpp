@@ -1,5 +1,5 @@
 #include "person.hh"
-// #include "student.hh"
+#include "student.hh"
 // #include "teacher.hh"
 #include <iostream>
 
@@ -13,7 +13,7 @@ int main()
     person.celebrate_birthday(31);
     person.print(cout);
     cout << endl;
-    /*
+
     // Creating and testing student
     Student student("student", 20, "xyz123");
     student.print(cout);
@@ -24,7 +24,7 @@ int main()
     student.complete_course("Data Structures and Algorithms");
     student.print(cout);
     cout << endl;
-
+    /*
     // Creating and testing teacher
     Teacher teacher("teacher", 40, "TF113");
     teacher.print(cout);

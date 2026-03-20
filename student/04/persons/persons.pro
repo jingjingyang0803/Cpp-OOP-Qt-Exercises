@@ -5,8 +5,10 @@ CONFIG -= qt
 
 SOURCES += \
         main.cpp \
-        person.cpp
+        person.cpp \
+        student.cpp
 
 HEADERS += \
-    person.hh
+    person.hh \
+    student.hh
 

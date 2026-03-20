@@ -4,13 +4,13 @@
 Person::Person(const std::string& name, int age):
     name_(name), age_(age)
 {
-    std::cout << "created: " << get_role() << std::endl;
+    std::cout << "Person created: " << get_name() << std::endl;
 }
 
 // Destructor
 Person::~Person()
 {
-    std::cout << "destructed: " << get_role() << std::endl;
+    std::cout << "Person destructed: " << get_name() << std::endl;
 }
 
 std::string Person::get_name() const
