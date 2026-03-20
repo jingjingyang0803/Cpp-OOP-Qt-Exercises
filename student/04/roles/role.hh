@@ -14,7 +14,7 @@ public:
 
     // Prints the role in the format:
     // Role started at <from_year_>
-    /* virtual */ void print(std::ostream& output) const;
+    virtual void print(std::ostream& output) const;
 
 private:
     int from_year_;

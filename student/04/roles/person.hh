@@ -4,7 +4,9 @@
 #include "role.hh"
 #include <string>
 #include <vector>
+#include <iostream>
 
+// Represents a person with multiple roles.
 class Person
 {
 public:
@@ -12,16 +14,16 @@ public:
     Person(const std::string& name);
 
     // Destructor
-    virtual ~Person();
+    ~Person();
 
-    // Adds a new role for the person
+    // Prints person's name
+    void print_name(std::ostream& output) const;
+
+    // Adds a new role
     void add_role(Role* role);
 
-    // Prints the roles
+    // Prints person's all roles starting year
     void print(std::ostream& output) const;
-
-    // Prints the name
-    void print_name(std::ostream& output) const;
 
 private:
     std::string name_;
