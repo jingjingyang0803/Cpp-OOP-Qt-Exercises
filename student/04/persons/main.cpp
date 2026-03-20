@@ -1,6 +1,6 @@
 #include "person.hh"
-#include "student.hh"
-#include "teacher.hh"
+// #include "student.hh"
+// #include "teacher.hh"
 #include <iostream>
 
 using namespace std;
@@ -13,7 +13,7 @@ int main()
     person.celebrate_birthday(31);
     person.print(cout);
     cout << endl;
-
+    /*
     // Creating and testing student
     Student student("student", 20, "xyz123");
     student.print(cout);
@@ -44,6 +44,6 @@ int main()
     person = teacher;
     person.print(cout);
     cout << endl;
-
+    */
     return 0;
 }

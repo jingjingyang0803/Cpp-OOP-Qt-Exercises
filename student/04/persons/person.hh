@@ -22,6 +22,10 @@ public:
     // Prints person's data in the format: <name> : <age>
     void print(std::ostream& output) const;
 
+protected:
+    // Returns the role of the person (to be overridden)
+    virtual std::string get_role() const;
+
 private:
     std::string name_;
     int age_;
