@@ -7,11 +7,11 @@ class MostVowels : public BaseGame
 {
 public:
     MostVowels(unsigned int rounds);
-    virtual ~MostVowels();
+    ~MostVowels();
 
-    void printGameName() const override;
+    void printGameName() const;
     unsigned int roundWinner(const std::string& word1,
-                             const std::string& word2) const override;
+                             const std::string& word2) const;
 };
 
 #endif // MOSTVOWELS_HH
