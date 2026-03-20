@@ -1,5 +1,5 @@
 #include "owl.hh"
-//#include "elephant.hh"
+#include "elephant.hh"
 //#include "cockatoo.hh"
 #include <iostream>
 
@@ -16,7 +16,7 @@ int main()
     owl.print_altitude(std::cout);
     owl.hoot(std::cout);
 
-    /*
+
     std::cout << std::endl << "Elephant" << std::endl;
 
     Elephant elephant;
@@ -25,6 +25,7 @@ int main()
     elephant.suckle(std::cout);
     elephant.trumpet(std::cout);
 
+    /*
     std::cout << std::endl << "Cockatoo" << std::endl;
 
     Cockatoo cockatoo;
