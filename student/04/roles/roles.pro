@@ -7,9 +7,11 @@ SOURCES += \
         main.cpp \
         person.cpp \
         role.cpp \
-        player.cpp
+        player.cpp \
+        student.cpp
 
 HEADERS += \
     person.hh \
     role.hh \
-    player.hh
+    player.hh \
+    student.hh

@@ -1,7 +1,7 @@
 #include "person.hh"
 #include "player.hh"
 // #include "programmer.hh"
-// #include "student.hh"
+#include "student.hh"
 #include <iostream>
 
 using namespace std;
@@ -15,9 +15,9 @@ int main()
     player1.add_instrument("violin");
     person1.add_role(&player1);
     player1.print(cout);
-    // Student student1(2023, 123456);
-    // person1.add_role(&student1);
-    // student1.print(cout);
+    Student student1(2023, 123456);
+    person1.add_role(&student1);
+    student1.print(cout);
     person1.print(cout);
 
     cout << endl << "*** Another person: ";
