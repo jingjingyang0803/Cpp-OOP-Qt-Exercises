@@ -1,6 +1,6 @@
 #include "basegame.hh"
 #include "mostvowels.hh"
-//#include "rockpaperscissors.hh"
+#include "rockpaperscissors.hh"
 #include <iostream>
 
 using namespace std;
@@ -47,9 +47,9 @@ int main()
         }
         else if(command == "3")
         {
-            //RockPaperScissors rps(rounds);
-            //rps.setPlayers(player1, player2);
-            //rps.play();
+            RockPaperScissors rps(rounds);
+            rps.setPlayers(player1, player2);
+            rps.play();
         }
         cout << endl;
     }
