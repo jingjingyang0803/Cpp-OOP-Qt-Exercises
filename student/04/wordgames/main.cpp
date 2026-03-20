@@ -1,5 +1,5 @@
 #include "basegame.hh"
-//#include "mostvowels.hh"
+#include "mostvowels.hh"
 //#include "rockpaperscissors.hh"
 #include <iostream>
 
@@ -41,9 +41,9 @@ int main()
         }
         else if(command == "2")
         {
-            //MostVowels vowels(rounds);
-            //vowels.setPlayers(player1, player2);
-            //vowels.play();
+            MostVowels vowels(rounds);
+            vowels.setPlayers(player1, player2);
+            vowels.play();
         }
         else if(command == "3")
         {
