@@ -1,6 +1,6 @@
 #include "person.hh"
 #include "student.hh"
-// #include "teacher.hh"
+#include "teacher.hh"
 #include <iostream>
 
 using namespace std;
@@ -24,7 +24,7 @@ int main()
     student.complete_course("Data Structures and Algorithms");
     student.print(cout);
     cout << endl;
-    /*
+
     // Creating and testing teacher
     Teacher teacher("teacher", 40, "TF113");
     teacher.print(cout);
@@ -44,6 +44,6 @@ int main()
     person = teacher;
     person.print(cout);
     cout << endl;
-    */
+
     return 0;
 }
