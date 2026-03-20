@@ -17,7 +17,7 @@ public:
     void printGameName() const;
 
     // Determine the winner of a round.
-    // Vowels considered: a, e, i, o, u (case-insensitive).
+    // Vowels considered: a, e, i, o, u , y(case-insensitive).
     // The word containing more vowels wins.
     // If both words have the same number of vowels -> tie.
     // Return 1 if player1 wins, 2 if player2 wins, 0 if tie.

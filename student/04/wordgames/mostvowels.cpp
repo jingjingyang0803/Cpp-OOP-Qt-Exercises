@@ -24,7 +24,7 @@ unsigned int MostVowels::roundWinner(const std::string& word1,
         for(char ch : word)
         {
             ch = std::tolower(static_cast<unsigned char>(ch));
-            if(ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u')
+            if(ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' || ch == 'y')
             {
                 ++count;
             }
