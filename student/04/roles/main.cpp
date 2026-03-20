@@ -1,6 +1,6 @@
 #include "person.hh"
 #include "player.hh"
-// #include "programmer.hh"
+#include "programmer.hh"
 #include "student.hh"
 #include <iostream>
 
@@ -27,11 +27,11 @@ int main()
     player2.add_instrument("guitar");
     person2.add_role(&player2);
     player2.print(cout);
-    // Programmer programmer2(2001);
-    // programmer2.add_skill("Python");
-    // programmer2.add_skill("C++");
-    // person2.add_role(&programmer2);
-    // programmer2.print(cout);
+    Programmer programmer2(2001);
+    programmer2.add_skill("Python");
+    programmer2.add_skill("C++");
+    person2.add_role(&programmer2);
+    programmer2.print(cout);
     person2.print(cout);
     return 0;
 }

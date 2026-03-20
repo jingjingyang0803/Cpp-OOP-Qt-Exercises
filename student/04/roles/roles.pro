@@ -8,10 +8,12 @@ SOURCES += \
         person.cpp \
         role.cpp \
         player.cpp \
-        student.cpp
+        student.cpp \
+        programmer.cpp
 
 HEADERS += \
     person.hh \
     role.hh \
     player.hh \
-    student.hh
+    student.hh \
+    programmer.hh
