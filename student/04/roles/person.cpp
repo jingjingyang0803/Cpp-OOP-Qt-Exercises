@@ -9,10 +9,6 @@ Person::Person(const std::string& name):
 // Destructor
 Person::~Person()
 {
-    for(Role* role : roles_)
-    {
-        delete role;
-    }
 }
 
 // Print only name
@@ -27,12 +23,11 @@ void Person::add_role(Role* role)
     roles_.push_back(role);
 }
 
-// Print name + all roles
+// Print all roles
 void Person::print(std::ostream& output) const
 {
-
     for(Role* role : roles_)
     {
-        role->print(output);
+        role->Role::print(output);   // force base class print
     }
 }
