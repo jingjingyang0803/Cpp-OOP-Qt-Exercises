@@ -6,8 +6,10 @@ CONFIG -= qt
 SOURCES += \
         main.cpp \
         person.cpp \
-        role.cpp
+        role.cpp \
+        player.cpp
 
 HEADERS += \
     person.hh \
-    role.hh
+    role.hh \
+    player.hh
