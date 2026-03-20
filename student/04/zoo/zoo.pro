@@ -8,11 +8,14 @@ SOURCES += main.cpp \
     bird.cpp \
     owl.cpp \
     mammal.cpp \
-    elephant.cpp
+    elephant.cpp \
+    cockatoo.cpp
 
 HEADERS += \
     animal.hh \
     bird.hh \
     owl.hh \
     mammal.hh \
-    elephant.hh
+    elephant.hh \
+    cockatoo.hh
+

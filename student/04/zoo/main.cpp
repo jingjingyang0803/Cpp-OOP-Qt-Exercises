@@ -1,6 +1,6 @@
 #include "owl.hh"
 #include "elephant.hh"
-//#include "cockatoo.hh"
+#include "cockatoo.hh"
 #include <iostream>
 
 using namespace std;
@@ -25,7 +25,6 @@ int main()
     elephant.suckle(std::cout);
     elephant.trumpet(std::cout);
 
-    /*
     std::cout << std::endl << "Cockatoo" << std::endl;
 
     Cockatoo cockatoo;
@@ -34,6 +33,6 @@ int main()
     cockatoo.print_location(std::cout);
     cockatoo.print_altitude(std::cout);
     cockatoo.sing(std::cout);
-    */
+
     return 0;
 }
