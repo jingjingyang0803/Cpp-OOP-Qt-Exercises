@@ -4,5 +4,13 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-        main.cpp
+        main.cpp \
+        date.cpp \
+        datetime.cpp \
+
+HEADERS += \
+        date.hh \
+        datetime.hh \
+        dateexception.hh
+
 
