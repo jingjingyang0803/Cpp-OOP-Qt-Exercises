@@ -7,6 +7,7 @@ SOURCES += \
         main.cpp \
         date.cpp \
         datetime.cpp \
+        dateexception.cpp
 
 HEADERS += \
         date.hh \
