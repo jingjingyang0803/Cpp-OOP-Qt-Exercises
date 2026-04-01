@@ -8,7 +8,7 @@ Date::Date(int year, int month, int day)
   if (!isLegal()) {
     std::ostringstream oss;
     oss << "Illegal date " << std::setw(2) << std::setfill('0') << day << "."
-        << std::setw(2) << std::setfill('0') << month << "." << std::setw(4)
+        << std::setw(2) << std::setfill('0') << month << "."
         << std::setfill('0') << year;
     throw DateException(oss.str().c_str());
   }
