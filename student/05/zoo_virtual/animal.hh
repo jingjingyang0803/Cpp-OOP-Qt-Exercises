@@ -4,18 +4,21 @@
 #include <iostream>
 #include <string>
 
-class Animal
-{
+class Animal {
 public:
-    Animal();
-    Animal(const std::string& moving_noise);
-    virtual ~Animal();
-    void move(int x, int y, std::ostream& output);
-    void print_location(std::ostream& output) const;
+  Animal();
+  Animal(const std::string &moving_noise);
+  virtual ~Animal();
+  void move(int x, int y, std::ostream &output);
+  void print_location(std::ostream &output) const;
+
+  // abstract method, must be implemented by derived classes
+  virtual void vocalize(std::ostream &output) const = 0;
+
 private:
-    int x_;
-    int y_;
-    std::string moving_noise_;
+  int x_;
+  int y_;
+  std::string moving_noise_;
 };
 
 #endif // ANIMAL_HH

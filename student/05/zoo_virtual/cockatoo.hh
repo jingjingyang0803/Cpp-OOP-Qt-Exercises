@@ -3,13 +3,12 @@
 
 #include "bird.hh"
 
-class Cockatoo : public Bird
-{
+class Cockatoo : public Bird {
 public:
-    Cockatoo();
-    ~Cockatoo();
+  Cockatoo();
+  ~Cockatoo();
 
-    void sing(std::ostream& output) const;
+  void vocalize(std::ostream &output) const;
 };
 
 #endif // COCKATOO_HH

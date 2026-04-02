@@ -3,17 +3,16 @@
 
 #include "mammal.hh"
 
-class Elephant : public Mammal
-{
+class Elephant : public Mammal {
 public:
-    // Constructor
-    Elephant();
+  // Constructor
+  Elephant();
 
-    // Destructor
-    virtual ~Elephant() = default;
+  // Destructor
+  virtual ~Elephant() = default;
 
-    // New functionality
-    void trumpet(std::ostream& output) const;
+  // New functionality
+  void vocalize(std::ostream &output) const;
 };
 
 #endif // ELEPHANT_HH

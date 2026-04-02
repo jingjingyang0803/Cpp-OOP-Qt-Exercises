@@ -1,15 +1,15 @@
 #ifndef OWL_HH
 #define OWL_HH
-#include"bird.hh"
+#include "bird.hh"
 
-class Owl: public Bird
-{
+class Owl : public Bird {
 public:
-    Owl();
-    virtual ~Owl();
-    void hoot(std::ostream& output) const;
+  Owl();
+  virtual ~Owl();
+  void vocalize(std::ostream &output) const;
+
 private:
-    // attributes
+  // attributes
 };
 
 #endif // OWL_HH
