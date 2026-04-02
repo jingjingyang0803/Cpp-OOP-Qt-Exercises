@@ -6,9 +6,11 @@ CONFIG -= qt
 SOURCES += \
     creditaccount.cpp \
     main.cpp \
-    account.cpp
+    account.cpp \
+    timedepositaccount.cpp
 
 HEADERS += \
     account.hh  \
-    creditaccount.hh
+    creditaccount.hh \
+    timedepositaccount.hh
 
