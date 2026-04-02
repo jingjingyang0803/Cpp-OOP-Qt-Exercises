@@ -29,7 +29,7 @@ class Shape
     void paint(char color);
 
     // Add missing functions
-    void get_color(std::ostream& output) const;
+    Color get_color() const;
     virtual double area() const = 0;
     virtual double circumference() const = 0;
     virtual void print(std::ostream& output) const = 0;

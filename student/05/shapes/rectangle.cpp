@@ -22,7 +22,7 @@ double Rectangle::circumference() const
 
 void Rectangle::print(std::ostream& output) const
 {
-    get_color(output);
+    output << COLOR_NAMES.at(get_color());
     output << " rectangle with width " << width_ << " and height " << height_ << std::endl;
     output << "Area: " << area() << std::endl;
     output << "Circumference: " << circumference() << std::endl;

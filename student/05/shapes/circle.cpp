@@ -26,7 +26,7 @@ double Circle::circumference() const
 
 void Circle::print(std::ostream& output) const
 {
-    get_color(output);
+    output << COLOR_NAMES.at(get_color());
     output << " circle with radius " << radius_ << std::endl;
     output << "Area: " << area() << std::endl;
     output << "Circumference: " << circumference() << std::endl;

@@ -25,7 +25,7 @@ void Shape::paint(char color)
     }
 }
 
-void Shape::get_color(std::ostream& output) const
+Color Shape::get_color() const
 {
-    output << COLOR_NAMES.at(color_);
+    return color_;
 }
