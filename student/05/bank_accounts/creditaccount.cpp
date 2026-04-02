@@ -25,7 +25,7 @@ void CreditAccount::print() const
 {
     Account::print();
     std::cout << "  ::: "
-              << "Credit limit: " << credit_limit_ << std::endl;
+              << "Credit limit : " << credit_limit_ << std::endl;
 }
 
 void CreditAccount::set_credit_limit(double limit)

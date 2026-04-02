@@ -24,7 +24,7 @@ void TimeDepositAccount::print() const
 {
     Account::print();
     std::cout << "  ::: "
-              << "Days left: " << days_left_ << std::endl;
+              << "Days left : " << days_left_ << std::endl;
 }
 
 void TimeDepositAccount::set_times(int years)
