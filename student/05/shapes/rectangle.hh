@@ -9,8 +9,8 @@ class Rectangle : public Shape
     Rectangle(char color, double width, double height);
     ~Rectangle();
 
-    double area(std::ostream& output) const override;
-    double circumference(std::ostream& output) const override;
+    double area() const override;
+    double circumference() const override;
     void print(std::ostream& output) const override;
 
   private:

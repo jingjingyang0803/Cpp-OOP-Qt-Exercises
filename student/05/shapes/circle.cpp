@@ -14,12 +14,12 @@ Circle::~Circle()
 {
 }
 
-double Circle::area(std::ostream& output) const
+double Circle::area() const
 {
     return PI * radius_ * radius_;
 }
 
-double Circle::circumference(std::ostream& output) const
+double Circle::circumference() const
 {
     return 2 * PI * radius_;
 }
@@ -28,6 +28,6 @@ void Circle::print(std::ostream& output) const
 {
     get_color(output);
     output << " circle with radius " << radius_ << std::endl;
-    output << "Area: " << area(output) << std::endl;
-    output << "Circumference: " << circumference(output) << std::endl;
+    output << "Area: " << area() << std::endl;
+    output << "Circumference: " << circumference() << std::endl;
 }

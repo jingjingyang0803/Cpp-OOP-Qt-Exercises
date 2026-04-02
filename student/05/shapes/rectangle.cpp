@@ -10,12 +10,12 @@ Rectangle::~Rectangle()
 {
 }
 
-double Rectangle::area(std::ostream& output) const
+double Rectangle::area() const
 {
     return width_ * height_;
 }
 
-double Rectangle::circumference(std::ostream& output) const
+double Rectangle::circumference() const
 {
     return 2 * (width_ + height_);
 }
@@ -24,6 +24,6 @@ void Rectangle::print(std::ostream& output) const
 {
     get_color(output);
     output << " rectangle with width " << width_ << " and height " << height_ << std::endl;
-    output << "Area: " << area(output) << std::endl;
-    output << "Circumference: " << circumference(output) << std::endl;
+    output << "Area: " << area() << std::endl;
+    output << "Circumference: " << circumference() << std::endl;
 }
