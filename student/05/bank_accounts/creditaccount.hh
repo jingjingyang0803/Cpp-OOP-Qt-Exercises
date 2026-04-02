@@ -30,7 +30,6 @@ public:
 
 private:
     double credit_limit_;
-    double credit_used_ = 0.0;
 };
 
 #endif // CREDITACCOUNT_HH

@@ -39,12 +39,13 @@ public:
     // Prints the iban of the account.
     void print_iban() const;
 
-private:
+protected:
     // Data members
     std::string owner_;
     std::string iban_;
     double balance_ = 0.0;
 
+private:
     // Generates IBAN (based on running_number_ below).
     // Allows no more than 99 accounts.
     void generate_iban();

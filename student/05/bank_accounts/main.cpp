@@ -52,7 +52,21 @@ void print_deposits(const vector<Account*>& accs)
 {
     cout << "Printing deposits:" << endl;
 
-    // TODO: Write the implementation here
+    for(auto acc : accs)
+    {
+        cout << "  Account ";
+        acc->print_iban();
+        cout << " has time deposit: ";
+        TimeDepositAccount* deposit_ptr = dynamic_cast<TimeDepositAccount*>(acc);
+        if(deposit_ptr)
+        {
+            cout << deposit_ptr->get_times() << endl;
+        }
+        else
+        {
+            cout << 0 << endl;
+        }
+    }
 }
 
 int main()
@@ -113,7 +127,7 @@ int main()
     time_deposit_account.transfer_to(&normal_account, 40); // succeeds
     print_accounts(accounts);
 
-    cout << "5: Transforming money from an account to itself:" << endl << endl;;
+    cout << "5: Transforming money from an account to itself:" << endl << endl;
     normal_account.transfer_to(&normal_account, 1000);
     credit_account.transfer_to(&credit_account, 1000);
     time_deposit_account.transfer_to(&time_deposit_account, 1000);

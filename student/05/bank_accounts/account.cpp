@@ -6,6 +6,8 @@ int Account::running_number_ = 0;
 
 Account::Account(const std::string& owner)
 {
+    owner_ = owner;
+    balance_ = 0.0;
     generate_iban();
 }
 
@@ -16,19 +18,16 @@ Account::~Account()
 void Account::save_money(double amount)
 {
     balance_ += amount;
-    std::cout << "Saving money: " << amount << std::endl;
 }
 
 bool Account::take_money(double amount)
 {
     if(balance_ < amount)
     {
-        std::cout << "Not enough money in the account" << std::endl;
         return false;
     }
     balance_ -= amount;
 
-    std::cout << "Taking money: " << amount << std::endl;
     return true;
 }
 
@@ -36,13 +35,11 @@ bool Account::transfer_to(Account* other_account, double amount)
 {
     if(this == other_account)
     {
-        std::cout << "Transferring money to the same account: " << amount << std::endl;
         return true;
     }
     if(take_money(amount))
     {
         other_account->save_money(amount);
-        std::cout << "Transferring money: " << amount << std::endl;
         return true;
     }
     return false;
@@ -50,13 +47,12 @@ bool Account::transfer_to(Account* other_account, double amount)
 
 void Account::print() const
 {
-    std::cout << "owner: " << owner_ << " : IBAN: " << iban_ << " : balance: " << balance_
-              << std::endl;
+    std::cout << owner_ << " : " << iban_ << " : " << balance_ << " euros" << std::endl;
 }
 
 void Account::print_iban() const
 {
-    std::cout << "IBAN: " << iban_ << std::endl;
+    std::cout << iban_;
 }
 
 void Account::generate_iban()

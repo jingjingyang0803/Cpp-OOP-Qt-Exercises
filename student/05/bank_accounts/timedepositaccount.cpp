@@ -3,6 +3,7 @@
 
 TimeDepositAccount::TimeDepositAccount(const std::string& owner) : Account(owner)
 {
+    days_left_ = 0;
 }
 
 TimeDepositAccount::~TimeDepositAccount()
@@ -15,14 +16,15 @@ bool TimeDepositAccount::take_money(double amount)
     {
         return Account::take_money(amount);
     }
-    std::cout << "Cannot take money, deposit time left: " << days_left_ << " days" << std::endl;
+    std::cout << "ERROR! Cannot take money: deposit time has not expired" << std::endl;
     return false;
 }
 
 void TimeDepositAccount::print() const
 {
     Account::print();
-    std::cout << "Days left: " << days_left_ << std::endl;
+    std::cout << "  ::: "
+              << "Days left: " << days_left_ << std::endl;
 }
 
 void TimeDepositAccount::set_times(int years)
@@ -32,15 +34,10 @@ void TimeDepositAccount::set_times(int years)
 
 int TimeDepositAccount::get_times() const
 {
-    return days_left_ / 365;
+    return days_left_;
 }
 
 void TimeDepositAccount::spend_time(int days)
 {
-    if(days > days_left_)
-    {
-        std::cout << "Cannot spend time, not enough time left" << std::endl;
-        return;
-    }
     days_left_ -= days;
 }
