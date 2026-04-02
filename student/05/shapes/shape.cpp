@@ -8,22 +8,24 @@ Shape::Shape(char color)
 
 Shape::~Shape()
 {
-
 }
 
 void Shape::paint(char color)
 {
-    if(COLOR_CODES.find(color) == COLOR_CODES.end())
+    if (COLOR_CODES.find(color) == COLOR_CODES.end())
     {
         cout << "Wrong color" << endl;
     }
-    for(auto color_code : COLOR_CODES)
+    for (auto color_code : COLOR_CODES)
     {
-        if(color_code.first == color)
+        if (color_code.first == color)
         {
             color_ = color_code.second;
         }
     }
 }
 
-
+void Shape::get_color(std::ostream& output) const
+{
+    output << COLOR_NAMES.at(color_);
+}

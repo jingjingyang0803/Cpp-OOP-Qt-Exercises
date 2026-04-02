@@ -5,8 +5,10 @@ CONFIG -= qt
 
 SOURCES += \
         main.cpp \
-        shape.cpp
+        shape.cpp \
+        circle.cpp
 
 HEADERS += \
-    shape.hh
+    shape.hh \
+    circle.hh
 
