@@ -30,8 +30,8 @@ class Shape
 
     // Add missing functions
     void get_color(std::ostream& output) const;
-    virtual void area(std::ostream& output) const = 0;
-    virtual void circumference(std::ostream& output) const = 0;
+    virtual double area(std::ostream& output) const = 0;
+    virtual double circumference(std::ostream& output) const = 0;
     virtual void print(std::ostream& output) const = 0;
 
   private:

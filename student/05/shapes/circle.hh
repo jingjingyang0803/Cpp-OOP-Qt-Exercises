@@ -9,8 +9,8 @@ class Circle : public Shape
   public:
     Circle(char color, double radius);
     ~Circle();
-    void area(std::ostream& output) const override;
-    void circumference(std::ostream& output) const override;
+    double area(std::ostream& output) const override;
+    double circumference(std::ostream& output) const override;
     void print(std::ostream& output) const override;
 
   private:
