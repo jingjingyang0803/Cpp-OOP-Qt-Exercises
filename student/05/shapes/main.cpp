@@ -1,6 +1,6 @@
 #include "circle.hh"
+#include "rectangle.hh"
 #include "shape.hh"
-// #include "rectangle.hh"
 #include <fstream>
 #include <iostream>
 #include <memory>
@@ -82,6 +82,10 @@ int main()
         }
         else if (splitted_line.size() == 3)
         {
+            char color = splitted_line[0][0];
+            double width = stod(splitted_line[1]);
+            double height = stod(splitted_line[2]);
+            shapes.push_back(make_shared<Rectangle>(color, width, height));
         }
         else
         {

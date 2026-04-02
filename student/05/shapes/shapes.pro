@@ -6,9 +6,11 @@ CONFIG -= qt
 SOURCES += \
         main.cpp \
         shape.cpp \
-        circle.cpp
+        circle.cpp \
+        rectangle.cpp
 
 HEADERS += \
     shape.hh \
-    circle.hh
+    circle.hh \
+    rectangle.hh
 
