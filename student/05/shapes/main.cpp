@@ -87,10 +87,6 @@ int main()
             double height = stod(splitted_line[2]);
             shapes.push_back(make_shared<Rectangle>(color, width, height));
         }
-        else
-        {
-            cout << "Wrong line format" << endl;
-        }
     }
     print_shapes(shapes);
     return 0;
