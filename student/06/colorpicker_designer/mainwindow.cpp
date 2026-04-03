@@ -2,9 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
@@ -16,6 +14,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->horizontalSliderBlue->setMinimum(0);
     ui->horizontalSliderBlue->setMaximum(RGB_VALUE_MAX);
+
+    // Set the range of the spin boxes to be the same as the sliders
+    ui->spinBoxRed->setMinimum(0);
+    ui->spinBoxRed->setMaximum(RGB_VALUE_MAX);
+
+    ui->spinBoxGreen->setMinimum(0);
+    ui->spinBoxGreen->setMaximum(RGB_VALUE_MAX);
+
+    ui->spinBoxBlue->setMinimum(0);
+    ui->spinBoxBlue->setMaximum(RGB_VALUE_MAX);
 
     connect(ui->horizontalSliderRed, &QSlider::valueChanged, this, &MainWindow::onColorChanged);
     connect(ui->horizontalSliderGreen, &QSlider::valueChanged, this, &MainWindow::onColorChanged);
@@ -31,9 +39,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::onColorChanged()
 {
-    //qDebug() << "onColorChanged";
-    QColor selectedColor(ui->horizontalSliderRed->value(),
-                         ui->horizontalSliderGreen->value(),
+    // qDebug() << "onColorChanged";
+    QColor selectedColor(ui->horizontalSliderRed->value(), ui->horizontalSliderGreen->value(),
                          ui->horizontalSliderBlue->value());
 
     QPixmap colorMap(64, 64);

@@ -3,7 +3,8 @@
 
 #include <QMainWindow>
 
-namespace Ui {
+namespace Ui
+{
 class MainWindow;
 }
 
@@ -11,15 +12,15 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
-public:
-    explicit MainWindow(QWidget *parent = 0);
+  public:
+    explicit MainWindow(QWidget* parent = 0);
     ~MainWindow();
 
-private slots:
+  private slots:
     void onColorChanged();
 
-private:
-    Ui::MainWindow *ui;
+  private:
+    Ui::MainWindow* ui;
 
     const int RGB_VALUE_MAX = 255;
 };
