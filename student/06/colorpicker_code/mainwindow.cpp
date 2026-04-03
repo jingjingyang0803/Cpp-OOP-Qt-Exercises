@@ -37,9 +37,14 @@ void MainWindow::setup_ui()
     horizontalSliderGreen_ = new QSlider(Qt::Horizontal, this);
     horizontalSliderBlue_ = new QSlider(Qt::Horizontal, this);
 
-    spinBoxRed_ = new QSpinBox(this);
-    spinBoxGreen_ = new QSpinBox(this);
-    spinBoxBlue_ = new QSpinBox(this);
+    // Set the object names for the sliders and spin boxes so that they can be accessed in the tests
+    spinBoxRed_->setObjectName("spinBoxRed");
+    spinBoxGreen_->setObjectName("spinBoxGreen");
+    spinBoxBlue_->setObjectName("spinBoxBlue");
+
+    horizontalSliderRed_->setObjectName("horizontalSliderRed");
+    horizontalSliderGreen_->setObjectName("horizontalSliderGreen");
+    horizontalSliderBlue_->setObjectName("horizontalSliderBlue");
 
     // Set the range of the sliders to be between 0 and 255
     horizontalSliderRed_->setRange(0, RGB_VALUE_MAX);
