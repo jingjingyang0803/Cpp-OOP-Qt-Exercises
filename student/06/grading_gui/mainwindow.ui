@@ -13,7 +13,80 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QWidget" name="gridLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>130</y>
+      <width>361</width>
+      <height>242</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>P1 points:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>P2 points:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QPushButton" name="pushButtonCalculate">
+       <property name="text">
+        <string>Calculate</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>B points:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>N points:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Exam grade:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QSpinBox" name="spinBoxN"/>
+     </item>
+     <item row="1" column="1">
+      <widget class="QSpinBox" name="spinBoxP1"/>
+     </item>
+     <item row="2" column="1">
+      <widget class="QSpinBox" name="spinBoxP2"/>
+     </item>
+     <item row="3" column="1">
+      <widget class="QSpinBox" name="spinBoxB"/>
+     </item>
+     <item row="4" column="1">
+      <widget class="QSpinBox" name="spinBoxE"/>
+     </item>
+     <item row="5" column="1">
+      <widget class="QTextBrowser" name="textBrowser"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
@@ -27,5 +100,86 @@
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>spinBoxN</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>textBrowser</receiver>
+   <slot>reload()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>357</x>
+     <y>175</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>343</x>
+     <y>347</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinBoxP1</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>textBrowser</receiver>
+   <slot>reload()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>396</x>
+     <y>205</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>382</x>
+     <y>325</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinBoxP2</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>textBrowser</receiver>
+   <slot>reload()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>444</x>
+     <y>234</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>428</x>
+     <y>326</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinBoxB</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>textBrowser</receiver>
+   <slot>reload()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>488</x>
+     <y>268</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>469</x>
+     <y>324</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinBoxE</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>textBrowser</receiver>
+   <slot>reload()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>507</x>
+     <y>301</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>541</x>
+     <y>329</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
