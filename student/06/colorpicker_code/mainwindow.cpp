@@ -25,7 +25,7 @@ void MainWindow::setup_ui()
     // Create the horizontal layout and grid layout, and add the grid layout to the horizontal
     // layout
     auto* horizontal_layout = new QHBoxLayout(central_widget);
-    auto* grid_layout = new QGridLayout(central_widget);
+    auto* grid_layout = new QGridLayout();
     horizontal_layout->addLayout(grid_layout);
 
     // Create the labels, sliders and spin boxes for red, green and blue
@@ -36,6 +36,10 @@ void MainWindow::setup_ui()
     horizontalSliderRed_ = new QSlider(Qt::Horizontal, this);
     horizontalSliderGreen_ = new QSlider(Qt::Horizontal, this);
     horizontalSliderBlue_ = new QSlider(Qt::Horizontal, this);
+
+    spinBoxRed_ = new QSpinBox(this);
+    spinBoxGreen_ = new QSpinBox(this);
+    spinBoxBlue_ = new QSpinBox(this);
 
     // Set the object names for the sliders and spin boxes so that they can be accessed in the tests
     spinBoxRed_->setObjectName("spinBoxRed");
