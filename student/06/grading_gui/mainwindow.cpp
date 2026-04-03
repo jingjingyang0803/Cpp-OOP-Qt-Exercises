@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->spinBoxP1->setMaximum(MAX_P_POINTS_PER_PROJECT);
     ui->spinBoxP2->setMaximum(MAX_P_POINTS_PER_PROJECT);
     ui->spinBoxB->setMaximum(MAX_B_POINTS);
-    ui->spinBoxE->setMaximum(100);
+    ui->spinBoxE->setMaximum(5);
 }
 
 MainWindow::~MainWindow()
@@ -21,10 +21,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButtonCalculate_clicked()
 {
-    double pointsN = ui->spinBoxN->value();
-    double pointsP1 = ui->spinBoxP1->value();
-    double pointsP2 = ui->spinBoxP2->value();
-    double pointsE = ui->spinBoxE->value();
+    unsigned int pointsN = ui->spinBoxN->value();
+    unsigned int pointsP1 = ui->spinBoxP1->value();
+    unsigned int pointsP2 = ui->spinBoxP2->value();
+    unsigned int pointsE = ui->spinBoxE->value();
 
     unsigned int scoreW = score_from_weekly_exercises(pointsN);
     unsigned int scoreP = score_from_projects(pointsP1, pointsP2);
