@@ -25,9 +25,9 @@
     </property>
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="0">
-      <widget class="QLCDNumber" name="lcdNumberSec">
+      <widget class="QLCDNumber" name="lcdNumberMin">
        <property name="styleSheet">
-        <string notr="true">#lcdNumberSec {
+        <string notr="true">#lcdNumberMin {
     background-color: #0f8a8a;
     color: white;
 }
@@ -37,9 +37,9 @@
       </widget>
      </item>
      <item row="1" column="0">
-      <widget class="QLCDNumber" name="lcdNumberMin">
+      <widget class="QLCDNumber" name="lcdNumberSec">
        <property name="styleSheet">
-        <string notr="true">#lcdNumberMin {
+        <string notr="true">#lcdNumberSec {
     background-color: #008000;
     color: white;
 }
