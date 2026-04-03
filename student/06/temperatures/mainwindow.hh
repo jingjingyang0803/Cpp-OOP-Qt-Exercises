@@ -1,5 +1,5 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef MAINWINDOW_HH
+#define MAINWINDOW_HH
 
 #include <QMainWindow>
 
@@ -33,4 +33,4 @@ class MainWindow : public QMainWindow
     QString scale_ = "Celsius";
     int degrees_ = 0;
 };
-#endif // MAINWINDOW_H
+#endif // MAINWINDOW_HH
