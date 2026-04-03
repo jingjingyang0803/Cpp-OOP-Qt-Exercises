@@ -29,7 +29,7 @@ void MainWindow::on_pushButtonCalculate_clicked()
 
     unsigned int scoreW = score_from_weekly_exercises(pointsN + pointsB);
     unsigned int scoreP = score_from_projects(pointsP1, pointsP2);
-    unsigned int total = calculate_total_grade(pointsN, pointsP1, pointsP2, pointsE);
+    unsigned int total = calculate_total_grade(pointsN + pointsB, pointsP1, pointsP2, pointsE);
 
     ui->textBrowser->setText("W-Score: " + QString::number(scoreW) + "\nP-Score: " +
                              QString::number(scoreP) + "\nTotal grade: " + QString::number(total));
