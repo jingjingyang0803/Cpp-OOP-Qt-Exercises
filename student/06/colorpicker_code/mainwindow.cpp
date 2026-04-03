@@ -6,10 +6,18 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
-#include <QSlider>
-#include <QSpinBox>
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
+{
+    setup_ui();
+    setup_connections();
+}
+
+MainWindow::~MainWindow()
+{
+}
+
+void MainWindow::setup_ui()
 {
     auto* central_widget = new QWidget(this);
     setCentralWidget(central_widget);
@@ -25,40 +33,58 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
     auto* green_label = new QLabel("Green", this);
     auto* blue_label = new QLabel("Blue", this);
 
-    auto* red_slider = new QSlider(Qt::Horizontal, this);
-    auto* green_slider = new QSlider(Qt::Horizontal, this);
-    auto* blue_slider = new QSlider(Qt::Horizontal, this);
+    horizontalSliderRed_ = new QSlider(Qt::Horizontal, this);
+    horizontalSliderGreen_ = new QSlider(Qt::Horizontal, this);
+    horizontalSliderBlue_ = new QSlider(Qt::Horizontal, this);
 
-    auto* red_spin = new QSpinBox(this);
-    auto* green_spin = new QSpinBox(this);
-    auto* blue_spin = new QSpinBox(this);
+    spinBoxRed_ = new QSpinBox(this);
+    spinBoxGreen_ = new QSpinBox(this);
+    spinBoxBlue_ = new QSpinBox(this);
 
     // Set the range of the sliders to be between 0 and 255
-    red_slider->setRange(0, 255);
-    green_slider->setRange(0, 255);
-    blue_slider->setRange(0, 255);
+    horizontalSliderRed_->setRange(0, RGB_VALUE_MAX);
+    horizontalSliderGreen_->setRange(0, RGB_VALUE_MAX);
+    horizontalSliderBlue_->setRange(0, RGB_VALUE_MAX);
 
     // Set the range of the spin boxes to be between 0 and 255
-    red_spin->setRange(0, 255);
-    green_spin->setRange(0, 255);
-    blue_spin->setRange(0, 255);
+    spinBoxRed_->setRange(0, RGB_VALUE_MAX);
+    spinBoxGreen_->setRange(0, RGB_VALUE_MAX);
+    spinBoxBlue_->setRange(0, RGB_VALUE_MAX);
 
     // Add the labels, sliders and spin boxes to the grid layout
     grid_layout->addWidget(red_label, 0, 0);
-    grid_layout->addWidget(red_slider, 0, 1);
-    grid_layout->addWidget(red_spin, 0, 2);
+    grid_layout->addWidget(horizontalSliderRed_, 0, 1);
+    grid_layout->addWidget(spinBoxRed_, 0, 2);
     grid_layout->addWidget(green_label, 1, 0);
-    grid_layout->addWidget(green_slider, 1, 1);
-    grid_layout->addWidget(green_spin, 1, 2);
+    grid_layout->addWidget(horizontalSliderGreen_, 1, 1);
+    grid_layout->addWidget(spinBoxGreen_, 1, 2);
     grid_layout->addWidget(blue_label, 2, 0);
-    grid_layout->addWidget(blue_slider, 2, 1);
-    grid_layout->addWidget(blue_spin, 2, 2);
+    grid_layout->addWidget(horizontalSliderBlue_, 2, 1);
+    grid_layout->addWidget(spinBoxBlue_, 2, 2);
 
     // Add a label for the color preview to the horizontal layout
     auto* color_preview_label = new QLabel("Color Preview", this);
     horizontal_layout->addWidget(color_preview_label);
 }
 
-MainWindow::~MainWindow()
+void MainWindow::setup_connections()
+{
+    // Connect the sliders to the spin boxes so that when the slider value changes, the
+    // corresponding spin box value also changes
+    connect(horizontalSliderRed_, &QSlider::valueChanged, spinBoxRed_, &QSpinBox::setValue);
+    connect(horizontalSliderGreen_, &QSlider::valueChanged, spinBoxGreen_, &QSpinBox::setValue);
+    connect(horizontalSliderBlue_, &QSlider::valueChanged, spinBoxBlue_, &QSpinBox::setValue);
+
+    // Connect the spin boxes to the sliders so that when the spin box value changes, the
+    // corresponding slider value also changes
+    connect(spinBoxRed_, QOverload<int>::of(&QSpinBox::valueChanged), horizontalSliderRed_,
+            &QSlider::setValue);
+    connect(spinBoxGreen_, QOverload<int>::of(&QSpinBox::valueChanged), horizontalSliderGreen_,
+            &QSlider::setValue);
+    connect(spinBoxBlue_, QOverload<int>::of(&QSpinBox::valueChanged), horizontalSliderBlue_,
+            &QSlider::setValue);
+}
+
+void MainWindow::onColorChanged()
 {
 }
