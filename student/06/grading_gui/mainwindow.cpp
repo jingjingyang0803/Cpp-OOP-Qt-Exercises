@@ -24,9 +24,10 @@ void MainWindow::on_pushButtonCalculate_clicked()
     unsigned int pointsN = ui->spinBoxN->value();
     unsigned int pointsP1 = ui->spinBoxP1->value();
     unsigned int pointsP2 = ui->spinBoxP2->value();
+    unsigned int pointsB = ui->spinBoxB->value();
     unsigned int pointsE = ui->spinBoxE->value();
 
-    unsigned int scoreW = score_from_weekly_exercises(pointsN);
+    unsigned int scoreW = score_from_weekly_exercises(pointsN + pointsB);
     unsigned int scoreP = score_from_projects(pointsP1, pointsP2);
     unsigned int total = calculate_total_grade(pointsN, pointsP1, pointsP2, pointsE);
 
