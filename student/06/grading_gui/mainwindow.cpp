@@ -24,7 +24,6 @@ void MainWindow::on_pushButtonCalculate_clicked()
     double pointsN = ui->spinBoxN->value();
     double pointsP1 = ui->spinBoxP1->value();
     double pointsP2 = ui->spinBoxP2->value();
-    double pointsB = ui->spinBoxB->value();
     double pointsE = ui->spinBoxE->value();
 
     unsigned int scoreW = score_from_weekly_exercises(pointsN);
