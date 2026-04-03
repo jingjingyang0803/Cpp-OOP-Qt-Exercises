@@ -15,28 +15,21 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_lineEditScale_editingFinished()
-{
-    scale_ = ui->lineEditScale->text();
-}
-
-void MainWindow::on_spinBoxDegrees_valueChanged(int arg1)
-{
-    degrees_ = arg1;
-}
-
 void MainWindow::on_pushButtonConvert_clicked()
 {
+    QString scale = ui->lineEditScale->text();
+    int degrees = ui->spinBoxDegrees->value();
+
     double converted = 0.0;
 
-    if (scale_ == "Celsius")
+    if (scale == "Celsius")
     {
-        converted = 1.8 * degrees_ + 32.0;
+        converted = 1.8 * degrees + 32.0;
         ui->textBrowser->setText(QString::number(converted));
     }
-    else if (scale_ == "Fahrenheit")
+    else if (scale == "Fahrenheit")
     {
-        converted = (degrees_ - 32.0) * 1.8;
+        converted = (degrees - 32.0) / 1.8;
         ui->textBrowser->setText(QString::number(converted));
     }
     else

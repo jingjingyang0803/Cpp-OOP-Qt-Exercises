@@ -19,9 +19,6 @@ class MainWindow : public QMainWindow
     ~MainWindow();
 
   private slots:
-    void on_lineEditScale_editingFinished();
-
-    void on_spinBoxDegrees_valueChanged(int arg1);
 
     void on_pushButtonConvert_clicked();
 
