@@ -4,6 +4,10 @@
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    // Set the range of the spin box for degrees
+    ui->spinBoxDegrees->setMinimum(-273);
+    ui->spinBoxDegrees->setMaximum(1000);
 }
 
 MainWindow::~MainWindow()

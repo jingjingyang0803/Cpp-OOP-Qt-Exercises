@@ -30,7 +30,7 @@ class MainWindow : public QMainWindow
   private:
     Ui::MainWindow* ui;
 
-    QString scale_ = "Celsius";
+    QString scale_ = "";
     int degrees_ = 0;
 };
 #endif // MAINWINDOW_HH
