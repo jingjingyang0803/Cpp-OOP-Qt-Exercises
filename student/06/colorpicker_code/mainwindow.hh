@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_HH
 #define MAINWINDOW_HH
 
+#include <QLabel>
 #include <QMainWindow>
 #include <QSlider>
 #include <QSpinBox>
@@ -30,5 +31,7 @@ class MainWindow : public QMainWindow
     QSpinBox* spinBoxRed_;
     QSpinBox* spinBoxGreen_;
     QSpinBox* spinBoxBlue_;
+
+    QLabel* colorPreviewLabel_;
 };
 #endif // MAINWINDOW_HH

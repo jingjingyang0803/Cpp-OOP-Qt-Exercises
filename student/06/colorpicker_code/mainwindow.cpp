@@ -63,8 +63,11 @@ void MainWindow::setup_ui()
     grid_layout->addWidget(spinBoxBlue_, 2, 2);
 
     // Add a label for the color preview to the horizontal layout
-    auto* color_preview_label = new QLabel("Color Preview", this);
-    horizontal_layout->addWidget(color_preview_label);
+    colorPreviewLabel_ = new QLabel(this);
+    colorPreviewLabel_->setFixedSize(60, 60);
+    colorPreviewLabel_->setStyleSheet("background-color: rgb(0,0,0); border: 1px solid black;");
+
+    horizontal_layout->addWidget(colorPreviewLabel_);
 }
 
 void MainWindow::setup_connections()
@@ -83,8 +86,31 @@ void MainWindow::setup_connections()
             &QSlider::setValue);
     connect(spinBoxBlue_, QOverload<int>::of(&QSpinBox::valueChanged), horizontalSliderBlue_,
             &QSlider::setValue);
+
+    // Connect the sliders and spin boxes to the onColorChanged slot so that when any of the values
+    // change, the color preview is updated
+    connect(horizontalSliderRed_, &QSlider::valueChanged, this, &MainWindow::onColorChanged);
+    connect(horizontalSliderGreen_, &QSlider::valueChanged, this, &MainWindow::onColorChanged);
+    connect(horizontalSliderBlue_, &QSlider::valueChanged, this, &MainWindow::onColorChanged);
+    connect(spinBoxRed_, QOverload<int>::of(&QSpinBox::valueChanged), this,
+            &MainWindow::onColorChanged);
+    connect(spinBoxGreen_, QOverload<int>::of(&QSpinBox::valueChanged), this,
+            &MainWindow::onColorChanged);
+    connect(spinBoxBlue_, QOverload<int>::of(&QSpinBox::valueChanged), this,
+            &MainWindow::onColorChanged);
 }
 
 void MainWindow::onColorChanged()
 {
+    // Get the current values of the sliders and spin boxes
+    int red_value = horizontalSliderRed_->value();
+    int green_value = horizontalSliderGreen_->value();
+    int blue_value = horizontalSliderBlue_->value();
+
+    // Update the color preview label with the new color
+    QString color_style = QString("background-color: rgb(%1, %2, %3);")
+                              .arg(red_value)
+                              .arg(green_value)
+                              .arg(blue_value);
+    colorPreviewLabel_->setStyleSheet(color_style);
 }
