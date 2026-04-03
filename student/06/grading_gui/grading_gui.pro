@@ -15,7 +15,7 @@ SOURCES += \
 
 HEADERS += \
     gradecalculator.hh \
-    mainwindow.h
+    mainwindow.hh
 
 FORMS += \
     mainwindow.ui
