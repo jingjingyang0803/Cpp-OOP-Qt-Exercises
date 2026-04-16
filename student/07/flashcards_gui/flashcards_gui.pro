@@ -10,12 +10,14 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
+    mainwindow.cpp \
     utils.cpp \
     deckmanager.cpp \
     deck.cpp \
     card.cpp
 
 HEADERS += \
+    mainwindow.hh \
     utils.hh \
     deckmanager.hh \
     deck.hh \
