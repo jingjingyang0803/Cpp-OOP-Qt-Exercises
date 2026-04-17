@@ -23,6 +23,8 @@ class MainWindow : public QMainWindow
 
   private slots:
     void loadFile();
+    void addDeck();
+    void removeDeck();
 
   private:
     DeckManager deck_manager_;

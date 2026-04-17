@@ -159,6 +159,12 @@ void MainWindow::setup_connections()
     // Load the file when the Load button is clicked.
     connect(load_button_, &QPushButton::clicked, this, &MainWindow::loadFile);
 
+    // Add a new deck when the Add Deck button is clicked.
+    connect(add_deck_button_, &QPushButton::clicked, this, &MainWindow::addDeck);
+
+    // Remove the selected deck when the Remove Deck button is clicked.
+    connect(remove_deck_button_, &QPushButton::clicked, this, &MainWindow::removeDeck);
+
     // Close the program when the Exit button is clicked.
     connect(exit_button_, &QPushButton::clicked, this, &MainWindow::close);
 }
@@ -188,5 +194,74 @@ void MainWindow::loadFile()
     else
     {
         QMessageBox::critical(this, "Error", "Failed to load the file.");
+    }
+}
+
+void MainWindow::addDeck()
+{
+    qDebug() << "addDeck called";
+
+    std::string deck_name = deck_name_edit_->text().toStdString();
+    std::string fields_str = deck_fields_edit_->text().toStdString();
+
+    if (deck_name.empty())
+    {
+        QMessageBox::warning(this, "Input Error", "Deck name cannot be empty.");
+        return;
+    }
+
+    std::vector<std::string> fields;
+    size_t start = 0;
+    size_t end = fields_str.find(';');
+    while (end != std::string::npos)
+    {
+        fields.push_back(fields_str.substr(start, end - start));
+        start = end + 1;
+        end = fields_str.find(';', start);
+    }
+    if (start < fields_str.size())
+    {
+        fields.push_back(fields_str.substr(start));
+    }
+
+    if (fields.empty())
+    {
+        QMessageBox::warning(this, "Input Error", "Fields cannot be empty.");
+        return;
+    }
+
+    if (deck_manager_.add_deck(deck_name, fields))
+    {
+        deck_list_->addItem(QString::fromStdString(deck_name));
+        deck_name_edit_->clear();
+        deck_fields_edit_->clear();
+    }
+    else
+    {
+        QMessageBox::critical(this, "Error", "Failed to add the deck. It may already exist.");
+    }
+}
+
+void MainWindow::removeDeck()
+{
+    qDebug() << "removeDeck called";
+
+    QListWidgetItem* selected_item = deck_list_->currentItem();
+    if (!selected_item)
+    {
+        QMessageBox::warning(this, "Selection Error", "No deck selected.");
+        return;
+    }
+
+    std::string deck_name = selected_item->text().toStdString();
+    if (deck_manager_.remove_deck(deck_name))
+    {
+        delete selected_item;
+        selected_deck_label_->setText("Selected deck: None");
+        card_list_->clear();
+    }
+    else
+    {
+        QMessageBox::critical(this, "Error", "Failed to remove the deck.");
     }
 }
