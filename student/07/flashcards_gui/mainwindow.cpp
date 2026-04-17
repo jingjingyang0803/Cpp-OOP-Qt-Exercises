@@ -4,7 +4,10 @@
 #include <vector>
 
 #include <QDebug>
+#include <QDialog>
+#include <QDialogButtonBox>
 #include <QDir>
+#include <QFormLayout>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
@@ -64,25 +67,16 @@ void MainWindow::setup_ui()
     QLabel* decks_label = new QLabel("Decks", this);
     deck_list_ = new QListWidget(this);
 
-    QLabel* deck_name_label = new QLabel("Deck name:", this);
-    deck_name_edit_ = new QLineEdit(this);
+    QHBoxLayout* deck_button_row = new QHBoxLayout();
+    add_deck_button_ = new QPushButton("Add", this);
+    remove_deck_button_ = new QPushButton("Remove", this);
 
-    QLabel* deck_fields_label = new QLabel("Fields:", this);
-    deck_fields_edit_ = new QLineEdit(this);
+    deck_button_row->addWidget(add_deck_button_);
+    deck_button_row->addWidget(remove_deck_button_);
 
-    add_deck_button_ = new QPushButton("Add Deck", this);
-    remove_deck_button_ = new QPushButton("Remove Deck", this);
-
-    deck_name_edit_->setPlaceholderText("Enter deck name");
-    deck_fields_edit_->setPlaceholderText("Example: English;Finnish");
     left_layout->addWidget(decks_label);
     left_layout->addWidget(deck_list_);
-    left_layout->addWidget(deck_name_label);
-    left_layout->addWidget(deck_name_edit_);
-    left_layout->addWidget(deck_fields_label);
-    left_layout->addWidget(deck_fields_edit_);
-    left_layout->addWidget(add_deck_button_);
-    left_layout->addWidget(remove_deck_button_);
+    left_layout->addLayout(deck_button_row);
 
     // =========================
     // Right panel: cards and card tools
@@ -201,8 +195,35 @@ void MainWindow::addDeck()
 {
     qDebug() << "addDeck called";
 
-    std::string deck_name = deck_name_edit_->text().toStdString();
-    std::string fields_str = deck_fields_edit_->text().toStdString();
+    QDialog dialog(this);
+    dialog.setWindowTitle("Add Deck");
+
+    QFormLayout* form_layout = new QFormLayout(&dialog);
+
+    QLineEdit* deck_name_input = new QLineEdit(&dialog);
+    QLineEdit* fields_input = new QLineEdit(&dialog);
+
+    deck_name_input->setPlaceholderText("Enter deck name");
+    fields_input->setPlaceholderText("Example: English;Finnish");
+
+    form_layout->addRow("Deck name:", deck_name_input);
+    form_layout->addRow("Fields:", fields_input);
+
+    QDialogButtonBox* button_box =
+        new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, &dialog);
+
+    form_layout->addWidget(button_box);
+
+    connect(button_box, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
+    connect(button_box, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
+
+    if (dialog.exec() != QDialog::Accepted)
+    {
+        return;
+    }
+
+    std::string deck_name = deck_name_input->text().toStdString();
+    std::string fields_str = fields_input->text().toStdString();
 
     if (deck_name.empty())
     {
@@ -233,8 +254,6 @@ void MainWindow::addDeck()
     if (deck_manager_.add_deck(deck_name, fields))
     {
         deck_list_->addItem(QString::fromStdString(deck_name));
-        deck_name_edit_->clear();
-        deck_fields_edit_->clear();
     }
     else
     {
