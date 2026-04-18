@@ -38,6 +38,8 @@ void MainWindow::setup_ui()
     splitter->addWidget(create_right_panel());
     splitter->setStretchFactor(0, 1);
     splitter->setStretchFactor(1, 2);
+    splitter->setChildrenCollapsible(true);
+    splitter->setHandleWidth(6);
 
     main_layout->addWidget(splitter);
     main_layout->addLayout(create_bottom_bar());
@@ -66,7 +68,6 @@ QHBoxLayout* MainWindow::create_top_bar()
     QHBoxLayout* top_layout = new QHBoxLayout();
 
     file_edit_ = new QLineEdit(this);
-
     file_edit_->setPlaceholderText("Enter file name, and press ENTER to load");
 
     top_layout->addWidget(file_edit_);
@@ -89,6 +90,8 @@ QWidget* MainWindow::create_left_panel()
     deck_button_row->addWidget(add_deck_button_);
     deck_button_row->addWidget(remove_deck_button_);
 
+    left_panel->setMinimumWidth(0);
+
     left_layout->addWidget(decks_label);
     left_layout->addWidget(deck_list_);
     left_layout->addLayout(deck_button_row);
@@ -102,7 +105,6 @@ QWidget* MainWindow::create_right_panel()
     QVBoxLayout* right_layout = new QVBoxLayout(right_panel);
 
     selected_deck_label_ = new QLabel("", this);
-
     card_list_ = new QListWidget(this);
 
     QHBoxLayout* card_button_layout = new QHBoxLayout();
@@ -115,6 +117,8 @@ QWidget* MainWindow::create_right_panel()
     card_button_layout->addWidget(edit_card_button_);
     card_button_layout->addWidget(remove_card_button_);
     card_button_layout->addWidget(study_button_);
+
+    right_panel->setMinimumWidth(0);
 
     right_layout->addWidget(selected_deck_label_);
     right_layout->addWidget(card_list_);
@@ -143,33 +147,20 @@ void MainWindow::setup_main_window()
 
 void MainWindow::setup_connections()
 {
-    // Load the file when the ENTER key is pressed in the file input field.
     connect(file_edit_, &QLineEdit::returnPressed, this, &MainWindow::loadFile);
 
-    // Add a new deck when the Add Deck button is clicked.
     connect(add_deck_button_, &QPushButton::clicked, this, &MainWindow::addDeck);
-
-    // Remove the selected deck when the Remove Deck button is clicked.
     connect(remove_deck_button_, &QPushButton::clicked, this, &MainWindow::removeDeck);
 
-    // Show the cards of the selected deck when the selection changes.
     connect(deck_list_, &QListWidget::currentTextChanged, this, &MainWindow::showDeckCards);
 
-    // Add new card when the New Card button is clicked.
     connect(new_card_button_, &QPushButton::clicked, this, &MainWindow::addCard);
-
-    // Remove the selected card when the Remove Card button is clicked.
     connect(remove_card_button_, &QPushButton::clicked, this, &MainWindow::removeCard);
-
-    // Edit the selected card when the Edit Card button is clicked.
     connect(edit_card_button_, &QPushButton::clicked, this, &MainWindow::editCard);
 
-    // Start studying the selected deck when the Study button is clicked.
     connect(study_button_, &QPushButton::clicked, this, &MainWindow::startStudy);
-
     connect(study_widget_, &StudyWidget::exitRequested, this, &MainWindow::exitStudyMode);
 
-    // Close the program when the Exit button is clicked.
     connect(exit_button_, &QPushButton::clicked, this, &MainWindow::close);
 }
 
@@ -181,9 +172,6 @@ void MainWindow::loadFile()
     QString file_name_qt = file_edit_->text().trimmed();
     std::string file_name = file_name_qt.toStdString();
 
-    qDebug() << "file name =" << file_name_qt;
-    qDebug() << "deck count =" << static_cast<int>(deck_manager_.get_deck_names().size());
-
     if (file_name.empty())
     {
         QMessageBox::warning(this, "Input Error", "Please enter a file name.");
@@ -193,6 +181,7 @@ void MainWindow::loadFile()
     if (deck_manager_.read_file(file_name))
     {
         deck_list_->clear();
+        card_list_->clear();
 
         std::vector<std::string> deck_names = deck_manager_.get_deck_names();
         for (const std::string& deck_name : deck_names)
@@ -201,7 +190,6 @@ void MainWindow::loadFile()
         }
 
         selected_deck_label_->setText("Ready to learn? Select a deck to start!");
-
         file_edit_->clear();
     }
     else
@@ -209,10 +197,9 @@ void MainWindow::loadFile()
         QMessageBox::critical(this, "Error", "Failed to load the file: " + file_name_qt);
     }
 }
+
 void MainWindow::addDeck()
 {
-    qDebug() << "addDeck called";
-
     QDialog dialog(this);
     dialog.setWindowTitle("Add Deck");
 
@@ -240,8 +227,10 @@ void MainWindow::addDeck()
         return;
     }
 
-    std::string deck_name = deck_name_input->text().toStdString();
-    std::string fields_str = fields_input->text().toStdString();
+    QString deck_name_qt = deck_name_input->text().trimmed();
+    QString fields_qt = fields_input->text().trimmed();
+
+    std::string deck_name = deck_name_qt.toStdString();
 
     if (deck_name.empty())
     {
@@ -250,17 +239,14 @@ void MainWindow::addDeck()
     }
 
     std::vector<std::string> fields;
-    size_t start = 0;
-    size_t end = fields_str.find(';');
-    while (end != std::string::npos)
+    QStringList parts = fields_qt.split(';', Qt::SkipEmptyParts);
+    for (const QString& part : parts)
     {
-        fields.push_back(fields_str.substr(start, end - start));
-        start = end + 1;
-        end = fields_str.find(';', start);
-    }
-    if (start < fields_str.size())
-    {
-        fields.push_back(fields_str.substr(start));
+        QString trimmed = part.trimmed();
+        if (!trimmed.isEmpty())
+        {
+            fields.push_back(trimmed.toStdString());
+        }
     }
 
     if (fields.empty())
@@ -281,8 +267,6 @@ void MainWindow::addDeck()
 
 void MainWindow::removeDeck()
 {
-    qDebug() << "removeDeck called";
-
     QListWidgetItem* selected_item = deck_list_->currentItem();
     if (!selected_item)
     {
@@ -290,12 +274,29 @@ void MainWindow::removeDeck()
         return;
     }
 
+    int removed_row = deck_list_->row(selected_item);
     std::string deck_name = selected_item->text().toStdString();
+
     if (deck_manager_.remove_deck(deck_name))
     {
         delete selected_item;
-        selected_deck_label_->setText("Ready to learn? Select a deck to start!");
-        card_list_->clear();
+
+        // select a new deck if available, otherwise clear the right panel
+        if (deck_list_->count() > 0)
+        {
+            int new_row = removed_row;
+            if (new_row >= deck_list_->count())
+            {
+                new_row = deck_list_->count() - 1;
+            }
+
+            deck_list_->setCurrentRow(new_row);
+        }
+        else
+        {
+            selected_deck_label_->setText("Ready to learn? Select a deck to start!");
+            card_list_->clear();
+        }
     }
     else
     {
@@ -363,8 +364,6 @@ void MainWindow::showDeckCards(const QString& deck_name_qt)
 
 void MainWindow::addCard()
 {
-    qDebug() << "addCard called";
-
     QListWidgetItem* selected_item = deck_list_->currentItem();
     if (!selected_item)
     {
@@ -392,7 +391,6 @@ void MainWindow::addCard()
     dialog.setWindowTitle("Add Card");
 
     QFormLayout* form_layout = new QFormLayout(&dialog);
-
     std::vector<QLineEdit*> input_boxes;
 
     for (const std::string& field_name : *deck_fields_ptr)
@@ -419,8 +417,7 @@ void MainWindow::addCard()
     Fields definitions;
     for (QLineEdit* input : input_boxes)
     {
-        std::string text = input->text().toStdString();
-        definitions.push_back(text);
+        definitions.push_back(input->text().toStdString());
     }
 
     if (deck->add_card(*deck_fields_ptr, definitions))
@@ -435,8 +432,6 @@ void MainWindow::addCard()
 
 void MainWindow::removeCard()
 {
-    qDebug() << "removeCard called";
-
     QListWidgetItem* selected_deck_item = deck_list_->currentItem();
     if (!selected_deck_item)
     {
@@ -474,8 +469,6 @@ void MainWindow::removeCard()
 
 void MainWindow::editCard()
 {
-    qDebug() << "editCard called";
-
     QListWidgetItem* selected_deck_item = deck_list_->currentItem();
     if (!selected_deck_item)
     {
@@ -519,7 +512,6 @@ void MainWindow::editCard()
     dialog.setWindowTitle("Edit Card");
 
     QFormLayout* form_layout = new QFormLayout(&dialog);
-
     std::vector<QLineEdit*> input_boxes;
 
     for (size_t i = 0; i < deck_fields_ptr->size(); ++i)
@@ -577,25 +569,32 @@ void MainWindow::startStudy()
 
     std::string deck_name = selected_item->text().toStdString();
     auto deck = deck_manager_.get_deck(deck_name);
+    if (!deck)
+    {
+        QMessageBox::critical(this, "Error", "Selected deck not found.");
+        return;
+    }
 
     auto fields_ptr = deck->get_fields();
+    if (!fields_ptr || fields_ptr->size() < 2)
+    {
+        QMessageBox::warning(this, "Study Error", "Study mode requires at least two fields.");
+        return;
+    }
 
     std::string front_field = fields_ptr->at(0);
     std::string back_field = fields_ptr->at(1);
 
     study_widget_->setStudyDeck(deck, front_field, back_field);
-
     enterStudyMode();
 }
 
 void MainWindow::enterStudyMode()
 {
     app_stack_->setCurrentWidget(study_page_);
-    study_mode_on_ = true;
 }
 
 void MainWindow::exitStudyMode()
 {
     app_stack_->setCurrentWidget(main_page_);
-    study_mode_on_ = false;
 }
