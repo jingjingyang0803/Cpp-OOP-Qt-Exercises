@@ -45,7 +45,6 @@ class MainWindow : public QMainWindow
     DeckManager deck_manager_;
 
     QLineEdit* file_edit_;
-    QPushButton* load_button_;
 
     QListWidget* deck_list_;
     QLineEdit* deck_name_edit_;

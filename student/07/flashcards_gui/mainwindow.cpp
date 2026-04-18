@@ -45,15 +45,11 @@ QHBoxLayout* MainWindow::create_top_bar()
 {
     QHBoxLayout* top_layout = new QHBoxLayout();
 
-    QLabel* file_label = new QLabel("File:", this);
     file_edit_ = new QLineEdit(this);
-    load_button_ = new QPushButton("Load", this);
 
-    file_edit_->setPlaceholderText("Enter file name");
+    file_edit_->setPlaceholderText("Enter file name, and press ENTER to load");
 
-    top_layout->addWidget(file_label);
     top_layout->addWidget(file_edit_);
-    top_layout->addWidget(load_button_);
 
     return top_layout;
 }
@@ -133,8 +129,8 @@ void MainWindow::setup_main_window()
 
 void MainWindow::setup_connections()
 {
-    // Load the file when the Load button is clicked.
-    connect(load_button_, &QPushButton::clicked, this, &MainWindow::loadFile);
+    // Load the file when the ENTER key is pressed in the file input field.
+    connect(file_edit_, &QLineEdit::returnPressed, this, &MainWindow::loadFile);
 
     // Add a new deck when the Add Deck button is clicked.
     connect(add_deck_button_, &QPushButton::clicked, this, &MainWindow::addDeck);
@@ -172,20 +168,19 @@ void MainWindow::loadFile()
     qDebug() << "deck count =" << static_cast<int>(deck_manager_.get_deck_names().size());
     if (deck_manager_.read_file(file_name))
     {
-        deck_list_->clear();
-
         std::vector<std::string> deck_names = deck_manager_.get_deck_names();
         for (const std::string& deck_name : deck_names)
         {
             deck_list_->addItem(QString::fromStdString(deck_name));
         }
 
-        selected_deck_label_->setText("Selected deck: None");
-        card_list_->clear();
+        // clear the file name input field after loading the file
+        file_edit_->clear();
     }
     else
     {
-        QMessageBox::critical(this, "Error", "Failed to load the file.");
+        QMessageBox::critical(this, "Error",
+                              "Failed to load the file: " + QString::fromStdString(file_name));
     }
 }
 
