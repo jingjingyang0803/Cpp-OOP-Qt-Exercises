@@ -12,8 +12,15 @@
 /**
  * @brief A widget for studying flashcards from a deck.
  *
- * Displays one card at a time and allows the user to flip the card
- * and navigate through the deck.
+ * This widget shows one card at a time and allows the user to:
+ * - choose which field is shown on the front side
+ * - choose which field is shown on the back side
+ * - flip the current card
+ * - move to the previous or next card
+ * - exit study mode
+ *
+ * Visual side cues are given with random colors:
+ * one color for the front side and another for the back side.
  *
  * Author information:
  *   Name: Jingjing Yang
@@ -27,6 +34,7 @@ class StudyWidget : public QWidget
   public:
     explicit StudyWidget(QWidget* parent = nullptr);
 
+    // initialize study session with a deck
     void setStudyDeck(std::shared_ptr<Deck> deck, const std::string& front_field,
                       const std::string& back_field);
 
@@ -37,23 +45,26 @@ class StudyWidget : public QWidget
     void showPreviousCard();
     void showNextCard();
     void flipCard();
-    void chooseRandomColors();
-    void applySideColors();
-    void updateView();
     void updateSelectedFields();
 
   private:
     void setupUi();
     void setupConnections();
 
+    void updateView();
+    void chooseRandomColors();
+    void applySideColors();
+
     std::shared_ptr<Deck> deck_;
     std::string front_field_;
     std::string back_field_;
+
     unsigned int current_index_ = 0;
     bool showing_front_ = true;
 
     QLabel* card_label_;
     QLabel* progress_label_;
+
     QPushButton* last_button_;
     QPushButton* next_button_;
     QPushButton* flip_button_;
@@ -61,6 +72,7 @@ class StudyWidget : public QWidget
 
     QComboBox* front_field_box_;
     QComboBox* back_field_box_;
+
     Fields available_fields_;
 
     QColor front_color_;
