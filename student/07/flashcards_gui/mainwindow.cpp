@@ -95,28 +95,21 @@ void MainWindow::setup_ui()
     new_card_button_ = new QPushButton("New", this);
     edit_card_button_ = new QPushButton("Edit", this);
     remove_card_button_ = new QPushButton("Remove", this);
+    study_button_ = new QPushButton("Study", this);
 
     card_button_layout->addWidget(new_card_button_);
     card_button_layout->addWidget(edit_card_button_);
     card_button_layout->addWidget(remove_card_button_);
-
-    // Create a stacked widget for future card pages:
-    // for example Add Card, Edit Card, or Study Card.
-    card_stack_ = new QStackedWidget(this);
-
-    // Add a simple placeholder page for now.
-    QWidget* placeholder_page = new QWidget(this);
-    QVBoxLayout* placeholder_layout = new QVBoxLayout(placeholder_page);
-    QLabel* placeholder_label = new QLabel("Card editor area", this);
-
-    placeholder_layout->addWidget(placeholder_label);
-    card_stack_->addWidget(placeholder_page);
+    card_button_layout->addWidget(study_button_);
 
     right_layout->addWidget(selected_deck_label_);
     right_layout->addWidget(cards_label);
     right_layout->addWidget(card_list_);
     right_layout->addLayout(card_button_layout);
-    right_layout->addWidget(card_stack_);
+
+    study_widget_ = new StudyWidget(this);
+    study_widget_->hide();
+    right_layout->addWidget(study_widget_);
 
     // Add both panels into the splitter.
     splitter->addWidget(left_panel);
@@ -170,6 +163,9 @@ void MainWindow::setup_connections()
 
     // Edit the selected card when the Edit Card button is clicked.
     connect(edit_card_button_, &QPushButton::clicked, this, &MainWindow::editCard);
+
+    // Start studying the selected deck when the Study button is clicked.
+    connect(study_button_, &QPushButton::clicked, this, &MainWindow::startStudy);
 
     // Close the program when the Exit button is clicked.
     connect(exit_button_, &QPushButton::clicked, this, &MainWindow::close);
@@ -558,4 +554,37 @@ void MainWindow::editCard()
     }
 
     showDeckCards(QString::fromStdString(deck_name));
+}
+
+void MainWindow::startStudy()
+{
+    qDebug() << "startStudy called";
+    QListWidgetItem* selected_item = deck_list_->currentItem();
+    if (!selected_item)
+    {
+        QMessageBox::warning(this, "Selection Error", "No deck selected.");
+        return;
+    }
+
+    std::string deck_name = selected_item->text().toStdString();
+    auto deck = deck_manager_.get_deck(deck_name);
+    if (!deck)
+    {
+        QMessageBox::critical(this, "Error", "Selected deck not found.");
+        return;
+    }
+
+    auto fields_ptr = deck->get_fields();
+    if (!fields_ptr || fields_ptr->size() < 2)
+    {
+        QMessageBox::warning(this, "Study Error", "Study requires at least two fields.");
+        return;
+    }
+
+    // default: use the first field as front and the second field as back
+    std::string front_field = fields_ptr->at(0);
+    std::string back_field = fields_ptr->at(1);
+
+    study_widget_->setStudyDeck(deck, front_field, back_field);
+    study_widget_->show();
 }

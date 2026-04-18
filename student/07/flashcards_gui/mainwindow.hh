@@ -2,6 +2,7 @@
 #define MAINWINDOW_HH
 
 #include "deckmanager.hh"
+#include "studywidget.hh"
 
 #include <QLabel>
 #include <QLineEdit>
@@ -30,6 +31,7 @@ class MainWindow : public QMainWindow
     void addCard();
     void removeCard();
     void editCard();
+    void startStudy();
 
   private:
     DeckManager deck_manager_;
@@ -48,7 +50,8 @@ class MainWindow : public QMainWindow
     QPushButton* new_card_button_;
     QPushButton* edit_card_button_;
     QPushButton* remove_card_button_;
-    QStackedWidget* card_stack_;
+    QPushButton* study_button_;
+    StudyWidget* study_widget_;
 
     QPushButton* exit_button_;
 

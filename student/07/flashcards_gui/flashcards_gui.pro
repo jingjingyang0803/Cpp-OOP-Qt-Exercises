@@ -14,14 +14,16 @@ SOURCES += \
     utils.cpp \
     deckmanager.cpp \
     deck.cpp \
-    card.cpp
+    card.cpp \
+    studywidget.cpp
 
 HEADERS += \
     mainwindow.hh \
     utils.hh \
     deckmanager.hh \
     deck.hh \
-    card.hh
+    card.hh \
+    studywidget.hh
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
