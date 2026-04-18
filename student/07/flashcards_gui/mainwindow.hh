@@ -1,3 +1,21 @@
+/*
+#############################################################################
+# COMP.CS.115 Ohjelmointi 3: Rajapinnat / Programming 3: Interfaces         #
+# Project: Opettelukorttien paluu / Return of Flashcards                    #
+# File: mainwindow.hh                                                       #
+# Description: Declares the MainWindow class interface.                     #
+#                                                                           #
+# Notes: * Provides the main application window for managing decks          #
+#          and cards.                                                       #
+#        * Allows loading, adding, removing, and editing decks and cards.   #
+#        * Provides a study mode for flashcards.                            #
+#                                                                           #
+# Author information:                                                       #
+#   Name: Jingjing Yang                                                     #
+#   Email: jingjing.yang@tuni.fi                                            #
+#############################################################################
+*/
+
 #ifndef MAINWINDOW_HH
 #define MAINWINDOW_HH
 

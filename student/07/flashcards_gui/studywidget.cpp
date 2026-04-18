@@ -1,3 +1,18 @@
+/*
+#############################################################################
+# COMP.CS.115 Ohjelmointi 3: Rajapinnat / Programming 3: Interfaces         #
+# Project: Opettelukorttien paluu / Return of Flashcards                    #
+# File: studywidget.cpp                                                     #
+# Description: Implements StudyWidget class functionality.                 #
+#                                                                           #
+# Notes:                                                                    #
+#                                                                           #
+# Author information:                                                       #
+#   Name: Jingjing Yang                                                     #
+#   Email: jingjing.yang@tuni.fi                                            #
+#############################################################################
+*/
+
 #include "studywidget.hh"
 
 #include <QHBoxLayout>

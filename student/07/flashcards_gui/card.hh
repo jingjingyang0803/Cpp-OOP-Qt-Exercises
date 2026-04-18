@@ -16,7 +16,6 @@
 #       - Fields get_definitions(const Fields& requested_fields) const      #
 #       - bool update_definitions(const Fields& field_types,                #
 #                                 const Fields& definitions)                #
-#                                                                           #
 #############################################################################
 */
 

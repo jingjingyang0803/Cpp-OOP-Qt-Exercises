@@ -1,3 +1,21 @@
+/*
+#############################################################################
+# COMP.CS.115 Ohjelmointi 3: Rajapinnat / Programming 3: Interfaces         #
+# Project: Opettelukorttien paluu / Return of Flashcards                    #
+# File: studywidget.hh                                                      #
+# Description: Declares the StudyWidget class interface.                    #
+#                                                                           #
+# Notes: * Provides a widget for studying flashcards from a deck.           #
+#        * Allows choosing front and back fields, flipping cards,           #
+#          navigating between cards, and exiting study mode.                #
+#        * Visual side cues are given with random colors.                   #
+#                                                                           #
+# Author information:                                                       #
+#   Name: Jingjing Yang                                                     #
+#   Email: jingjing.yang@tuni.fi                                            #
+#############################################################################
+*/
+
 #ifndef STUDYWIDGET_HH
 #define STUDYWIDGET_HH
 
@@ -21,10 +39,6 @@
  *
  * Visual side cues are given with random colors:
  * one color for the front side and another for the back side.
- *
- * Author information:
- *   Name: Jingjing Yang
- *   Email: jingjing.yang@tuni.fi
  */
 
 class StudyWidget : public QWidget
