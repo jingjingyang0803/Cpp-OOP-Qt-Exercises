@@ -29,6 +29,10 @@ class StudyWidget : public QWidget
                       const std::string& back_field);
 
   private slots:
+    void showPreviousCard();
+    void showNextCard();
+    void flipCard();
+    void updateView();
 
   private:
     void setupUi();

@@ -19,36 +19,7 @@ void StudyWidget::setStudyDeck(std::shared_ptr<Deck> deck, const std::string& fr
     current_index_ = 0;
     showing_front_ = true;
 
-    if (!deck_ || deck_->get_cards().empty())
-    {
-        card_label_->setText("No cards to study.");
-        progress_label_->setText("0 / 0");
-        return;
-    }
-
-    auto card = deck_->get_cards().at(0);
-    if (!card)
-    {
-        card_label_->setText("Invalid card.");
-        progress_label_->setText("0 / 0");
-        return;
-    }
-
-    Fields requested_fields;
-    requested_fields.push_back(front_field_);
-
-    Fields definitions = card->get_definitions(requested_fields);
-
-    if (!definitions.empty())
-    {
-        card_label_->setText(QString::fromStdString(definitions.at(0)));
-    }
-    else
-    {
-        card_label_->setText("");
-    }
-
-    progress_label_->setText("1 / " + QString::number(deck_->get_cards().size()));
+    updateView();
 }
 
 void StudyWidget::setupUi()
@@ -86,4 +57,104 @@ void StudyWidget::setupUi()
 
 void StudyWidget::setupConnections()
 {
+    connect(last_button_, &QPushButton::clicked, this, &StudyWidget::showPreviousCard);
+
+    connect(next_button_, &QPushButton::clicked, this, &StudyWidget::showNextCard);
+
+    connect(flip_button_, &QPushButton::clicked, this, &StudyWidget::flipCard);
+}
+
+void StudyWidget::updateView()
+{
+    if (!deck_ || deck_->get_cards().empty())
+    {
+        card_label_->setText("No cards to study.");
+        progress_label_->setText("0 / 0");
+        return;
+    }
+
+    const auto& cards = deck_->get_cards();
+
+    if (current_index_ >= cards.size())
+    {
+        current_index_ = 0;
+    }
+
+    std::shared_ptr<Card> card = cards.at(current_index_);
+    if (!card)
+    {
+        card_label_->setText("Invalid card.");
+        progress_label_->setText(QString::number(current_index_ + 1) + " / " +
+                                 QString::number(cards.size()));
+        return;
+    }
+
+    Fields requested_fields;
+    if (showing_front_)
+    {
+        requested_fields.push_back(front_field_);
+    }
+    else
+    {
+        requested_fields.push_back(back_field_);
+    }
+
+    Fields definitions = card->get_definitions(requested_fields);
+
+    QString shown_text;
+    if (!definitions.empty())
+    {
+        shown_text = QString::fromStdString(definitions.at(0));
+    }
+    else
+    {
+        shown_text = "";
+    }
+
+    card_label_->setText(shown_text);
+    progress_label_->setText(QString::number(current_index_ + 1) + " / " +
+                             QString::number(cards.size()));
+}
+
+void StudyWidget::showPreviousCard()
+{
+    if (!deck_ || deck_->get_cards().empty())
+    {
+        return;
+    }
+
+    if (current_index_ == 0)
+    {
+        current_index_ = deck_->get_cards().size() - 1;
+    }
+    else
+    {
+        --current_index_;
+    }
+
+    showing_front_ = true;
+    updateView();
+}
+
+void StudyWidget::showNextCard()
+{
+    if (!deck_ || deck_->get_cards().empty())
+    {
+        return;
+    }
+
+    current_index_ = (current_index_ + 1) % deck_->get_cards().size();
+    showing_front_ = true;
+    updateView();
+}
+
+void StudyWidget::flipCard()
+{
+    if (!deck_ || deck_->get_cards().empty())
+    {
+        return;
+    }
+
+    showing_front_ = !showing_front_;
+    updateView();
 }
