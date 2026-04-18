@@ -11,6 +11,7 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include <QStackedWidget>
+#include <QTableWidget>
 #include <QWidget>
 
 class MainWindow : public QMainWindow
@@ -29,8 +30,6 @@ class MainWindow : public QMainWindow
     QWidget* create_left_panel();
     QWidget* create_right_panel();
     QHBoxLayout* create_bottom_bar();
-
-    QString formatCardText(const std::shared_ptr<Card>& card) const;
 
   private slots:
     void loadFile();
@@ -62,7 +61,7 @@ class MainWindow : public QMainWindow
 
     // right panel
     QLabel* selected_deck_label_;
-    QListWidget* card_list_;
+    QTableWidget* card_table_;
     QPushButton* new_card_button_;
     QPushButton* edit_card_button_;
     QPushButton* remove_card_button_;

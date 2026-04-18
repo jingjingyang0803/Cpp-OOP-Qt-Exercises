@@ -3,15 +3,18 @@
 #include <string>
 #include <vector>
 
+#include <QAbstractItemView>
 #include <QDebug>
 #include <QDialog>
 #include <QDialogButtonBox>
 #include <QDir>
 #include <QFormLayout>
+#include <QHeaderView>
 #include <QListWidget>
 #include <QMessageBox>
 #include <QSplitter>
 #include <QStackedWidget>
+#include <QTableWidget>
 #include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
@@ -105,7 +108,14 @@ QWidget* MainWindow::create_right_panel()
     QVBoxLayout* right_layout = new QVBoxLayout(right_panel);
 
     selected_deck_label_ = new QLabel("", this);
-    card_list_ = new QListWidget(this);
+
+    card_table_ = new QTableWidget(this);
+    card_table_->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    card_table_->setSelectionBehavior(QAbstractItemView::SelectRows);
+    card_table_->setSelectionMode(QAbstractItemView::SingleSelection);
+    card_table_->setAlternatingRowColors(true);
+    card_table_->verticalHeader()->setVisible(false);
+    card_table_->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     QHBoxLayout* card_button_layout = new QHBoxLayout();
     new_card_button_ = new QPushButton("New", this);
@@ -121,7 +131,7 @@ QWidget* MainWindow::create_right_panel()
     right_panel->setMinimumWidth(0);
 
     right_layout->addWidget(selected_deck_label_);
-    right_layout->addWidget(card_list_);
+    right_layout->addWidget(card_table_);
     right_layout->addLayout(card_button_layout);
 
     return right_panel;
@@ -181,7 +191,6 @@ void MainWindow::loadFile()
     if (deck_manager_.read_file(file_name))
     {
         deck_list_->clear();
-        card_list_->clear();
 
         std::vector<std::string> deck_names = deck_manager_.get_deck_names();
         for (const std::string& deck_name : deck_names)
@@ -310,7 +319,7 @@ void MainWindow::removeDeck()
         else
         {
             selected_deck_label_->setText("Ready to learn? Select a deck to start!");
-            card_list_->clear();
+            card_table_->clear();
         }
     }
     else
@@ -319,60 +328,78 @@ void MainWindow::removeDeck()
     }
 }
 
-QString MainWindow::formatCardText(const std::shared_ptr<Card>& card) const
-{
-    if (!card)
-    {
-        return "";
-    }
-
-    QString card_text;
-
-    const auto& card_fields = card->get_fields();
-    const auto& card_definitions = card->get_definitions(card_fields);
-
-    for (size_t i = 0; i < card_fields.size(); ++i)
-    {
-        card_text += QString::fromStdString(card_fields.at(i));
-        card_text += ": ";
-        card_text += QString::fromStdString(card_definitions.at(i));
-
-        if (i + 1 < card_definitions.size() && i + 1 < card_fields.size())
-        {
-            card_text += " | ";
-        }
-    }
-
-    return card_text;
-}
-
 void MainWindow::showDeckCards(const QString& deck_name_qt)
 {
     if (deck_name_qt.isEmpty())
     {
         selected_deck_label_->setText("Ready to learn? Select a deck to start!");
-        card_list_->clear();
+        card_table_->clear();
+        card_table_->setRowCount(0);
+        card_table_->setColumnCount(0);
         return;
     }
 
     std::string deck_name = deck_name_qt.toStdString();
     selected_deck_label_->setText("You're studying: " + deck_name_qt);
-    card_list_->clear();
 
     auto deck = deck_manager_.get_deck(deck_name);
     if (!deck)
     {
+        card_table_->clear();
+        card_table_->setRowCount(0);
+        card_table_->setColumnCount(0);
         return;
     }
 
-    for (const auto& card : deck->get_cards())
+    auto fields_ptr = deck->get_fields();
+    if (!fields_ptr || fields_ptr->empty())
     {
-        QString card_text = formatCardText(card);
-        if (!card_text.isEmpty())
+        card_table_->clear();
+        card_table_->setRowCount(0);
+        card_table_->setColumnCount(0);
+        return;
+    }
+
+    const auto& cards = deck->get_cards();
+
+    card_table_->clear();
+    card_table_->setRowCount(static_cast<int>(cards.size()));
+    card_table_->setColumnCount(static_cast<int>(fields_ptr->size()));
+
+    QStringList headers;
+    for (const std::string& field : *fields_ptr)
+    {
+        headers << QString::fromStdString(field);
+    }
+    card_table_->setHorizontalHeaderLabels(headers);
+
+    for (int row = 0; row < static_cast<int>(cards.size()); ++row)
+    {
+        const auto& card = cards.at(row);
+        if (!card)
         {
-            QListWidgetItem* item = new QListWidgetItem(card_text);
-            item->setData(Qt::UserRole, static_cast<uint>(card->get_id()));
-            card_list_->addItem(item);
+            continue;
+        }
+
+        Fields definitions = card->get_definitions(*fields_ptr);
+
+        for (int col = 0; col < static_cast<int>(fields_ptr->size()); ++col)
+        {
+            QString cell_text;
+            if (col < static_cast<int>(definitions.size()))
+            {
+                cell_text = QString::fromStdString(definitions.at(col));
+            }
+
+            QTableWidgetItem* item = new QTableWidgetItem(cell_text);
+
+            // store card id in the first column item
+            if (col == 0)
+            {
+                item->setData(Qt::UserRole, static_cast<uint>(card->get_id()));
+            }
+
+            card_table_->setItem(row, col, item);
         }
     }
 }
@@ -459,6 +486,7 @@ void MainWindow::addCard()
         QMessageBox::critical(this, "Error", "Failed to add card.");
     }
 }
+
 void MainWindow::removeCard()
 {
     QListWidgetItem* selected_deck_item = deck_list_->currentItem();
@@ -477,14 +505,21 @@ void MainWindow::removeCard()
         return;
     }
 
-    QListWidgetItem* selected_card_item = card_list_->currentItem();
-    if (!selected_card_item)
+    int current_row = card_table_->currentRow();
+    if (current_row < 0)
     {
         QMessageBox::warning(this, "Selection Error", "No card selected.");
         return;
     }
 
-    unsigned int card_id = selected_card_item->data(Qt::UserRole).toUInt();
+    QTableWidgetItem* first_item = card_table_->item(current_row, 0);
+    if (!first_item)
+    {
+        QMessageBox::critical(this, "Error", "Selected card not found.");
+        return;
+    }
+
+    unsigned int card_id = first_item->data(Qt::UserRole).toUInt();
 
     if (deck->remove_card(card_id))
     {
@@ -513,14 +548,21 @@ void MainWindow::editCard()
         return;
     }
 
-    QListWidgetItem* selected_card_item = card_list_->currentItem();
-    if (!selected_card_item)
+    int current_row = card_table_->currentRow();
+    if (current_row < 0)
     {
         QMessageBox::warning(this, "Selection Error", "No card selected.");
         return;
     }
 
-    unsigned int card_id = selected_card_item->data(Qt::UserRole).toUInt();
+    QTableWidgetItem* first_item = card_table_->item(current_row, 0);
+    if (!first_item)
+    {
+        QMessageBox::critical(this, "Error", "Selected card not found.");
+        return;
+    }
+
+    unsigned int card_id = first_item->data(Qt::UserRole).toUInt();
     auto card = deck->get_card(card_id);
     if (!card)
     {
@@ -548,7 +590,11 @@ void MainWindow::editCard()
         const std::string& field_name = deck_fields_ptr->at(i);
 
         QLineEdit* input = new QLineEdit(&dialog);
-        input->setText(QString::fromStdString(current_definitions.at(i)));
+        if (i < current_definitions.size())
+        {
+            input->setText(QString::fromStdString(current_definitions.at(i)));
+        }
+
         form_layout->addRow(QString::fromStdString(field_name) + ":", input);
         input_boxes.push_back(input);
     }
@@ -580,7 +626,6 @@ void MainWindow::editCard()
         }
     }
 
-    // require at least one field to be filled, otherwise the card would be invisible in study mode
     if (all_empty)
     {
         QMessageBox::warning(this, "Input Error", "At least one field must be filled.");
