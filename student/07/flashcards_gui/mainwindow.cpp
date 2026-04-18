@@ -171,23 +171,29 @@ void MainWindow::setup_main_window()
 
 void MainWindow::setup_connections()
 {
+    // file loading
     connect(file_edit_, &QLineEdit::returnPressed, this, &MainWindow::loadFile);
 
+    // deck management(add/remove)
     connect(add_deck_button_, &QPushButton::clicked, this, &MainWindow::addDeck);
     connect(remove_deck_button_, &QPushButton::clicked, this, &MainWindow::removeDeck);
 
+    // show cards when a deck is selected
     connect(deck_list_, &QListWidget::currentTextChanged, this, &MainWindow::showDeckCards);
 
+    // card management(add/edit/remove)
     connect(new_card_button_, &QPushButton::clicked, this, &MainWindow::addCard);
     connect(remove_card_button_, &QPushButton::clicked, this, &MainWindow::removeCard);
     connect(edit_card_button_, &QPushButton::clicked, this, &MainWindow::editCard);
 
+    // study mode
     connect(study_button_, &QPushButton::clicked, this, &MainWindow::startStudy);
 
+    // connections for study widget
     connect(study_widget_, &StudyWidget::addCardRequested, this, &MainWindow::addCard);
-
     connect(study_widget_, &StudyWidget::exitRequested, this, &MainWindow::exitStudyMode);
 
+    // exit application
     connect(exit_button_, &QPushButton::clicked, this, &MainWindow::close);
 }
 
@@ -662,6 +668,7 @@ void MainWindow::editCard()
 
 void MainWindow::startStudy()
 {
+    // validate selection and data before entering study mode
     QListWidgetItem* selected_item = deck_list_->currentItem();
     if (!selected_item)
     {
@@ -677,10 +684,10 @@ void MainWindow::startStudy()
         return;
     }
 
-    auto fields_ptr = deck->get_fields();
-    if (!fields_ptr || fields_ptr->size() < 2)
+    // require at least one card to enter study mode, otherwise it would be empty and confusing
+    if (deck->get_cards().empty())
     {
-        QMessageBox::warning(this, "Study Error", "Study mode requires at least two fields.");
+        QMessageBox::warning(this, "Study Error", "This deck has no cards to study.");
         return;
     }
 
