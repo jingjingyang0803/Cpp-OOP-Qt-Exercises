@@ -415,9 +415,24 @@ void MainWindow::addCard()
     }
 
     Fields definitions;
+    bool all_empty = true;
+
     for (QLineEdit* input : input_boxes)
     {
-        definitions.push_back(input->text().toStdString());
+        std::string text = input->text().toStdString();
+        definitions.push_back(text);
+
+        if (!text.empty())
+        {
+            all_empty = false;
+        }
+    }
+
+    // require at least one field to be filled, otherwise the card would be invisible in study mode
+    if (all_empty)
+    {
+        QMessageBox::warning(this, "Input Error", "At least one field must be filled.");
+        return;
     }
 
     if (deck->add_card(*deck_fields_ptr, definitions))
@@ -429,7 +444,6 @@ void MainWindow::addCard()
         QMessageBox::critical(this, "Error", "Failed to add card.");
     }
 }
-
 void MainWindow::removeCard()
 {
     QListWidgetItem* selected_deck_item = deck_list_->currentItem();
@@ -538,15 +552,24 @@ void MainWindow::editCard()
     }
 
     Fields new_definitions;
+    bool all_empty = true;
+
     for (QLineEdit* input : input_boxes)
     {
         std::string text = input->text().toStdString();
-        if (text.empty())
-        {
-            QMessageBox::warning(this, "Input Error", "All fields must be filled.");
-            return;
-        }
         new_definitions.push_back(text);
+
+        if (!text.empty())
+        {
+            all_empty = false;
+        }
+    }
+
+    // require at least one field to be filled, otherwise the card would be invisible in study mode
+    if (all_empty)
+    {
+        QMessageBox::warning(this, "Input Error", "At least one field must be filled.");
+        return;
     }
 
     if (!card->update_definitions(*deck_fields_ptr, new_definitions))
