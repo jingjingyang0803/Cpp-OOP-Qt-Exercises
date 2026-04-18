@@ -19,7 +19,6 @@
 #include <vector>
 
 #include <QAbstractItemView>
-#include <QDebug>
 #include <QDialog>
 #include <QDialogButtonBox>
 #include <QDir>
@@ -191,9 +190,6 @@ void MainWindow::setup_connections()
 
 void MainWindow::loadFile()
 {
-    qDebug() << "loadFile called";
-    qDebug() << "current path =" << QDir::currentPath();
-
     QString file_name_qt = file_edit_->text().trimmed();
     std::string file_name = file_name_qt.toStdString();
 
