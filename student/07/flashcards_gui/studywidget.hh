@@ -4,6 +4,7 @@
 #include "card.hh"
 #include "deck.hh"
 
+#include <QComboBox>
 #include <QLabel>
 #include <QPushButton>
 #include <QWidget>
@@ -33,6 +34,7 @@ class StudyWidget : public QWidget
     void showNextCard();
     void flipCard();
     void updateView();
+    void updateSelectedFields();
 
   private:
     void setupUi();
@@ -49,6 +51,10 @@ class StudyWidget : public QWidget
     QPushButton* last_button_;
     QPushButton* next_button_;
     QPushButton* flip_button_;
+
+    QComboBox* front_field_box_;
+    QComboBox* back_field_box_;
+    Fields available_fields_;
 };
 
 #endif // STUDYWIDGET_HH

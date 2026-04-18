@@ -19,12 +19,48 @@ void StudyWidget::setStudyDeck(std::shared_ptr<Deck> deck, const std::string& fr
     current_index_ = 0;
     showing_front_ = true;
 
+    available_fields_.clear();
+    front_field_box_->clear();
+    back_field_box_->clear();
+
+    if (deck_)
+    {
+        auto fields_ptr = deck_->get_fields();
+        if (fields_ptr)
+        {
+            available_fields_ = *fields_ptr;
+
+            for (const std::string& field : available_fields_)
+            {
+                QString qfield = QString::fromStdString(field);
+                front_field_box_->addItem(qfield);
+                back_field_box_->addItem(qfield);
+            }
+        }
+    }
+
+    front_field_box_->setCurrentText(QString::fromStdString(front_field_));
+    back_field_box_->setCurrentText(QString::fromStdString(back_field_));
+
     updateView();
 }
 
 void StudyWidget::setupUi()
 {
     QVBoxLayout* main_layout = new QVBoxLayout(this);
+
+    QHBoxLayout* field_layout = new QHBoxLayout();
+
+    QLabel* front_label = new QLabel("Front:", this);
+    front_field_box_ = new QComboBox(this);
+
+    QLabel* back_label = new QLabel("Back:", this);
+    back_field_box_ = new QComboBox(this);
+
+    field_layout->addWidget(front_label);
+    field_layout->addWidget(front_field_box_);
+    field_layout->addWidget(back_label);
+    field_layout->addWidget(back_field_box_);
 
     card_label_ = new QLabel("No card", this);
     card_label_->setAlignment(Qt::AlignCenter);
@@ -50,6 +86,7 @@ void StudyWidget::setupUi()
 
     flip_button_ = new QPushButton("Flip", this);
 
+    main_layout->addLayout(field_layout);
     main_layout->addWidget(card_label_);
     main_layout->addLayout(nav_layout);
     main_layout->addWidget(flip_button_);
@@ -62,6 +99,20 @@ void StudyWidget::setupConnections()
     connect(next_button_, &QPushButton::clicked, this, &StudyWidget::showNextCard);
 
     connect(flip_button_, &QPushButton::clicked, this, &StudyWidget::flipCard);
+
+    connect(front_field_box_, &QComboBox::currentTextChanged, this,
+            &StudyWidget::updateSelectedFields);
+    connect(back_field_box_, &QComboBox::currentTextChanged, this,
+            &StudyWidget::updateSelectedFields);
+}
+
+void StudyWidget::updateSelectedFields()
+{
+    front_field_ = front_field_box_->currentText().toStdString();
+    back_field_ = back_field_box_->currentText().toStdString();
+
+    showing_front_ = true;
+    updateView();
 }
 
 void StudyWidget::updateView()
