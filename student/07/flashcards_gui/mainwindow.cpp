@@ -277,6 +277,21 @@ void MainWindow::removeDeck()
     int removed_row = deck_list_->row(selected_item);
     std::string deck_name = selected_item->text().toStdString();
 
+    auto deck = deck_manager_.get_deck(deck_name);
+    if (!deck)
+    {
+        QMessageBox::critical(this, "Error", "Selected deck not found.");
+        return;
+    }
+
+    // do not allow removing a deck that still has cards
+    if (!deck->get_cards().empty())
+    {
+        QMessageBox::warning(this, "Remove Error",
+                             "This deck still contains cards. Remove all cards first.");
+        return;
+    }
+
     if (deck_manager_.remove_deck(deck_name))
     {
         delete selected_item;
