@@ -122,7 +122,7 @@ QHBoxLayout* MainWindow::create_bottom_bar()
 void MainWindow::setup_main_window()
 {
     setWindowTitle("Flashcards");
-    resize(1100, 700);
+    resize(500, 400);
 }
 
 void MainWindow::setup_connections()
