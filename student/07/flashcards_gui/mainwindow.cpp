@@ -165,6 +165,9 @@ void MainWindow::setup_connections()
     // Add new card when the New Card button is clicked.
     connect(new_card_button_, &QPushButton::clicked, this, &MainWindow::addCard);
 
+    // Remove the selected card when the Remove Card button is clicked.
+    connect(remove_card_button_, &QPushButton::clicked, this, &MainWindow::removeCard);
+
     // Close the program when the Exit button is clicked.
     connect(exit_button_, &QPushButton::clicked, this, &MainWindow::close);
 }
@@ -342,7 +345,9 @@ void MainWindow::showDeckCards(const QString& deck_name_qt)
         QString card_text = formatCardText(card);
         if (!card_text.isEmpty())
         {
-            card_list_->addItem(card_text);
+            QListWidgetItem* item = new QListWidgetItem(card_text);
+            item->setData(Qt::UserRole, static_cast<uint>(card->get_id()));
+            card_list_->addItem(item);
         }
     }
 }
@@ -416,5 +421,44 @@ void MainWindow::addCard()
     else
     {
         QMessageBox::critical(this, "Error", "Failed to add card.");
+    }
+}
+
+void MainWindow::removeCard()
+{
+    qDebug() << "removeCard called";
+
+    QListWidgetItem* selected_deck_item = deck_list_->currentItem();
+    if (!selected_deck_item)
+    {
+        QMessageBox::warning(this, "Selection Error", "No deck selected.");
+        return;
+    }
+
+    std::string deck_name = selected_deck_item->text().toStdString();
+    auto deck = deck_manager_.get_deck(deck_name);
+
+    if (!deck)
+    {
+        QMessageBox::critical(this, "Error", "Selected deck not found.");
+        return;
+    }
+
+    QListWidgetItem* selected_card_item = card_list_->currentItem();
+    if (!selected_card_item)
+    {
+        QMessageBox::warning(this, "Selection Error", "No card selected.");
+        return;
+    }
+
+    unsigned int card_id = selected_card_item->data(Qt::UserRole).toUInt();
+
+    if (deck->remove_card(card_id))
+    {
+        showDeckCards(QString::fromStdString(deck_name));
+    }
+    else
+    {
+        QMessageBox::critical(this, "Error", "Failed to remove card.");
     }
 }
