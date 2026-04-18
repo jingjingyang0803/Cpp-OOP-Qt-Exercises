@@ -22,10 +22,14 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
 
 void MainWindow::setup_ui()
 {
-    QWidget* central_widget = new QWidget(this);
-    setCentralWidget(central_widget);
+    app_stack_ = new QStackedWidget(this);
+    setCentralWidget(app_stack_);
 
-    QVBoxLayout* main_layout = new QVBoxLayout(central_widget);
+    // -------------------------
+    // Main page
+    // -------------------------
+    main_page_ = new QWidget(this);
+    QVBoxLayout* main_layout = new QVBoxLayout(main_page_);
 
     main_layout->addLayout(create_top_bar());
 
@@ -37,6 +41,22 @@ void MainWindow::setup_ui()
 
     main_layout->addWidget(splitter);
     main_layout->addLayout(create_bottom_bar());
+
+    // -------------------------
+    // Study page
+    // -------------------------
+    study_page_ = new QWidget(this);
+    QVBoxLayout* study_layout = new QVBoxLayout(study_page_);
+
+    study_widget_ = new StudyWidget(this);
+    study_layout->addWidget(study_widget_);
+
+    // -------------------------
+    // Add pages to stack
+    // -------------------------
+    app_stack_->addWidget(main_page_);
+    app_stack_->addWidget(study_page_);
+    app_stack_->setCurrentWidget(main_page_);
 
     setup_main_window();
 }
@@ -96,13 +116,9 @@ QWidget* MainWindow::create_right_panel()
     card_button_layout->addWidget(remove_card_button_);
     card_button_layout->addWidget(study_button_);
 
-    study_widget_ = new StudyWidget(this);
-    study_widget_->hide();
-
     right_layout->addWidget(selected_deck_label_);
     right_layout->addWidget(card_list_);
     right_layout->addLayout(card_button_layout);
-    right_layout->addWidget(study_widget_);
 
     return right_panel;
 }
@@ -122,7 +138,7 @@ QHBoxLayout* MainWindow::create_bottom_bar()
 void MainWindow::setup_main_window()
 {
     setWindowTitle("Flashcards");
-    resize(500, 400);
+    resize(600, 400);
 }
 
 void MainWindow::setup_connections()
@@ -184,7 +200,7 @@ void MainWindow::loadFile()
             deck_list_->addItem(QString::fromStdString(deck_name));
         }
 
-        selected_deck_label_->setText("Select a deck to get started");
+        selected_deck_label_->setText("Ready to learn? Select a deck to start!");
 
         file_edit_->clear();
     }
@@ -574,26 +590,12 @@ void MainWindow::startStudy()
 
 void MainWindow::enterStudyMode()
 {
-    card_list_->hide();
-    new_card_button_->hide();
-    edit_card_button_->hide();
-    remove_card_button_->hide();
-    study_button_->hide();
-
-    study_widget_->show();
-
+    app_stack_->setCurrentWidget(study_page_);
     study_mode_on_ = true;
 }
 
 void MainWindow::exitStudyMode()
 {
-    study_widget_->hide();
-
-    card_list_->show();
-    new_card_button_->show();
-    edit_card_button_->show();
-    remove_card_button_->show();
-    study_button_->show();
-
+    app_stack_->setCurrentWidget(main_page_);
     study_mode_on_ = false;
 }

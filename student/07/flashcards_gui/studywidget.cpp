@@ -160,9 +160,6 @@ void StudyWidget::applySideColors()
                                     "  padding: 4px;"
                                     "}"
                                     "QComboBox QAbstractItemView {"
-                                    "  border: 2px solid " +
-                                    front_color_name +
-                                    ";"
                                     "  selection-background-color: " +
                                     front_color_name +
                                     ";"
@@ -176,9 +173,6 @@ void StudyWidget::applySideColors()
                                    "  padding: 4px;"
                                    "}"
                                    "QComboBox QAbstractItemView {"
-                                   "  border: 2px solid " +
-                                   back_color_name +
-                                   ";"
                                    "  selection-background-color: " +
                                    back_color_name +
                                    ";"

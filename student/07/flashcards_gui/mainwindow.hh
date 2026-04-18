@@ -47,6 +47,10 @@ class MainWindow : public QMainWindow
     DeckManager deck_manager_;
     bool study_mode_on_ = false;
 
+    QStackedWidget* app_stack_;
+    QWidget* main_page_;
+    QWidget* study_page_;
+
     QLineEdit* file_edit_;
     QListWidget* deck_list_;
     QLineEdit* deck_name_edit_;
