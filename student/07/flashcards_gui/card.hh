@@ -19,14 +19,14 @@
 
 #include "utils.hh"
 
-#include <string>
 #include <map>
+#include <string>
 
 using namespace std;
 
 class Card
 {
-public:
+  public:
     /**
      * @brief Constructs a Card object.
      *
@@ -50,8 +50,7 @@ public:
      * @return False if field_types and definitions are't equal size,
      * true otherwise.
      */
-    bool add_new_definitions(const Fields& field_types,
-                             const Fields& definitions);
+    bool add_new_definitions(const Fields& field_types, const Fields& definitions);
 
     /**
      * @brief Checks if the card contains the specified field_types.
@@ -69,6 +68,15 @@ public:
     Fields get_fields() const;
 
     /**
+     * @brief Fetches definitions of chosen field types.
+     *
+     * @param requested_fields Requested definition field types
+     * @return Requested definitions for prompts. If a requested field type
+     * doesn't exist, the corresponding definition is an empty string.
+     */
+    Fields get_definitions(const Fields& requested_fields) const;
+
+    /**
      * @brief Fetches definitions of chosen field types
      *
      * @param requested_fields Requested definition field types
@@ -76,8 +84,7 @@ public:
      * @return True if all requested fields existed,
      * false otherwise.
      */
-    bool get_definitions(const Fields& requested_fields,
-                         Fields& return_definitions);
+    bool get_definitions(const Fields& requested_fields, Fields& return_definitions);
 
     /**
      * @brief Checks study answers against stored definitions.
@@ -93,8 +100,7 @@ public:
      * @param answers User-provided answers
      * @return result Study result [0-1] points
      */
-    double check_answers(const Fields& answer_fields,
-                         const Fields& answers) const;
+    double check_answers(const Fields& answer_fields, const Fields& answers) const;
 
     /**
      * @brief Returns the card ID.
@@ -111,7 +117,7 @@ public:
      */
     bool operator==(const Card& other) const;
 
-private:
+  private:
     static unsigned int NEXT_ID;
     unsigned int ID_;
 

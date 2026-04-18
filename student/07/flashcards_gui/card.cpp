@@ -17,37 +17,33 @@
 
 unsigned int Card::NEXT_ID = 1;
 
-Card::Card() :
-    ID_(NEXT_ID++)
+Card::Card() : ID_(NEXT_ID++)
 {
-
 }
 
 Card::~Card()
 {
-
 }
 
-bool Card::add_new_definitions(const Fields &field_types,
-                               const Fields &definitions)
+bool Card::add_new_definitions(const Fields& field_types, const Fields& definitions)
 {
-    if ( field_types.size() != definitions.size() )
+    if (field_types.size() != definitions.size())
     {
         return false;
     }
 
-    for ( Fields::size_type field = 0 ; field < field_types.size() ; ++field )
+    for (Fields::size_type field = 0; field < field_types.size(); ++field)
     {
         definitions_[field_types.at(field)] = definitions.at(field);
     }
     return true;
 }
 
-bool Card::has_fields(const Fields &field_types) const
+bool Card::has_fields(const Fields& field_types) const
 {
-    for ( const string& field : field_types )
+    for (const string& field : field_types)
     {
-        if ( definitions_.find(field) == definitions_.end() )
+        if (definitions_.find(field) == definitions_.end())
         {
             return false;
         }
@@ -58,20 +54,36 @@ bool Card::has_fields(const Fields &field_types) const
 Fields Card::get_fields() const
 {
     Fields field_types;
-    for ( const pair<string, string> definition : definitions_ )
+    for (const pair<string, string> definition : definitions_)
     {
         field_types.push_back(definition.first);
     }
     return field_types;
 }
 
-bool Card::get_definitions(const Fields &requested_fields,
-                           Fields &return_definitions)
+Fields Card::get_definitions(const Fields& requested_fields) const
+{
+    Fields return_definitions;
+    for (Fields::size_type i = 0; i < requested_fields.size(); ++i)
+    {
+        if (definitions_.find(requested_fields.at(i)) == definitions_.end())
+        {
+            return_definitions.push_back("");
+        }
+        else
+        {
+            return_definitions.push_back(definitions_.at(requested_fields.at(i)));
+        }
+    }
+    return return_definitions;
+}
+
+bool Card::get_definitions(const Fields& requested_fields, Fields& return_definitions)
 {
     return_definitions.clear();
-    for ( Fields::size_type i = 0 ; i < requested_fields.size() ; ++i )
+    for (Fields::size_type i = 0; i < requested_fields.size(); ++i)
     {
-        if ( definitions_.find(requested_fields.at(i)) == definitions_.end() )
+        if (definitions_.find(requested_fields.at(i)) == definitions_.end())
         {
             return false;
         }
@@ -81,35 +93,34 @@ bool Card::get_definitions(const Fields &requested_fields,
     return true;
 }
 
-double Card::check_answers(const Fields& answer_fields,
-                           const Fields& answers) const
+double Card::check_answers(const Fields& answer_fields, const Fields& answers) const
 {
     // Partial result = Points collected for each correct field on this card
     double partial_result = 0;
-    for ( Fields::size_type i = 0 ; i < answers.size(); ++i )
+    for (Fields::size_type i = 0; i < answers.size(); ++i)
     {
         // Check if field can be found
-        if ( definitions_.find(answer_fields.at(i)) == definitions_.end() )
+        if (definitions_.find(answer_fields.at(i)) == definitions_.end())
         {
             continue;
         }
 
         // If "correct answer" is empty, any answer is accepted and accumulates points
-        if ( definitions_.at(answer_fields.at(i)).empty() )
+        if (definitions_.at(answer_fields.at(i)).empty())
         {
             ++partial_result;
             continue;
         }
 
         // Check answers by comparing "correct" and "user provided" answers
-        if ( definitions_.at(answer_fields.at(i)) == answers.at(i) )
+        if (definitions_.at(answer_fields.at(i)) == answers.at(i))
         {
             ++partial_result;
         }
     }
 
     // Add 0-1 points to the result depending on how many fields were correct
-    return partial_result/answer_fields.size();
+    return partial_result / answer_fields.size();
 }
 
 unsigned int Card::get_id() const
@@ -117,8 +128,7 @@ unsigned int Card::get_id() const
     return ID_;
 }
 
-bool Card::operator==(const Card &other) const
+bool Card::operator==(const Card& other) const
 {
     return ID_ == other.ID_;
 }
-

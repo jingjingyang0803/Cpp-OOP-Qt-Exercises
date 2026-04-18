@@ -159,6 +159,9 @@ void MainWindow::setup_connections()
     // Remove the selected deck when the Remove Deck button is clicked.
     connect(remove_deck_button_, &QPushButton::clicked, this, &MainWindow::removeDeck);
 
+    // Show the cards of the selected deck when the selection changes.
+    connect(deck_list_, &QListWidget::currentTextChanged, this, &MainWindow::showDeckCards);
+
     // Close the program when the Exit button is clicked.
     connect(exit_button_, &QPushButton::clicked, this, &MainWindow::close);
 }
@@ -282,5 +285,48 @@ void MainWindow::removeDeck()
     else
     {
         QMessageBox::critical(this, "Error", "Failed to remove the deck.");
+    }
+}
+
+void MainWindow::showDeckCards(const QString& deck_name_qt)
+{
+    if (deck_name_qt.isEmpty())
+    {
+        selected_deck_label_->setText("Selected deck: None");
+        card_list_->clear();
+        return;
+    }
+
+    std::string deck_name = deck_name_qt.toStdString();
+    selected_deck_label_->setText("Selected deck: " + deck_name_qt);
+    card_list_->clear();
+
+    auto deck = deck_manager_.get_deck(deck_name);
+
+    for (const std::shared_ptr<Card>& card : deck->get_cards())
+    {
+        if (!card)
+        {
+            continue;
+        }
+
+        QString card_text;
+
+        const auto& deck_fields = card->get_fields();
+        const auto& definitions = card->get_definitions(deck_fields);
+
+        for (size_t i = 0; i < deck_fields.size(); ++i)
+        {
+            card_text += QString::fromStdString(deck_fields.at(i));
+            card_text += ": ";
+            card_text += QString::fromStdString(definitions.at(i));
+
+            if (i + 1 < definitions.size() && i + 1 < deck_fields.size())
+            {
+                card_text += " | ";
+            }
+        }
+
+        card_list_->addItem(card_text);
     }
 }
