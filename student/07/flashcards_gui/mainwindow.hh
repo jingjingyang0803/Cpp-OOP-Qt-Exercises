@@ -25,7 +25,9 @@ class MainWindow : public QMainWindow
     void loadFile();
     void addDeck();
     void removeDeck();
+    QString formatCardText(const std::shared_ptr<Card>& card) const;
     void showDeckCards(const QString& deck_name);
+    void addCard();
 
   private:
     DeckManager deck_manager_;

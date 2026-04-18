@@ -10,6 +10,10 @@
 #        * Provides answer checking and prompt retrieval.                   #
 #                                                                           #
 # Author information:                                                       #
+#   Name: Jingjing Yang                                                     #
+#   Email: jingjing.yang@tuni.fi                                            #
+#   Functions  added:                                                       #
+#       - Fields get_definitions(const Fields& requested_fields) const      #
 #                                                                           #
 #############################################################################
 */

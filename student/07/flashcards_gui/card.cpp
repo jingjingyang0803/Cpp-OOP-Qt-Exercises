@@ -8,7 +8,10 @@
 # Notes:                                                                    #
 #                                                                           #
 # Author information:                                                       #
-#                                                                           #
+#   Name: Jingjing Yang                                                     #
+#   Email: jingjing.yang@tuni.fi                                            #
+#   Implementations added:                                                  #
+#       - Fields get_definitions(const Fields& requested_fields) const      #
 #############################################################################
 */
 

@@ -162,6 +162,9 @@ void MainWindow::setup_connections()
     // Show the cards of the selected deck when the selection changes.
     connect(deck_list_, &QListWidget::currentTextChanged, this, &MainWindow::showDeckCards);
 
+    // Add new card when the New Card button is clicked.
+    connect(new_card_button_, &QPushButton::clicked, this, &MainWindow::addCard);
+
     // Close the program when the Exit button is clicked.
     connect(exit_button_, &QPushButton::clicked, this, &MainWindow::close);
 }
@@ -288,6 +291,33 @@ void MainWindow::removeDeck()
     }
 }
 
+QString MainWindow::formatCardText(const std::shared_ptr<Card>& card) const
+{
+    if (!card)
+    {
+        return "";
+    }
+
+    QString card_text;
+
+    const auto& card_fields = card->get_fields();
+    const auto& card_definitions = card->get_definitions(card_fields);
+
+    for (size_t i = 0; i < card_fields.size(); ++i)
+    {
+        card_text += QString::fromStdString(card_fields.at(i));
+        card_text += ": ";
+        card_text += QString::fromStdString(card_definitions.at(i));
+
+        if (i + 1 < card_definitions.size() && i + 1 < card_fields.size())
+        {
+            card_text += " | ";
+        }
+    }
+
+    return card_text;
+}
+
 void MainWindow::showDeckCards(const QString& deck_name_qt)
 {
     if (deck_name_qt.isEmpty())
@@ -302,31 +332,89 @@ void MainWindow::showDeckCards(const QString& deck_name_qt)
     card_list_->clear();
 
     auto deck = deck_manager_.get_deck(deck_name);
-
-    for (const std::shared_ptr<Card>& card : deck->get_cards())
+    if (!deck)
     {
-        if (!card)
+        return;
+    }
+
+    for (const auto& card : deck->get_cards())
+    {
+        QString card_text = formatCardText(card);
+        if (!card_text.isEmpty())
         {
-            continue;
+            card_list_->addItem(card_text);
         }
+    }
+}
 
-        QString card_text;
+void MainWindow::addCard()
+{
+    qDebug() << "addCard called";
 
-        const auto& deck_fields = card->get_fields();
-        const auto& definitions = card->get_definitions(deck_fields);
+    QListWidgetItem* selected_item = deck_list_->currentItem();
+    if (!selected_item)
+    {
+        QMessageBox::warning(this, "Selection Error", "No deck selected.");
+        return;
+    }
 
-        for (size_t i = 0; i < deck_fields.size(); ++i)
-        {
-            card_text += QString::fromStdString(deck_fields.at(i));
-            card_text += ": ";
-            card_text += QString::fromStdString(definitions.at(i));
+    std::string deck_name = selected_item->text().toStdString();
+    auto deck = deck_manager_.get_deck(deck_name);
 
-            if (i + 1 < definitions.size() && i + 1 < deck_fields.size())
-            {
-                card_text += " | ";
-            }
-        }
+    if (!deck)
+    {
+        QMessageBox::critical(this, "Error", "Selected deck not found.");
+        return;
+    }
 
-        card_list_->addItem(card_text);
+    auto deck_fields_ptr = deck->get_fields();
+    if (!deck_fields_ptr || deck_fields_ptr->empty())
+    {
+        QMessageBox::warning(this, "Error", "This deck has no fields.");
+        return;
+    }
+
+    QDialog dialog(this);
+    dialog.setWindowTitle("Add Card");
+
+    QFormLayout* form_layout = new QFormLayout(&dialog);
+
+    std::vector<QLineEdit*> input_boxes;
+
+    for (const std::string& field_name : *deck_fields_ptr)
+    {
+        QLineEdit* input = new QLineEdit(&dialog);
+        input->setPlaceholderText(QString::fromStdString(field_name));
+        form_layout->addRow(QString::fromStdString(field_name) + ":", input);
+        input_boxes.push_back(input);
+    }
+
+    QDialogButtonBox* button_box =
+        new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, &dialog);
+
+    form_layout->addWidget(button_box);
+
+    connect(button_box, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
+    connect(button_box, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
+
+    if (dialog.exec() != QDialog::Accepted)
+    {
+        return;
+    }
+
+    Fields definitions;
+    for (QLineEdit* input : input_boxes)
+    {
+        std::string text = input->text().toStdString();
+        definitions.push_back(text);
+    }
+
+    if (deck->add_card(*deck_fields_ptr, definitions))
+    {
+        showDeckCards(QString::fromStdString(deck_name));
+    }
+    else
+    {
+        QMessageBox::critical(this, "Error", "Failed to add card.");
     }
 }
