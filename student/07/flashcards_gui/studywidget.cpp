@@ -3,7 +3,7 @@
 # COMP.CS.115 Ohjelmointi 3: Rajapinnat / Programming 3: Interfaces         #
 # Project: Opettelukorttien paluu / Return of Flashcards                    #
 # File: studywidget.cpp                                                     #
-# Description: Implements StudyWidget class functionality.                 #
+# Description: Implements StudyWidget class.                                #
 #                                                                           #
 # Notes:                                                                    #
 #                                                                           #
@@ -26,13 +26,10 @@ StudyWidget::StudyWidget(QWidget* parent) : QWidget(parent)
     setupConnections();
 }
 
-void StudyWidget::setStudyDeck(std::shared_ptr<Deck> deck, const std::string& front_field,
-                               const std::string& back_field)
+void StudyWidget::setStudyDeck(std::shared_ptr<Deck> deck)
 {
     // initialize variables and UI elements
     deck_ = deck;
-    front_field_ = front_field;
-    back_field_ = back_field;
 
     current_index_ = 0;
     showing_front_ = true;
@@ -67,9 +64,11 @@ void StudyWidget::setStudyDeck(std::shared_ptr<Deck> deck, const std::string& fr
     {
         front_field_box_->setCurrentIndex(0);
 
-        // try to pick a different field for back side
+        // default back field to second field if exists, otherwise first field
         if (available_fields_.size() > 1)
             back_field_box_->setCurrentIndex(1);
+        else
+            back_field_box_->setCurrentIndex(0);
     }
 
     front_field_box_->blockSignals(false);
@@ -118,7 +117,6 @@ void StudyWidget::setupUi()
     nav_layout->addWidget(next_button_);
 
     // actions
-    // actions
     QHBoxLayout* action_layout = new QHBoxLayout();
 
     add_button_ = new QPushButton("Add card", this);
@@ -126,7 +124,6 @@ void StudyWidget::setupUi()
     exit_button_ = new QPushButton("Exit", this);
 
     action_layout->addWidget(add_button_);
-
     action_layout->addWidget(flip_button_);
     action_layout->addWidget(exit_button_);
 
@@ -138,17 +135,18 @@ void StudyWidget::setupUi()
 
 void StudyWidget::setupConnections()
 {
+    // navigation buttons
     connect(last_button_, &QPushButton::clicked, this, &StudyWidget::showPreviousCard);
     connect(next_button_, &QPushButton::clicked, this, &StudyWidget::showNextCard);
-    connect(flip_button_, &QPushButton::clicked, this, &StudyWidget::flipCard);
 
+    // other actions
     connect(add_button_, &QPushButton::clicked, this, &StudyWidget::addCardRequested);
-
+    connect(flip_button_, &QPushButton::clicked, this, &StudyWidget::flipCard);
     connect(exit_button_, &QPushButton::clicked, this, &StudyWidget::exitRequested);
 
+    // field selection changes
     connect(front_field_box_, &QComboBox::currentTextChanged, this,
             &StudyWidget::updateSelectedFields);
-
     connect(back_field_box_, &QComboBox::currentTextChanged, this,
             &StudyWidget::updateSelectedFields);
 }

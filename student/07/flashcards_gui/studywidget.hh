@@ -49,12 +49,13 @@ class StudyWidget : public QWidget
     explicit StudyWidget(QWidget* parent = nullptr);
 
     // initialize study session with a deck
-    void setStudyDeck(std::shared_ptr<Deck> deck, const std::string& front_field,
-                      const std::string& back_field);
+    void setStudyDeck(std::shared_ptr<Deck> deck);
 
+    // refresh view after changes in the deck (e.g. adding cards)
     void refreshStudyView();
 
   signals:
+    // signals for communicating with MainWindow
     void exitRequested();
     void addCardRequested();
 

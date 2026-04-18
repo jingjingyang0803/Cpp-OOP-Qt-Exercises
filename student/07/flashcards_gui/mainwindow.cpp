@@ -684,10 +684,7 @@ void MainWindow::startStudy()
         return;
     }
 
-    std::string front_field = fields_ptr->at(0);
-    std::string back_field = fields_ptr->at(1);
-
-    study_widget_->setStudyDeck(deck, front_field, back_field);
+    study_widget_->setStudyDeck(deck);
     enterStudyMode();
 }
 
