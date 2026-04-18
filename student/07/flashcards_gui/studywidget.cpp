@@ -87,11 +87,14 @@ void StudyWidget::setupUi()
     nav_layout->addWidget(next_button_);
 
     flip_button_ = new QPushButton("Flip", this);
+    exit_button_ = new QPushButton("Exit Study", this);
 
     main_layout->addLayout(field_layout);
     main_layout->addWidget(card_label_);
     main_layout->addLayout(nav_layout);
     main_layout->addWidget(flip_button_);
+
+    main_layout->addWidget(exit_button_);
 }
 
 void StudyWidget::setupConnections()
@@ -101,6 +104,8 @@ void StudyWidget::setupConnections()
     connect(next_button_, &QPushButton::clicked, this, &StudyWidget::showNextCard);
 
     connect(flip_button_, &QPushButton::clicked, this, &StudyWidget::flipCard);
+
+    connect(exit_button_, &QPushButton::clicked, this, &StudyWidget::exitRequested);
 
     connect(front_field_box_, &QComboBox::currentTextChanged, this,
             &StudyWidget::updateSelectedFields);

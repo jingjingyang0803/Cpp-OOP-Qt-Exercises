@@ -151,6 +151,8 @@ void MainWindow::setup_connections()
     // Start studying the selected deck when the Study button is clicked.
     connect(study_button_, &QPushButton::clicked, this, &MainWindow::startStudy);
 
+    connect(study_widget_, &StudyWidget::exitRequested, this, &MainWindow::exitStudyMode);
+
     // Close the program when the Exit button is clicked.
     connect(exit_button_, &QPushButton::clicked, this, &MainWindow::close);
 }
