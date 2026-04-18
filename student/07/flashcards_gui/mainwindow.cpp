@@ -81,7 +81,7 @@ QWidget* MainWindow::create_right_panel()
     QWidget* right_panel = new QWidget(this);
     QVBoxLayout* right_layout = new QVBoxLayout(right_panel);
 
-    selected_deck_label_ = new QLabel("Selected deck: None", this);
+    selected_deck_label_ = new QLabel("", this);
 
     card_list_ = new QListWidget(this);
 
@@ -161,29 +161,38 @@ void MainWindow::loadFile()
 {
     qDebug() << "loadFile called";
     qDebug() << "current path =" << QDir::currentPath();
-    // Read file name from the input field.
-    std::string file_name = file_edit_->text().toStdString();
 
-    qDebug() << "file name =" << QString::fromStdString(file_name);
+    QString file_name_qt = file_edit_->text().trimmed();
+    std::string file_name = file_name_qt.toStdString();
+
+    qDebug() << "file name =" << file_name_qt;
     qDebug() << "deck count =" << static_cast<int>(deck_manager_.get_deck_names().size());
+
+    if (file_name.empty())
+    {
+        QMessageBox::warning(this, "Input Error", "Please enter a file name.");
+        return;
+    }
+
     if (deck_manager_.read_file(file_name))
     {
+        deck_list_->clear();
+
         std::vector<std::string> deck_names = deck_manager_.get_deck_names();
         for (const std::string& deck_name : deck_names)
         {
             deck_list_->addItem(QString::fromStdString(deck_name));
         }
 
-        // clear the file name input field after loading the file
+        selected_deck_label_->setText("Select a deck to get started");
+
         file_edit_->clear();
     }
     else
     {
-        QMessageBox::critical(this, "Error",
-                              "Failed to load the file: " + QString::fromStdString(file_name));
+        QMessageBox::critical(this, "Error", "Failed to load the file: " + file_name_qt);
     }
 }
-
 void MainWindow::addDeck()
 {
     qDebug() << "addDeck called";
@@ -269,7 +278,7 @@ void MainWindow::removeDeck()
     if (deck_manager_.remove_deck(deck_name))
     {
         delete selected_item;
-        selected_deck_label_->setText("Selected deck: None");
+        selected_deck_label_->setText("Ready to learn? Select a deck to start!");
         card_list_->clear();
     }
     else
@@ -309,13 +318,13 @@ void MainWindow::showDeckCards(const QString& deck_name_qt)
 {
     if (deck_name_qt.isEmpty())
     {
-        selected_deck_label_->setText("Selected deck: None");
+        selected_deck_label_->setText("Ready to learn? Select a deck to start!");
         card_list_->clear();
         return;
     }
 
     std::string deck_name = deck_name_qt.toStdString();
-    selected_deck_label_->setText("Selected deck: " + deck_name_qt);
+    selected_deck_label_->setText("You're studying: " + deck_name_qt);
     card_list_->clear();
 
     auto deck = deck_manager_.get_deck(deck_name);

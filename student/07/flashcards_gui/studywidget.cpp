@@ -77,7 +77,7 @@ void StudyWidget::setupUi()
 
     QHBoxLayout* nav_layout = new QHBoxLayout();
 
-    last_button_ = new QPushButton("Last", this);
+    last_button_ = new QPushButton("Previous", this);
     progress_label_ = new QLabel("0 / 0", this);
     progress_label_->setAlignment(Qt::AlignCenter);
     next_button_ = new QPushButton("Next", this);
@@ -86,8 +86,8 @@ void StudyWidget::setupUi()
     nav_layout->addWidget(progress_label_);
     nav_layout->addWidget(next_button_);
 
-    flip_button_ = new QPushButton("Flip", this);
-    exit_button_ = new QPushButton("Exit Study", this);
+    flip_button_ = new QPushButton("Flip card", this);
+    exit_button_ = new QPushButton("Exit study session", this);
 
     main_layout->addLayout(field_layout);
     main_layout->addWidget(card_label_);
@@ -194,7 +194,7 @@ void StudyWidget::applySideColors()
                                ";"
                                "  border-radius: 8px;"
                                "  padding: 20px;"
-                               "  font-size: 20px;"
+                               "  font-size: 32px;"
                                "  font-weight: bold;"
                                "}");
 }
