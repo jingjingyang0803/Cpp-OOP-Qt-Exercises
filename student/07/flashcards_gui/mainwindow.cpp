@@ -168,6 +168,9 @@ void MainWindow::setup_connections()
     // Remove the selected card when the Remove Card button is clicked.
     connect(remove_card_button_, &QPushButton::clicked, this, &MainWindow::removeCard);
 
+    // Edit the selected card when the Edit Card button is clicked.
+    connect(edit_card_button_, &QPushButton::clicked, this, &MainWindow::editCard);
+
     // Close the program when the Exit button is clicked.
     connect(exit_button_, &QPushButton::clicked, this, &MainWindow::close);
 }
@@ -461,4 +464,98 @@ void MainWindow::removeCard()
     {
         QMessageBox::critical(this, "Error", "Failed to remove card.");
     }
+}
+
+void MainWindow::editCard()
+{
+    qDebug() << "editCard called";
+
+    QListWidgetItem* selected_deck_item = deck_list_->currentItem();
+    if (!selected_deck_item)
+    {
+        QMessageBox::warning(this, "Selection Error", "No deck selected.");
+        return;
+    }
+
+    std::string deck_name = selected_deck_item->text().toStdString();
+    auto deck = deck_manager_.get_deck(deck_name);
+    if (!deck)
+    {
+        QMessageBox::critical(this, "Error", "Selected deck not found.");
+        return;
+    }
+
+    QListWidgetItem* selected_card_item = card_list_->currentItem();
+    if (!selected_card_item)
+    {
+        QMessageBox::warning(this, "Selection Error", "No card selected.");
+        return;
+    }
+
+    unsigned int card_id = selected_card_item->data(Qt::UserRole).toUInt();
+    auto card = deck->get_card(card_id);
+    if (!card)
+    {
+        QMessageBox::critical(this, "Error", "Selected card not found.");
+        return;
+    }
+
+    auto deck_fields_ptr = deck->get_fields();
+    if (!deck_fields_ptr || deck_fields_ptr->empty())
+    {
+        QMessageBox::warning(this, "Error", "This deck has no fields.");
+        return;
+    }
+
+    Fields current_definitions = card->get_definitions(*deck_fields_ptr);
+
+    QDialog dialog(this);
+    dialog.setWindowTitle("Edit Card");
+
+    QFormLayout* form_layout = new QFormLayout(&dialog);
+
+    std::vector<QLineEdit*> input_boxes;
+
+    for (size_t i = 0; i < deck_fields_ptr->size(); ++i)
+    {
+        const std::string& field_name = deck_fields_ptr->at(i);
+
+        QLineEdit* input = new QLineEdit(&dialog);
+        input->setText(QString::fromStdString(current_definitions.at(i)));
+        form_layout->addRow(QString::fromStdString(field_name) + ":", input);
+        input_boxes.push_back(input);
+    }
+
+    QDialogButtonBox* button_box =
+        new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, &dialog);
+
+    form_layout->addWidget(button_box);
+
+    connect(button_box, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
+    connect(button_box, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
+
+    if (dialog.exec() != QDialog::Accepted)
+    {
+        return;
+    }
+
+    Fields new_definitions;
+    for (QLineEdit* input : input_boxes)
+    {
+        std::string text = input->text().toStdString();
+        if (text.empty())
+        {
+            QMessageBox::warning(this, "Input Error", "All fields must be filled.");
+            return;
+        }
+        new_definitions.push_back(text);
+    }
+
+    if (!card->update_definitions(*deck_fields_ptr, new_definitions))
+    {
+        QMessageBox::critical(this, "Error", "Failed to update card.");
+        return;
+    }
+
+    showDeckCards(QString::fromStdString(deck_name));
 }

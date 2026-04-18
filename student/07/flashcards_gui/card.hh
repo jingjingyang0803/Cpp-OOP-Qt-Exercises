@@ -14,6 +14,8 @@
 #   Email: jingjing.yang@tuni.fi                                            #
 #   Functions  added:                                                       #
 #       - Fields get_definitions(const Fields& requested_fields) const      #
+#       - bool update_definitions(const Fields& field_types,                #
+#                                 const Fields& definitions)                #
 #                                                                           #
 #############################################################################
 */
@@ -88,6 +90,16 @@ class Card
      * @return True if all requested fields existed,
      * false otherwise.
      */
+
+    /**
+     * @brief Updates definitions of chosen field types.
+     *
+     * @param field_types Field type identifiers
+     * @param definitions New definitions for the specified field types
+     * @return True if all updates were successful, false otherwise
+     */
+    bool update_definitions(const Fields& field_types, const Fields& definitions);
+
     bool get_definitions(const Fields& requested_fields, Fields& return_definitions);
 
     /**

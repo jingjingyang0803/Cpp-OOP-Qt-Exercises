@@ -29,6 +29,7 @@ class MainWindow : public QMainWindow
     void showDeckCards(const QString& deck_name);
     void addCard();
     void removeCard();
+    void editCard();
 
   private:
     DeckManager deck_manager_;

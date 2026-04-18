@@ -12,6 +12,8 @@
 #   Email: jingjing.yang@tuni.fi                                            #
 #   Implementations added:                                                  #
 #       - Fields get_definitions(const Fields& requested_fields) const      #
+#       - bool update_definitions(const Fields& field_types,                #
+#                                 const Fields& definitions)                #
 #############################################################################
 */
 
@@ -79,6 +81,25 @@ Fields Card::get_definitions(const Fields& requested_fields) const
         }
     }
     return return_definitions;
+}
+
+bool Card::update_definitions(const Fields& field_types, const Fields& definitions)
+{
+    if (field_types.size() != definitions.size())
+    {
+        return false;
+    }
+
+    // Clear old data
+    definitions_.clear();
+
+    // Refill with new data
+    for (Fields::size_type i = 0; i < field_types.size(); ++i)
+    {
+        definitions_[field_types.at(i)] = definitions.at(i);
+    }
+
+    return true;
 }
 
 bool Card::get_definitions(const Fields& requested_fields, Fields& return_definitions)
