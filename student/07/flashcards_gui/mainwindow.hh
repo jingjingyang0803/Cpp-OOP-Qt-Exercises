@@ -40,12 +40,14 @@ class MainWindow : public QMainWindow
     void removeCard();
     void editCard();
     void startStudy();
+    void enterStudyMode();
+    void exitStudyMode();
 
   private:
     DeckManager deck_manager_;
+    bool study_mode_on_ = false;
 
     QLineEdit* file_edit_;
-
     QListWidget* deck_list_;
     QLineEdit* deck_name_edit_;
     QLineEdit* deck_fields_edit_;

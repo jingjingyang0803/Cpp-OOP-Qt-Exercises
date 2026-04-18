@@ -83,7 +83,6 @@ QWidget* MainWindow::create_right_panel()
 
     selected_deck_label_ = new QLabel("Selected deck: None", this);
 
-    QLabel* cards_label = new QLabel("Cards", this);
     card_list_ = new QListWidget(this);
 
     QHBoxLayout* card_button_layout = new QHBoxLayout();
@@ -101,7 +100,6 @@ QWidget* MainWindow::create_right_panel()
     study_widget_->hide();
 
     right_layout->addWidget(selected_deck_label_);
-    right_layout->addWidget(cards_label);
     right_layout->addWidget(card_list_);
     right_layout->addLayout(card_button_layout);
     right_layout->addWidget(study_widget_);
@@ -543,7 +541,6 @@ void MainWindow::editCard()
 
 void MainWindow::startStudy()
 {
-    qDebug() << "startStudy called";
     QListWidgetItem* selected_item = deck_list_->currentItem();
     if (!selected_item)
     {
@@ -553,23 +550,39 @@ void MainWindow::startStudy()
 
     std::string deck_name = selected_item->text().toStdString();
     auto deck = deck_manager_.get_deck(deck_name);
-    if (!deck)
-    {
-        QMessageBox::critical(this, "Error", "Selected deck not found.");
-        return;
-    }
 
     auto fields_ptr = deck->get_fields();
-    if (!fields_ptr || fields_ptr->size() < 2)
-    {
-        QMessageBox::warning(this, "Study Error", "Study requires at least two fields.");
-        return;
-    }
 
-    // default: use the first field as front and the second field as back
     std::string front_field = fields_ptr->at(0);
     std::string back_field = fields_ptr->at(1);
 
     study_widget_->setStudyDeck(deck, front_field, back_field);
+
+    enterStudyMode();
+}
+
+void MainWindow::enterStudyMode()
+{
+    card_list_->hide();
+    new_card_button_->hide();
+    edit_card_button_->hide();
+    remove_card_button_->hide();
+    study_button_->hide();
+
     study_widget_->show();
+
+    study_mode_on_ = true;
+}
+
+void MainWindow::exitStudyMode()
+{
+    study_widget_->hide();
+
+    card_list_->show();
+    new_card_button_->show();
+    edit_card_button_->show();
+    remove_card_button_->show();
+    study_button_->show();
+
+    study_mode_on_ = false;
 }
