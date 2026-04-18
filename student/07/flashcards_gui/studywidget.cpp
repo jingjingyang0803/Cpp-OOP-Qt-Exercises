@@ -136,13 +136,18 @@ void StudyWidget::setupUi()
 void StudyWidget::setupConnections()
 {
     // navigation buttons
-    connect(last_button_, &QPushButton::clicked, this, &StudyWidget::showPreviousCard);
-    connect(next_button_, &QPushButton::clicked, this, &StudyWidget::showNextCard);
+    connect(last_button_, &QPushButton::clicked, this,
+            &StudyWidget::showPreviousCard);
+    connect(next_button_, &QPushButton::clicked, this,
+            &StudyWidget::showNextCard);
 
     // other actions
-    connect(add_button_, &QPushButton::clicked, this, &StudyWidget::addCardRequested);
-    connect(flip_button_, &QPushButton::clicked, this, &StudyWidget::flipCard);
-    connect(exit_button_, &QPushButton::clicked, this, &StudyWidget::exitRequested);
+    connect(add_button_, &QPushButton::clicked, this,
+            &StudyWidget::addCardRequested);
+    connect(flip_button_, &QPushButton::clicked, this,
+            &StudyWidget::flipCard);
+    connect(exit_button_, &QPushButton::clicked, this,
+            &StudyWidget::exitRequested);
 
     // field selection changes
     connect(front_field_box_, &QComboBox::currentTextChanged, this,
@@ -234,8 +239,9 @@ void StudyWidget::flipCard()
 
 void StudyWidget::chooseRandomColors()
 {
-    QVector<QColor> palette = {"#e74c3c", "#3498db", "#2ecc71", "#f1c40f",
-                               "#9b59b6", "#e67e22", "#1abc9c"};
+    QVector<QColor> palette = {"#e74c3c", "#3498db", "#2ecc71",
+                                "#f1c40f", "#9b59b6", "#e67e22",
+                                "#1abc9c"};
 
     int a = QRandomGenerator::global()->bounded(palette.size());
     int b = QRandomGenerator::global()->bounded(palette.size());
@@ -261,5 +267,6 @@ void StudyWidget::applySideColors()
     QString active = (showing_front_ ? front_color_ : back_color_).name();
 
     card_label_->setStyleSheet("border:3px solid " + active +
-                               "; border-radius:8px; padding:20px; font-size:28px;");
+                               "; border-radius:8px; padding:20px;"
+                               "; font-size:28px;");
 }

@@ -30,7 +30,8 @@ Card::~Card()
 {
 }
 
-bool Card::add_new_definitions(const Fields& field_types, const Fields& definitions)
+bool Card::add_new_definitions(const Fields& field_types,
+                                const Fields& definitions)
 {
     if (field_types.size() != definitions.size())
     {
@@ -77,13 +78,16 @@ Fields Card::get_definitions(const Fields& requested_fields) const
         }
         else
         {
-            return_definitions.push_back(definitions_.at(requested_fields.at(i)));
+            return_definitions.push_back(
+                definitions_.at(requested_fields.at(i))
+            );
         }
     }
     return return_definitions;
 }
 
-bool Card::update_definitions(const Fields& field_types, const Fields& definitions)
+bool Card::update_definitions(const Fields& field_types,
+                            const Fields& definitions)
 {
     if (field_types.size() != definitions.size())
     {
@@ -102,7 +106,8 @@ bool Card::update_definitions(const Fields& field_types, const Fields& definitio
     return true;
 }
 
-bool Card::get_definitions(const Fields& requested_fields, Fields& return_definitions)
+bool Card::get_definitions(const Fields& requested_fields,
+                        Fields& return_definitions)
 {
     return_definitions.clear();
     for (Fields::size_type i = 0; i < requested_fields.size(); ++i)
@@ -117,7 +122,8 @@ bool Card::get_definitions(const Fields& requested_fields, Fields& return_defini
     return true;
 }
 
-double Card::check_answers(const Fields& answer_fields, const Fields& answers) const
+double Card::check_answers(const Fields& answer_fields,
+                        const Fields& answers) const
 {
     // Partial result = Points collected for each correct field on this card
     double partial_result = 0;
@@ -129,7 +135,8 @@ double Card::check_answers(const Fields& answer_fields, const Fields& answers) c
             continue;
         }
 
-        // If "correct answer" is empty, any answer is accepted and accumulates points
+        // If "correct answer" is empty,
+        // any answer is accepted and accumulates points
         if (definitions_.at(answer_fields.at(i)).empty())
         {
             ++partial_result;

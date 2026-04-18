@@ -55,7 +55,8 @@ class Card
      * @return False if field_types and definitions are't equal size,
      * true otherwise.
      */
-    bool add_new_definitions(const Fields& field_types, const Fields& definitions);
+    bool add_new_definitions(const Fields& field_types,
+                              const Fields& definitions);
 
     /**
      * @brief Checks if the card contains the specified field_types.
@@ -97,9 +98,11 @@ class Card
      * @param definitions New definitions for the specified field types
      * @return True if all updates were successful, false otherwise
      */
-    bool update_definitions(const Fields& field_types, const Fields& definitions);
+    bool update_definitions(const Fields& field_types,
+                            const Fields& definitions);
 
-    bool get_definitions(const Fields& requested_fields, Fields& return_definitions);
+    bool get_definitions(const Fields& requested_fields,
+                          Fields& return_definitions);
 
     /**
      * @brief Checks study answers against stored definitions.
@@ -115,7 +118,8 @@ class Card
      * @param answers User-provided answers
      * @return result Study result [0-1] points
      */
-    double check_answers(const Fields& answer_fields, const Fields& answers) const;
+    double check_answers(const Fields& answer_fields,
+                        const Fields& answers) const;
 
     /**
      * @brief Returns the card ID.

@@ -175,23 +175,32 @@ void MainWindow::setup_connections()
     connect(file_edit_, &QLineEdit::returnPressed, this, &MainWindow::loadFile);
 
     // deck management(add/remove)
-    connect(add_deck_button_, &QPushButton::clicked, this, &MainWindow::addDeck);
-    connect(remove_deck_button_, &QPushButton::clicked, this, &MainWindow::removeDeck);
+    connect(add_deck_button_, &QPushButton::clicked, this,
+            &MainWindow::addDeck);
+    connect(remove_deck_button_, &QPushButton::clicked, this,
+            &MainWindow::removeDeck);
 
     // show cards when a deck is selected
-    connect(deck_list_, &QListWidget::currentTextChanged, this, &MainWindow::showDeckCards);
+    connect(deck_list_, &QListWidget::currentTextChanged, this,
+            &MainWindow::showDeckCards);
 
     // card management(add/edit/remove)
-    connect(new_card_button_, &QPushButton::clicked, this, &MainWindow::addCard);
-    connect(remove_card_button_, &QPushButton::clicked, this, &MainWindow::removeCard);
-    connect(edit_card_button_, &QPushButton::clicked, this, &MainWindow::editCard);
+    connect(new_card_button_, &QPushButton::clicked, this,
+            &MainWindow::addCard);
+    connect(remove_card_button_, &QPushButton::clicked, this,
+            &MainWindow::removeCard);
+    connect(edit_card_button_, &QPushButton::clicked, this,
+            &MainWindow::editCard);
 
     // study mode
-    connect(study_button_, &QPushButton::clicked, this, &MainWindow::startStudy);
+    connect(study_button_, &QPushButton::clicked, this,
+            &MainWindow::startStudy);
 
     // connections for study widget
-    connect(study_widget_, &StudyWidget::addCardRequested, this, &MainWindow::addCard);
-    connect(study_widget_, &StudyWidget::exitRequested, this, &MainWindow::exitStudyMode);
+    connect(study_widget_, &StudyWidget::addCardRequested, this,
+            &MainWindow::addCard);
+    connect(study_widget_, &StudyWidget::exitRequested, this,
+            &MainWindow::exitStudyMode);
 
     // exit application
     connect(exit_button_, &QPushButton::clicked, this, &MainWindow::close);
@@ -218,12 +227,14 @@ void MainWindow::loadFile()
             deck_list_->addItem(QString::fromStdString(deck_name));
         }
 
-        selected_deck_label_->setText("Ready to learn? Select a deck to start!");
+        selected_deck_label_->setText("Ready to learn?"
+                                      "Select a deck to start!");
         file_edit_->clear();
     }
     else
     {
-        QMessageBox::critical(this, "Error", "Failed to load the file: " + file_name_qt);
+        QMessageBox::critical(this, "Error", "Failed to load the file: "
+                                                + file_name_qt);
     }
 }
 
@@ -244,7 +255,8 @@ void MainWindow::addDeck()
     form_layout->addRow("Fields:", fields_input);
 
     QDialogButtonBox* button_box =
-        new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, &dialog);
+        new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
+                            &dialog);
 
     form_layout->addWidget(button_box);
 
@@ -290,7 +302,8 @@ void MainWindow::addDeck()
     }
     else
     {
-        QMessageBox::critical(this, "Error", "Failed to add the deck. It may already exist.");
+        QMessageBox::critical(this, "Error",
+                            "Failed to add the deck. It may already exist.");
     }
 }
 
@@ -317,7 +330,8 @@ void MainWindow::removeDeck()
     if (!deck->get_cards().empty())
     {
         QMessageBox::warning(this, "Remove Error",
-                             "This deck still contains cards. Remove all cards first.");
+                             "This deck still contains cards.\n"
+                             "Remove all cards first.");
         return;
     }
 
@@ -338,7 +352,8 @@ void MainWindow::removeDeck()
         }
         else
         {
-            selected_deck_label_->setText("Ready to learn? Select a deck to start!");
+            selected_deck_label_->setText("Ready to learn?"
+                                          "Select a deck to start!");
             card_table_->clear();
         }
     }
@@ -352,7 +367,8 @@ void MainWindow::showDeckCards(const QString& deck_name_qt)
 {
     if (deck_name_qt.isEmpty())
     {
-        selected_deck_label_->setText("Ready to learn? Select a deck to start!");
+        selected_deck_label_->setText("Ready to learn?"
+                                      "Select a deck to start!");
         card_table_->clear();
         card_table_->setRowCount(0);
         card_table_->setColumnCount(0);
@@ -464,7 +480,8 @@ void MainWindow::addCard()
     }
 
     QDialogButtonBox* button_box =
-        new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, &dialog);
+        new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
+                            &dialog);
 
     form_layout->addWidget(button_box);
 
@@ -490,10 +507,12 @@ void MainWindow::addCard()
         }
     }
 
-    // require at least one field to be filled, otherwise the card would be invisible in study mode
+    // require at least one field to be filled,
+    // otherwise the card would be invisible in study mode
     if (all_empty)
     {
-        QMessageBox::warning(this, "Input Error", "At least one field must be filled.");
+        QMessageBox::warning(this, "Input Error",
+                                   "At least one field must be filled.");
         return;
     }
 
@@ -625,7 +644,8 @@ void MainWindow::editCard()
     }
 
     QDialogButtonBox* button_box =
-        new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, &dialog);
+        new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
+                            &dialog);
 
     form_layout->addWidget(button_box);
 
@@ -653,7 +673,8 @@ void MainWindow::editCard()
 
     if (all_empty)
     {
-        QMessageBox::warning(this, "Input Error", "At least one field must be filled.");
+        QMessageBox::warning(this, "Input Error",
+                                    "At least one field must be filled.");
         return;
     }
 
@@ -684,10 +705,12 @@ void MainWindow::startStudy()
         return;
     }
 
-    // require at least one card to enter study mode, otherwise it would be empty and confusing
+    // require at least one card to enter study mode,
+    // otherwise it would be empty and confusing
     if (deck->get_cards().empty())
     {
-        QMessageBox::warning(this, "Study Error", "This deck has no cards to study.");
+        QMessageBox::warning(this, "Study Error",
+                                   "This deck has no cards to study.");
         return;
     }
 
