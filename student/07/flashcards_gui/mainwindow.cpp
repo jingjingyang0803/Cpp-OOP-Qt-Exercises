@@ -8,16 +8,11 @@
 #include <QDialogButtonBox>
 #include <QDir>
 #include <QFormLayout>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QLineEdit>
 #include <QListWidget>
 #include <QMessageBox>
-#include <QPushButton>
 #include <QSplitter>
 #include <QStackedWidget>
 #include <QVBoxLayout>
-#include <QWidget>
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
 {
@@ -27,17 +22,27 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
 
 void MainWindow::setup_ui()
 {
-    // Create the central widget for the main window.
     QWidget* central_widget = new QWidget(this);
     setCentralWidget(central_widget);
 
-    // Create the main vertical layout:
-    // top bar -> middle area -> bottom bar.
     QVBoxLayout* main_layout = new QVBoxLayout(central_widget);
 
-    // -------------------------------------------------
-    // Top bar: file loading controls
-    // -------------------------------------------------
+    main_layout->addLayout(create_top_bar());
+
+    QSplitter* splitter = new QSplitter(Qt::Horizontal, this);
+    splitter->addWidget(create_left_panel());
+    splitter->addWidget(create_right_panel());
+    splitter->setStretchFactor(0, 1);
+    splitter->setStretchFactor(1, 2);
+
+    main_layout->addWidget(splitter);
+    main_layout->addLayout(create_bottom_bar());
+
+    setup_main_window();
+}
+
+QHBoxLayout* MainWindow::create_top_bar()
+{
     QHBoxLayout* top_layout = new QHBoxLayout();
 
     QLabel* file_label = new QLabel("File:", this);
@@ -50,17 +55,11 @@ void MainWindow::setup_ui()
     top_layout->addWidget(file_edit_);
     top_layout->addWidget(load_button_);
 
-    main_layout->addLayout(top_layout);
+    return top_layout;
+}
 
-    // -------------------------------------------------
-    // Middle area: left and right panels
-    // QSplitter allows the user to resize the panels.
-    // -------------------------------------------------
-    QSplitter* splitter = new QSplitter(Qt::Horizontal, this);
-
-    // =========================
-    // Left panel: deck controls
-    // =========================
+QWidget* MainWindow::create_left_panel()
+{
     QWidget* left_panel = new QWidget(this);
     QVBoxLayout* left_layout = new QVBoxLayout(left_panel);
 
@@ -78,9 +77,11 @@ void MainWindow::setup_ui()
     left_layout->addWidget(deck_list_);
     left_layout->addLayout(deck_button_row);
 
-    // =========================
-    // Right panel: cards and card tools
-    // =========================
+    return left_panel;
+}
+
+QWidget* MainWindow::create_right_panel()
+{
     QWidget* right_panel = new QWidget(this);
     QVBoxLayout* right_layout = new QVBoxLayout(right_panel);
 
@@ -89,9 +90,7 @@ void MainWindow::setup_ui()
     QLabel* cards_label = new QLabel("Cards", this);
     card_list_ = new QListWidget(this);
 
-    // Create a horizontal layout for card action buttons.
     QHBoxLayout* card_button_layout = new QHBoxLayout();
-
     new_card_button_ = new QPushButton("New", this);
     edit_card_button_ = new QPushButton("Edit", this);
     remove_card_button_ = new QPushButton("Remove", this);
@@ -102,41 +101,32 @@ void MainWindow::setup_ui()
     card_button_layout->addWidget(remove_card_button_);
     card_button_layout->addWidget(study_button_);
 
+    study_widget_ = new StudyWidget(this);
+    study_widget_->hide();
+
     right_layout->addWidget(selected_deck_label_);
     right_layout->addWidget(cards_label);
     right_layout->addWidget(card_list_);
     right_layout->addLayout(card_button_layout);
-
-    study_widget_ = new StudyWidget(this);
-    study_widget_->hide();
     right_layout->addWidget(study_widget_);
 
-    // Add both panels into the splitter.
-    splitter->addWidget(left_panel);
-    splitter->addWidget(right_panel);
+    return right_panel;
+}
 
-    // Make the right side a bit wider than the left side.
-    splitter->setStretchFactor(0, 1);
-    splitter->setStretchFactor(1, 2);
-
-    main_layout->addWidget(splitter);
-
-    // -------------------------------------------------
-    // Bottom bar: exit button
-    // -------------------------------------------------
+QHBoxLayout* MainWindow::create_bottom_bar()
+{
     QHBoxLayout* bottom_layout = new QHBoxLayout();
 
     exit_button_ = new QPushButton("Exit", this);
 
-    // Push the exit button to the right.
     bottom_layout->addStretch();
     bottom_layout->addWidget(exit_button_);
 
-    main_layout->addLayout(bottom_layout);
+    return bottom_layout;
+}
 
-    // -------------------------------------------------
-    // Main window settings
-    // -------------------------------------------------
+void MainWindow::setup_main_window()
+{
     setWindowTitle("Flashcards");
     resize(1100, 700);
 }

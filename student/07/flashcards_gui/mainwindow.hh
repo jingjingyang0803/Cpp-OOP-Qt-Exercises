@@ -4,6 +4,7 @@
 #include "deckmanager.hh"
 #include "studywidget.hh"
 
+#include <QHBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
 #include <QListWidget>
@@ -20,6 +21,13 @@ class MainWindow : public QMainWindow
 
   private:
     void setup_ui();
+
+    QHBoxLayout* create_top_bar();
+    QWidget* create_left_panel();
+    QWidget* create_right_panel();
+    QHBoxLayout* create_bottom_bar();
+    void setup_main_window();
+
     void setup_connections();
 
   private slots:
