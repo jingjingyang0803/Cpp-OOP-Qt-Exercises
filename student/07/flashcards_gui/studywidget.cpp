@@ -118,14 +118,22 @@ void StudyWidget::setupUi()
     nav_layout->addWidget(next_button_);
 
     // actions
+    // actions
+    QHBoxLayout* action_layout = new QHBoxLayout();
+
+    add_button_ = new QPushButton("Add card", this);
     flip_button_ = new QPushButton("Flip", this);
     exit_button_ = new QPushButton("Exit", this);
+
+    action_layout->addWidget(add_button_);
+
+    action_layout->addWidget(flip_button_);
+    action_layout->addWidget(exit_button_);
 
     main_layout->addLayout(field_layout);
     main_layout->addWidget(card_label_);
     main_layout->addLayout(nav_layout);
-    main_layout->addWidget(flip_button_);
-    main_layout->addWidget(exit_button_);
+    main_layout->addLayout(action_layout);
 }
 
 void StudyWidget::setupConnections()
@@ -133,6 +141,8 @@ void StudyWidget::setupConnections()
     connect(last_button_, &QPushButton::clicked, this, &StudyWidget::showPreviousCard);
     connect(next_button_, &QPushButton::clicked, this, &StudyWidget::showNextCard);
     connect(flip_button_, &QPushButton::clicked, this, &StudyWidget::flipCard);
+
+    connect(add_button_, &QPushButton::clicked, this, &StudyWidget::addCardRequested);
 
     connect(exit_button_, &QPushButton::clicked, this, &StudyWidget::exitRequested);
 
@@ -183,6 +193,11 @@ void StudyWidget::updateView()
     card_label_->setText(text);
     progress_label_->setText(QString::number(current_index_ + 1) + " / " +
                              QString::number(cards.size()));
+}
+
+void StudyWidget::refreshStudyView()
+{
+    updateView();
 }
 
 void StudyWidget::showPreviousCard()

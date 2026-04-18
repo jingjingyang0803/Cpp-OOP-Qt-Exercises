@@ -52,8 +52,11 @@ class StudyWidget : public QWidget
     void setStudyDeck(std::shared_ptr<Deck> deck, const std::string& front_field,
                       const std::string& back_field);
 
+    void refreshStudyView();
+
   signals:
     void exitRequested();
+    void addCardRequested();
 
   private slots:
     void showPreviousCard();
@@ -81,6 +84,7 @@ class StudyWidget : public QWidget
 
     QPushButton* last_button_;
     QPushButton* next_button_;
+    QPushButton* add_button_;
     QPushButton* flip_button_;
     QPushButton* exit_button_;
 

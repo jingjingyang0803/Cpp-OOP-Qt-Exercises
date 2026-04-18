@@ -183,6 +183,9 @@ void MainWindow::setup_connections()
     connect(edit_card_button_, &QPushButton::clicked, this, &MainWindow::editCard);
 
     connect(study_button_, &QPushButton::clicked, this, &MainWindow::startStudy);
+
+    connect(study_widget_, &StudyWidget::addCardRequested, this, &MainWindow::addCard);
+
     connect(study_widget_, &StudyWidget::exitRequested, this, &MainWindow::exitStudyMode);
 
     connect(exit_button_, &QPushButton::clicked, this, &MainWindow::close);
@@ -491,6 +494,11 @@ void MainWindow::addCard()
     if (deck->add_card(*deck_fields_ptr, definitions))
     {
         showDeckCards(QString::fromStdString(deck_name));
+
+        if (study_widget_)
+        {
+            study_widget_->refreshStudyView();
+        }
     }
     else
     {
