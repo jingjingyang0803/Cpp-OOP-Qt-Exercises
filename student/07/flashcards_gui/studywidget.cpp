@@ -1,8 +1,10 @@
 #include "studywidget.hh"
 
 #include <QHBoxLayout>
+#include <QRandomGenerator>
 #include <QString>
 #include <QVBoxLayout>
+#include <QVector>
 
 StudyWidget::StudyWidget(QWidget* parent) : QWidget(parent)
 {
@@ -42,6 +44,7 @@ void StudyWidget::setStudyDeck(std::shared_ptr<Deck> deck, const std::string& fr
     front_field_box_->setCurrentText(QString::fromStdString(front_field_));
     back_field_box_->setCurrentText(QString::fromStdString(back_field_));
 
+    chooseRandomColors();
     updateView();
 }
 
@@ -61,7 +64,6 @@ void StudyWidget::setupUi()
     field_layout->addWidget(front_field_box_);
     field_layout->addWidget(back_label);
     field_layout->addWidget(back_field_box_);
-
     card_label_ = new QLabel("No card", this);
     card_label_->setAlignment(Qt::AlignCenter);
     card_label_->setWordWrap(true);
@@ -115,6 +117,82 @@ void StudyWidget::updateSelectedFields()
     updateView();
 }
 
+void StudyWidget::chooseRandomColors()
+{
+    QVector<QColor> palette = {
+        QColor("#e74c3c"), // red
+        QColor("#3498db"), // blue
+        QColor("#2ecc71"), // green
+        QColor("#f1c40f"), // yellow
+        QColor("#9b59b6"), // purple
+        QColor("#e67e22"), // orange
+        QColor("#1abc9c")  // teal
+    };
+
+    int first_index = QRandomGenerator::global()->bounded(palette.size());
+    int second_index = QRandomGenerator::global()->bounded(palette.size());
+
+    while (second_index == first_index)
+    {
+        second_index = QRandomGenerator::global()->bounded(palette.size());
+    }
+
+    front_color_ = palette.at(first_index);
+    back_color_ = palette.at(second_index);
+}
+
+void StudyWidget::applySideColors()
+{
+    QString front_color_name = front_color_.name();
+    QString back_color_name = back_color_.name();
+
+    // ComboBox + dropdown list
+    front_field_box_->setStyleSheet("QComboBox {"
+                                    "  border: 2px solid " +
+                                    front_color_name +
+                                    ";"
+                                    "  border-radius: 4px;"
+                                    "  padding: 4px;"
+                                    "}"
+                                    "QComboBox QAbstractItemView {"
+                                    "  border: 2px solid " +
+                                    front_color_name +
+                                    ";"
+                                    "  selection-background-color: " +
+                                    front_color_name +
+                                    ";"
+                                    "}");
+
+    back_field_box_->setStyleSheet("QComboBox {"
+                                   "  border: 2px solid " +
+                                   back_color_name +
+                                   ";"
+                                   "  border-radius: 4px;"
+                                   "  padding: 4px;"
+                                   "}"
+                                   "QComboBox QAbstractItemView {"
+                                   "  border: 2px solid " +
+                                   back_color_name +
+                                   ";"
+                                   "  selection-background-color: " +
+                                   back_color_name +
+                                   ";"
+                                   "}");
+
+    // Card border color
+    QColor active_color = showing_front_ ? front_color_ : back_color_;
+    QString active_color_name = active_color.name();
+
+    card_label_->setStyleSheet("QLabel {"
+                               "  border: 3px solid " +
+                               active_color_name +
+                               ";"
+                               "  border-radius: 8px;"
+                               "  padding: 20px;"
+                               "  font-size: 20px;"
+                               "  font-weight: bold;"
+                               "}");
+}
 void StudyWidget::updateView()
 {
     if (!deck_ || deck_->get_cards().empty())
@@ -162,6 +240,7 @@ void StudyWidget::updateView()
         shown_text = "";
     }
 
+    applySideColors();
     card_label_->setText(shown_text);
     progress_label_->setText(QString::number(current_index_ + 1) + " / " +
                              QString::number(cards.size()));

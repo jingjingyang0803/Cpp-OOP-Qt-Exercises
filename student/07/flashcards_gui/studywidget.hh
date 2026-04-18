@@ -4,6 +4,7 @@
 #include "card.hh"
 #include "deck.hh"
 
+#include <QColor>
 #include <QComboBox>
 #include <QLabel>
 #include <QPushButton>
@@ -33,6 +34,8 @@ class StudyWidget : public QWidget
     void showPreviousCard();
     void showNextCard();
     void flipCard();
+    void chooseRandomColors();
+    void applySideColors();
     void updateView();
     void updateSelectedFields();
 
@@ -55,6 +58,9 @@ class StudyWidget : public QWidget
     QComboBox* front_field_box_;
     QComboBox* back_field_box_;
     Fields available_fields_;
+
+    QColor front_color_;
+    QColor back_color_;
 };
 
 #endif // STUDYWIDGET_HH
