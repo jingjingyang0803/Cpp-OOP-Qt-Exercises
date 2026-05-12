@@ -1903,3 +1903,85 @@ Layout 更适合：
 - 更适合循环创建组件
 - 更容易动态修改界面
 - 更适合复杂程序
+## Design case
+
+设计一个 spaceship 游戏时，可以使用继承（inheritance）和多态（polymorphism）。
+
+首先创建一个基类 `Spaceship`，里面包含所有飞船共有的属性，例如：
+
+- health
+- speed
+- move()
+- attack()
+
+```cpp
+class Spaceship {
+public:
+    virtual void move() {
+        cout << "Spaceship moves\n";
+    }
+
+    virtual void attack() {
+        cout << "Spaceship attacks\n";
+    }
+
+    virtual ~Spaceship() {}
+};
+```
+
+然后创建不同类型的飞船继承它：
+
+```cpp
+class BattleShip : public Spaceship {
+public:
+    void attack() override {
+        cout << "BattleShip fires weapons\n";
+    }
+};
+
+class TravelShip : public Spaceship {
+public:
+    void move() override {
+        cout << "TravelShip travels long distance\n";
+    }
+};
+
+class WormholeShip : public Spaceship {
+public:
+    void move() override {
+        cout << "Wormhole jump activated\n";
+    }
+};
+```
+
+`virtual` 的作用是实现多态（polymorphism）。
+
+例如：
+
+```cpp
+Spaceship* ship = new BattleShip();
+ship->attack();
+```
+
+因为 `attack()` 是 virtual，所以程序会调用 `BattleShip` 的 attack，而不是 `Spaceship` 的 attack。
+
+`override` 用来表示子类正在重写父类函数，可以帮助编译器检查错误。
+
+限制：
+
+1. 构造函数不能是 virtual
+    
+    ```cpp
+    virtual Spaceship(); // wrong
+    ```
+    
+2. 析构函数通常应该是 virtual
+    
+    ```cpp
+    virtual ~Spaceship() {}
+    ```
+    
+3. static 函数不能是 virtual
+4. virtual 通常通过指针或引用实现多态
+
+这个设计可以让游戏很容易扩展新的 spaceship 类型。
