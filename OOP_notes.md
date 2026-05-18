@@ -257,6 +257,23 @@ Derived → Base
 Base* p = new Derived();
 delete p;
 ```
+## virtual function
+
+可以有实现：
+
+```cpp
+virtualvoidspeak() {
+	cout<<"sound";
+}
+```
+
+## pure virtual function
+
+强制子类实现：
+
+```
+virtual void speak() =0;
+```
 
 # 六、抽象类（Abstract Class）
 
