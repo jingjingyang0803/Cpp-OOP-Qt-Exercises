@@ -78,11 +78,11 @@ b->a = a;  // ❌ 循环引用，引用计数无法归零
 
 常见做法：把其中一端改为 `weak_ptr`，打破所有权环。
 
-| 指针 | 是否拥有对象 | 典型用途 |
-| --- | --- | --- |
-| unique_ptr | 独占 | 明确唯一所有者 |
-| shared_ptr | 共享 | 共享生命周期 |
-| weak_ptr | 不拥有 | 避免循环引用、做缓存/观察者 |
+| 指针       | 是否拥有对象 | 典型用途                    |
+| ---------- | ------------ | --------------------------- |
+| unique_ptr | 独占         | 明确唯一所有者              |
+| shared_ptr | 共享         | 共享生命周期                |
+| weak_ptr   | 不拥有       | 避免循环引用、做缓存/观察者 |
 
 # 二、类之间的关系
 
@@ -161,12 +161,12 @@ public:
 };
 ```
 
-| 关系 | 关键词 | 常见代码形态 |
-| --- | --- | --- |
-| Dependency | 用一下 | 参数/局部变量 |
-| Association | 互相知道 | 成员指针/引用（不强调拥有） |
-| Aggregation | 有，但可独立 | 成员指针，外部管理生命周期 |
-| Composition | 生死与共 | 成员对象（按值持有） |
+| 关系        | 关键词       | 常见代码形态                |
+| ----------- | ------------ | --------------------------- |
+| Dependency  | 用一下       | 参数/局部变量               |
+| Association | 互相知道     | 成员指针/引用（不强调拥有） |
+| Aggregation | 有，但可独立 | 成员指针，外部管理生命周期  |
+| Composition | 生死与共     | 成员对象（按值持有）        |
 
 # 三、继承（Inheritance）
 
@@ -183,11 +183,11 @@ class Derived : public Base {};
 
 ## 3 访问控制
 
-| 关键字 | 含义 |
-| --- | --- |
-| public | 外部可见 |
-| protected | 派生类可访问 |
-| private | 仅类内部可访问 |
+| 关键字    | 含义           |
+| --------- | -------------- |
+| public    | 外部可见       |
+| protected | 派生类可访问   |
+| private   | 仅类内部可访问 |
 
 # 四、多态（Polymorphism）
 
@@ -277,6 +277,7 @@ Base virtual calls → Base version
 Base* p = new Derived();
 delete p;
 ```
+
 ## virtual function
 
 可以有实现：
@@ -298,6 +299,7 @@ virtual void speak() =0;
 # 六、抽象类（Abstract Class）
 
 ## 定义
+
 In the class hierarchy an abstract base class groups concrete classes together based on both common behaviour and common implementation.
 
 ```cpp
@@ -322,13 +324,13 @@ In C++, generics are implemented with templates.
 A template is not itself a class, but a pattern for generating classes or functions.
 For example, std::vector is a class template， std::vector<int> and std::vector<string> are concrete instantiations of that template.
 
-| 特性 | Templates | Virtual Polymorphism |
-| --- | --- | --- |
-| 时间 | 编译时 | 运行时 |
-| 类型 | 泛型类型 | 继承层次 |
-| 机制 | 代码生成 | 动态绑定 |
-| 性能 | 快 | 稍慢 |
-| 灵活性 | 类型泛化 | 行为泛化 |
+| 特性   | Templates | Virtual Polymorphism |
+| ------ | --------- | -------------------- |
+| 时间   | 编译时    | 运行时               |
+| 类型   | 泛型类型  | 继承层次             |
+| 机制   | 代码生成  | 动态绑定             |
+| 性能   | 快        | 稍慢                 |
+| 灵活性 | 类型泛化  | 行为泛化             |
 
 ```
 Inheritance:
@@ -391,14 +393,12 @@ child = new QWidget(parent);
 
 ## 7 Designer vs Code
 
-| 方式 | 特点 |
-| --- | --- |
+| 方式     | 特点   |
+| -------- | ------ |
 | Designer | 搭建快 |
-| Code | 更灵活 |
+| Code     | 更灵活 |
 
-
-
-# C++ / OOP / Qt 
+# C++ / OOP / Qt
 
 ## 1. Abstraction and Interface
 
@@ -407,7 +407,6 @@ child = new QWidget(parent);
 Abstraction 的意思是：
 
 > 通过隐藏或省略细节，把复杂概念简化成更容易处理的形式。
-> 
 
 核心：
 
@@ -425,7 +424,6 @@ Generalizing a concept by hiding or omitting details
 目标：
 
 > Minimize connections between software components.
-> 
 
 意思是：
 
@@ -446,22 +444,20 @@ Design by Contract，简称 DbC。
 核心思想像签合同：
 
 > 调用者按规定调用，函数就保证按规定工作。
-> 
 
 ### 2.1 三个核心问题
 
-| 问题 | 对应概念 | 谁负责 |
-| --- | --- | --- |
-| What does the contract expect? | Precondition 前置条件 | Caller |
+| 问题                              | 对应概念               | 谁负责      |
+| --------------------------------- | ---------------------- | ----------- |
+| What does the contract expect?    | Precondition 前置条件  | Caller      |
 | What does the contract guarantee? | Postcondition 后置条件 | Implementer |
-| What does the contract maintain? | Invariant 不变式 | Class |
+| What does the contract maintain?  | Invariant 不变式       | Class       |
 
 ### 2.2 Precondition 前置条件
 
 前置条件是：
 
 > 调用函数之前必须满足的条件。
-> 
 
 例如：
 
@@ -477,7 +473,6 @@ void setDay(int day);
 后置条件是：
 
 > 函数执行完成后必须保证的结果。
-> 
 
 例如：
 
@@ -493,7 +488,6 @@ void setDay(int day);
 不变式是：
 
 > 对象在公开操作前后都必须保持成立的条件。
-> 
 
 例如：
 
@@ -504,6 +498,7 @@ void setDay(int day);
 也就是：
 
 调用前：对象合法
+
 调用后：对象仍然合法
 
 ### 2.5 子类中的 DbC 规则
@@ -534,7 +529,6 @@ catch(...)
 含义：
 
 > 捕获所有类型的异常。
-> 
 
 注意：
 
@@ -597,7 +591,6 @@ auto c = std::make_unique<Card>();
 ## 5. RAII-Resource Acquisition Is Initialization
 
 > 构造函数获取资源，析构函数释放资源。
-> 
 
 资源不只是内存，也包括：
 
@@ -620,7 +613,6 @@ RAII 的好处：
 初始化列表用于：
 
 > 直接构造成员变量。
-> 
 
 而不是：
 
@@ -663,10 +655,10 @@ Class(const Class& other);
 作用：
 
 > 创建新对象时，用已有对象初始化它。
-> 
 
 Class&：用起来更像普通变量，不能是空，更安全（常用于参数）。
-Class*：可以是 nullptr，需要 -> 访问成员，适合“可空/可选”的情况。
+
+Class\*：可以是 nullptr，需要 -> 访问成员，适合“可空/可选”的情况。
 
 例子：
 
@@ -690,9 +682,9 @@ Card c2(10);
 c2 = c1;
 ```
 
-| 情况 | 调用 |
-| --- | --- |
-| 创建新对象 | Copy constructor |
+| 情况             | 调用                |
+| ---------------- | ------------------- |
+| 创建新对象       | Copy constructor    |
 | 已有对象重新赋值 | Assignment operator |
 
 ### 6.5 Destructor 析构函数
@@ -739,6 +731,7 @@ delete p;
 正确析构顺序：
 
 Derived destructor
+
 Base destructor
 
 ## 7. Ownership 所有权
@@ -746,7 +739,6 @@ Base destructor
 Ownership 表示：
 
 > 谁负责释放资源。
-> 
 
 接口文档必须说明 ownership 是否转移。
 
@@ -777,13 +769,9 @@ void store(Card* c);
 
 ### 7.3 Move ownership vs Copy
 
-Move ownership：
+Move ownership：转移资源所有权
 
-转移资源所有权
-
-Copy：
-
-复制对象内容
+Copy：复制对象内容
 
 Move 通常更快，因为不需要复制全部数据。
 
@@ -817,10 +805,7 @@ std::unique_ptr<Card> p2 = p; // wrong
 std::unique_ptr<Card> p2 = std::move(p);
 ```
 
-move 后：
-
-p 不再拥有对象
-p2 拥有对象
+move 后：p 不再拥有对象, p2 拥有对象.
 
 ### 8.2 unique_ptr::release()
 
@@ -834,13 +819,9 @@ Card* raw = p.release();
 - 不 delete 对象
 - 返回 raw pointer 裸指针
 
-之后：
+之后：`p == nullptr`
 
-`p == nullptr`
-
-注意：
-
-`release()` 不会 delete 对象
+注意：`release()` 不会 delete 对象
 
 所以 raw pointer 必须之后被正确管理（比如后面交给另一个智能指针，或者明确 delete raw）。
 
@@ -877,11 +858,7 @@ std::shared_ptr<Card> p2 = p1;
 
 这不是深拷贝。
 
-意思是：
-
-p1 和 p2 指向同一个对象
-
-对象会在最后一个 shared_ptr 消失后销毁。
+意思是：p1 和 p2 指向同一个对象, 对象会在最后一个 shared_ptr 消失后销毁。
 
 ### 8.5 shared_ptr 缺点
 
@@ -903,13 +880,9 @@ unique_ptr 和 shared_ptr 都有：
 ptr.get();
 ```
 
-作用：
+作用：得到普通 raw pointer
 
-得到普通 raw pointer
-
-但是：
-
-不转移 ownership
+但是：不转移 ownership
 
 ### 8.7 weak_ptr
 
@@ -936,16 +909,12 @@ wp.expired()
 
 返回 bool：
 
-| 返回值 | 含义 |
-| --- | --- |
-| true | 对象已经销毁 |
-| false | 对象还活着 |
+| 返回值 | 含义         |
+| ------ | ------------ |
+| true   | 对象已经销毁 |
+| false  | 对象还活着   |
 
-注意：
-
-expired() 只是当前时刻的快照
-
-多线程下结果可能马上变化。
+注意：expired() 只是当前时刻的快照, 多线程下结果可能马上变化。
 
 ### 8.9 weak_ptr::lock()
 
@@ -974,10 +943,10 @@ else
 
 lock 的作用：
 
-| 情况 | 结果 |
-| --- | --- |
+| 情况       | 结果                |
+| ---------- | ------------------- |
 | 对象还活着 | 返回有效 shared_ptr |
-| 对象已销毁 | 返回空 shared_ptr |
+| 对象已销毁 | 返回空 shared_ptr   |
 
 ## 9. Circular Reference 循环引用
 
@@ -986,14 +955,9 @@ lock 的作用：
 A -> shared_ptr<B>
 B -> shared_ptr<A>
 
-会导致：
+会导致：引用计数永远不为 0, 对象无法释放
 
-引用计数永远不为 0
-对象无法释放
-
-解决方法：
-
-其中一边使用 weak_ptr
+解决方法：其中一边使用 weak_ptr
 
 ## 10. Linked List Ownership Example
 
@@ -1013,18 +977,18 @@ ListItem* last_;
 
 含义：
 
-| 成员 | 作用 |
-| --- | --- |
-| first_ | 拥有第一个节点 |
-| next | 拥有下一个节点 |
-| prev | 只指路，不拥有 |
-| last_ | 只指路，不拥有 |
+| 成员    | 作用           |
+| ------- | -------------- |
+| first\_ | 拥有第一个节点 |
+| next    | 拥有下一个节点 |
+| prev    | 只指路，不拥有 |
+| last\_  | 只指路，不拥有 |
 
 这样：
 
-从 first_ 开始拥有整条链表
+从 first\_ 开始拥有整条链表
 
-当 first_ 被销毁时：
+当 first\_ 被销毁时：
 
 整个链表自动释放
 
@@ -1181,24 +1145,20 @@ card.setValue(5);
 
 Encapsulation 的核心：
 
-**隐藏内部实现**
-**只暴露公共接口**
+**隐藏内部实现**, **只暴露公共接口**
 
-好的 OOP 应该：
-
-**数据和行为放在一起**
+好的 OOP 应该：**数据和行为放在一起**
 
 ### 14.1 Tell, Don’t Ask
 
 意思是：
 
 > 不要把对象的数据拿出来在外面处理，而是告诉对象去完成事情。
-> 
 
 坏设计：
 
 ```cpp
-intvalue =card.getValue();
+int value =card.getValue();
 if (value>10)
 {
     ...
@@ -1264,15 +1224,13 @@ class Card
 - 表达层次结构
 - 表示特殊化关系
 
-例子：
+例子：Dog 是 Animal。
 
 ```cpp
 Animal
   ↑
 Dog
 ```
-
-Dog 是 Animal。
 
 ### 16.2 继承语法
 
@@ -1285,28 +1243,22 @@ class Dog :public Animal
 ### 16.3 is-a 关系
 
 判断是否应该使用继承，最重要的是：
-
 **is-a relationship**
 
-例子：
-
-**Dog is an Animal**
-
-适合继承。
+例子：**Dog is an Animal**, 适合继承。
 
 ### 16.4 has-a 关系
 
-如果是 has-a：
+如果是 has-a：应该用 composition，而不是 inheritance。
 
 **Car has an Engine**
 
-应该用 composition，而不是 inheritance。
 
 ### 16.5 Ancestor and Descendant
 
-| 概念 | 含义 |
-| --- | --- |
-| Ancestor | 往上的父类、祖先类 |
+| 概念       | 含义               |
+| ---------- | ------------------ |
+| Ancestor   | 往上的父类、祖先类 |
 | Descendant | 往下的子类、后代类 |
 
 ### 16.6 子类可以做什么？
@@ -1321,9 +1273,7 @@ class Dog :public Animal
 
 父类 private 成员也存在于子类对象中。
 
-但是：
-
-**子类不能直接访问父类 private 成员**
+但是：**子类不能直接访问父类 private 成员**
 
 ### 16.8 protected
 
@@ -1332,18 +1282,16 @@ protected 表示：
 - 子类可以访问
 - 外部不能访问
 
-但是最好：
-
-**Only member functions should be protected**
+但是最好：**Only member functions should be protected**
 
 成员变量最好仍然 private。
 
 推荐：
 
-| 内容 | 访问权限 |
-| --- | --- |
-| 成员变量 | private |
-| 公共接口 | public |
+| 内容               | 访问权限  |
+| ------------------ | --------- |
+| 成员变量           | private   |
+| 公共接口           | public    |
 | 给子类用的辅助函数 | protected |
 
 ### 16.9 构造顺序
@@ -1353,9 +1301,7 @@ protected 表示：
 1. Base class constructor
 2. Derived class constructor
 
-原因：
-
-子类可能使用父类部分，所以父类必须先初始化
+原因：子类可能使用父类部分，所以父类必须先初始化
 
 ### 16.10 析构顺序
 
@@ -1393,29 +1339,24 @@ void processBook(Book* book);
 
 ### 16.12 Late Binding 动态绑定
 
-Late binding 指：
-
-运行时才决定调用哪个函数
+Late binding 指：运行时才决定调用哪个函数
 
 通常依赖 virtual function。
 
 ### 16.13 Interface Class 接口类
 
-Interface class：
-
-**只定义规则
-不提供实现**
+Interface class：**只定义规则, 不提供实现**
 
 通常包含 pure virtual functions。
 
-=0 是“接口占位符/强制子类实现”的语法糖
+`=0` 是“接口占位符/强制子类实现”的语法糖
 
 ```cpp
 class Drawable
 {
 public:
-	virtual void draw() =0;
-	virtual ~Drawable() =default;
+	virtual void draw() = 0;
+	virtual ~Drawable() = default;
 };
 ```
 
@@ -1436,9 +1377,7 @@ Abstract base class：
 - 代码分散
 - 改父类影响很多子类
 
-所以：
-
-不要滥用继承
+所以：不要滥用继承
 
 ## 17. Testing 测试
 
@@ -1446,19 +1385,15 @@ Abstract base class：
 
 测试不是为了证明程序没 bug。
 
-测试真正目标是：
-
-找 bug
+测试真正目标是：找 bug
 
 经典说法：
 
 > A successful test case is one that causes a failure.
-> 
 
 ### 17.2 正确测试 mindset
 
 > 假设代码有问题，我要找到它。
-> 
 
 ### 17.3 测试不会直接提升质量
 
@@ -1467,14 +1402,12 @@ Abstract base class：
 真正提升质量的是：
 
 > 修复问题
-> 
 
 ### 17.4 Technical Debt 技术债
 
 Technical debt 指：
 
 > 为了赶时间写的烂代码
-> 
 
 短期快，长期会导致：
 
@@ -1502,9 +1435,7 @@ Technical debt 指：
 Error 是最广义的错误。
 意思：**程序行为和 specification 不一致**
 
-注意：
-
-error 可能来自错误需求，而不一定来自代码。
+注意：error 可能来自错误需求，而不一定来自代码。
 
 ### 18.2 Fault / Defect
 
@@ -1596,12 +1527,12 @@ Test isolation 指：**测试之间不能互相依赖**
 
 ### 20.1 Qt Test 生命周期
 
-| 函数 | 运行时间 |
-| --- | --- |
-| initTestCase() | 所有测试开始前运行一次 |
+| 函数              | 运行时间               |
+| ----------------- | ---------------------- |
+| initTestCase()    | 所有测试开始前运行一次 |
 | cleanupTestCase() | 所有测试结束后运行一次 |
-| init() | 每个测试前运行 |
-| cleanup() | 每个测试后运行 |
+| init()            | 每个测试前运行         |
+| cleanup()         | 每个测试后运行         |
 
 ### 20.2 常用宏
 
@@ -1670,11 +1601,11 @@ Qt 处理 event
 
 ### 22.2 Event 三个属性
 
-| 属性 | 含义 | 例子 |
-| --- | --- | --- |
-| Target | 事件发生在哪个组件上 | Button A |
-| Source | 事件来源 | Mouse, Keyboard |
-| Type | 事件类型 | Click, Key Press |
+| 属性   | 含义                 | 例子             |
+| ------ | -------------------- | ---------------- |
+| Target | 事件发生在哪个组件上 | Button A         |
+| Source | 事件来源             | Mouse, Keyboard  |
+| Type   | 事件类型             | Click, Key Press |
 
 ## 23. Signal and Slot
 
@@ -1739,12 +1670,12 @@ slot 执行
 
 查 Qt 文档时重点看：
 
-| 部分 | 看什么 |
-| --- | --- |
-| Signals | 组件会发出什么信号 |
-| Public Functions | 可以调用哪些普通函数 |
-| Public Slots | 哪些函数可以作为 slot |
-| Inherited Members | 从父类继承了什么 |
+| 部分              | 看什么                |
+| ----------------- | --------------------- |
+| Signals           | 组件会发出什么信号    |
+| Public Functions  | 可以调用哪些普通函数  |
+| Public Slots      | 哪些函数可以作为 slot |
+| Inherited Members | 从父类继承了什么      |
 
 ### 24.1 const member function
 
@@ -1756,11 +1687,11 @@ QString text() const;
 
 含义：
 
-| 部分 | 含义 |
-| --- | --- |
-| `QString` | 返回值类型 |
-| `text()` | 函数名 |
-| `const` | 不修改对象状态 |
+| 部分      | 含义           |
+| --------- | -------------- |
+| `QString` | 返回值类型     |
+| `text()`  | 函数名         |
+| `const`   | 不修改对象状态 |
 
 ## 25. Qt GUI Project Structure
 
@@ -1789,12 +1720,13 @@ project.pro`
 
 但通常不需要手写。
 
-作用：描述界面上有哪些 
+作用：描述界面上有哪些
 
 ### 25.3 .ui 和 .cpp/.hh 的分工
 
-`widget.ui`     负责界面
-`.cpp/.hh`       负责逻辑
+`widget.ui` 负责界面
+
+`.cpp/.hh` 负责逻辑
 
 ## 26. Qt Class Hierarchy
 
@@ -1921,7 +1853,7 @@ class MainWindow :public QMainWindow
 
 		private slots:
 			void myTimerSlot();
-		
+
 		private:
 			QTimer* timer_;
 };
@@ -1952,7 +1884,7 @@ Layout 更适合：
 
 如果完全用代码写 GUI，可以创建项目时取消：
 
-- [ ]  Generate Form
+- [ ] Generate Form
 
 这样不会生成 .ui 文件。
 
@@ -1966,7 +1898,7 @@ Layout 更适合：
 - 更适合循环创建组件
 - 更容易动态修改界面
 - 更适合复杂程序
-  
+
 ## OOP design considerations (C++)
 
 1. Define **a base class**, often abstract, for the shared concept.
