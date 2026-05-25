@@ -315,6 +315,31 @@ virtual void foo() = 0;
 - overriding：基类 `virtual` + 派生类同签名重写 → 运行期多态
 - hiding：派生类声明了同名函数（但不满足重写条件）→ 基类同名函数可能被隐藏
 
+## Template vs Polymorphism
+
+Generics allow code to be parameterized by type.
+In C++, generics are implemented with templates.
+A template is not itself a class, but a pattern for generating classes or functions.
+For example, vector is a class template, and vector<int> is a concrete instantiation.
+
+| 特性 | Templates | Virtual Polymorphism |
+| --- | --- | --- |
+| 时间 | 编译时 | 运行时 |
+| 类型 | 泛型类型 | 继承层次 |
+| 机制 | 代码生成 | 动态绑定 |
+| 性能 | 快 | 稍慢 |
+| 灵活性 | 类型泛化 | 行为泛化 |
+
+```
+Inheritance:
+    same interface,
+    different behavior
+
+Templates:
+    same algorithm,
+    different types
+```
+
 # 七、Qt GUI
 
 ## 1 事件驱动（Event-driven programming）
