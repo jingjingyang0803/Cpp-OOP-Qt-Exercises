@@ -1,4 +1,4 @@
-# 1. `.` / `>` /  / `&`
+# 1. `.` / `>` / / `&`
 
 ## `.`
 
@@ -9,9 +9,7 @@ obj.func()
 obj.value
 ```
 
----
-
-## `>`
+## `->`
 
 指针调用成员：
 
@@ -37,14 +35,12 @@ dates.at(i)->toString()
 dates.at(i) 返回指针
 ```
 
----
-
 ##
 
 ### 声明指针
 
 ```cpp
-int*p;
+int* p;
 ```
 
 ### 解引用
@@ -54,8 +50,6 @@ int*p;
 ```
 
 取指针指向对象。
-
----
 
 ## `&`
 
@@ -68,8 +62,6 @@ Account*&
 
 表示“别名”。
 
----
-
 ### 变量前：取地址
 
 ```cpp
@@ -77,8 +69,6 @@ Account*&
 ```
 
 得到地址。
-
----
 
 例：
 
@@ -88,19 +78,15 @@ transfer_to(&normal_account,20)
 
 传地址。
 
----
-
 # 2. 引用 `&`（最重要）
 
 ## 普通引用
 
 ```cpp
-string&s
+string& s
 ```
 
 修改会影响原变量。
-
----
 
 ## const 引用（最常用）
 
@@ -108,11 +94,7 @@ string&s
 const string& s
 ```
 
-特点：
-
-**不复制
-不能修改
-效率高**
+特点：**不复制 不能修改 效率高**
 
 大型对象参数都推荐：
 
@@ -120,8 +102,6 @@ const string& s
 const vector<int>&
 const map<int,string>&
 ```
-
----
 
 ## 指针引用
 
@@ -133,8 +113,6 @@ string*& p
 
 可以修改指针本身。
 
----
-
 例：
 
 ```cpp
@@ -143,11 +121,7 @@ map<int,Service>*&
 
 表示：map指针 的引用
 
----
-
 # 3. const 放哪里
-
----
 
 ## const 在前
 
@@ -157,8 +131,6 @@ const string& s
 
 不能修改 s。
 
----
-
 ## const 在后（成员函数）
 
 ```cpp
@@ -166,8 +138,6 @@ void print() const
 ```
 
 表示：该函数不修改成员变量
-
----
 
 ## const 指针
 
@@ -177,35 +147,27 @@ const int* p
 
 不能改 `*p`
 
----
-
 ```cpp
 int* const p
 ```
 
 不能改 p。
 
----
-
 # 4. auto
 
 自动推导类型：
 
 ```cpp
-auto x =5;
+auto x = 5;
 ```
-
----
 
 常见：
 
 ```cpp
-auto it =m.find(key);
+auto it = m.find(key);
 ```
 
 避免写超长类型。
-
----
 
 推荐：
 
@@ -213,11 +175,7 @@ auto it =m.find(key);
 const auto&
 ```
 
----
-
 # 5. for loop
-
----
 
 ## 普通 for
 
@@ -225,11 +183,7 @@ const auto&
 for(int i=0;i<n;i++)
 ```
 
----
-
 ## range-for（现代 C++）
-
----
 
 ### 不修改元素
 
@@ -239,37 +193,27 @@ for(const string& s :arr)
 
 避免复制。
 
----
-
 ### 修改元素
 
 ```cpp
 for(string& s :arr)
 ```
 
----
-
 ### 指针容器
 
 ```cpp
-for(Role*role :roles_)
+for(Role* role :roles_)
 ```
-
----
 
 ### auto
 
 ```cpp
-for(const auto&x :vec)
+for(const auto& x :vec)
 ```
 
 最推荐。
 
----
-
 # 6. string 常用
-
----
 
 ## find
 
@@ -285,15 +229,11 @@ str.find(",")
 string::npos
 ```
 
----
-
 ## 判断包含
 
 ```cpp
 if(str.find(",")!= string::npos)
 ```
-
----
 
 ## substr
 
@@ -313,8 +253,6 @@ str.substr(start,len)
 ell
 ```
 
----
-
 ## empty
 
 ```cpp
@@ -323,19 +261,13 @@ str.empty()
 
 为空。
 
----
-
 ```cpp
-notstr.empty()
+not str.empty()
 ```
 
 非空。
 
----
-
 # 7. vector / map
-
----
 
 ## vector
 
@@ -347,23 +279,11 @@ v.size()
 v.empty()
 ```
 
----
-
 ## at vs []
 
-### `[]`
+`[]` 不检查越界。
 
-不检查越界。
-
----
-
-### at()
-
-检查越界。
-
-更安全。
-
----
+`at()` 检查越界, 更安全。
 
 ## map
 
@@ -371,15 +291,11 @@ v.empty()
 map<string,int> m;
 ```
 
----
-
 ### 插入
 
 ```cpp
-m["Tom"] =90;
+m["Tom"] = 90;
 ```
-
----
 
 ### 查找
 
@@ -389,15 +305,11 @@ m.find(key)
 
 返回 iterator。
 
----
-
 ### 判断存在
 
 ```cpp
 if(m.find(key)!=m.end())
 ```
-
----
 
 ### 不存在
 
@@ -405,39 +317,23 @@ if(m.find(key)!=m.end())
 if(m.find(key)==m.end())
 ```
 
----
-
 # 8. iterator
 
 iterator 类似指针。
 
----
+`it->first` map key。
 
-## `it->first`
-
-map key。
-
----
-
-## `it->second`
-
-map value。
-
----
+`it->second` map value。
 
 例：
 
 ```cpp
-auto it =definitions_.find(field);
+auto it = definitions_.find(field);
 
 return _definitions.push_back(it->second);
 ```
 
----
-
 # 9. sort
-
----
 
 ## 默认升序
 
@@ -445,35 +341,27 @@ return _definitions.push_back(it->second);
 sort(v.begin(),v.end());
 ```
 
----
-
 ## 自定义排序
 
 ```cpp
 sort(v.begin(),v.end(),
      [](int a,int b)
      {
-				return a>b;
+        return a>b;
      });
 ```
 
 降序。
 
----
-
 # 10. Lambda（超重要）
 
 匿名函数。
-
----
 
 结构：
 
 ```cpp
 [](){}
 ```
-
----
 
 完整：
 
@@ -484,15 +372,11 @@ sort(v.begin(),v.end(),
 }
 ```
 
----
-
 ## 三部分
 
 - [] 捕获列表
 - () 参数
 - {} 函数体
-
----
 
 ## 空捕获
 
@@ -502,18 +386,14 @@ sort(v.begin(),v.end(),
 
 不使用外部变量。
 
----
-
 ## 捕获外部变量
 
 ```cpp
-[x]
-[&x]
-[=]
-[&]
+[x]   capture x by value，复制 x
+[&x]  capture x by reference，引用 x
+[=]   capture all used external variables by value
+[&]   capture all used external variables by reference
 ```
-
----
 
 # 11. transform
 
@@ -521,27 +401,21 @@ sort(v.begin(),v.end(),
 transform(begin,end,out_begin,func)
 ```
 
----
-
 例：
 
 ```cpp
 transform(str.begin(),
-					str.end(),
-					str.begin(),
-          [](unsignedcharc)
+            str.end(),
+            str.begin(),
+          [](unsigned char c)
           {
-						returntolower(c);
+			return tolower(c);
           });
 ```
 
 全部转小写。
 
----
-
 # 12. throw / catch / exception
-
----
 
 ## throw
 
@@ -551,8 +425,6 @@ transform(str.begin(),
 throw invalid_argument("bad");
 ```
 
----
-
 ## catch
 
 ```cpp
@@ -560,8 +432,6 @@ catch(const invalid_argument& e)
 ```
 
 推荐 const 引用。
-
----
 
 ## what()
 
@@ -571,8 +441,6 @@ catch(const invalid_argument& e)
 e.what()
 ```
 
----
-
 ## 常见异常
 
 `invalid_argument
@@ -580,20 +448,16 @@ domain_error
 out_of_range
 runtime_error`
 
----
-
 例：
 
 ```cpp
 throw domain_error("No numbers");
 ```
 
----
-
 # 13. stod
 
 ```cpp
-doubl ex =stod(str);
+double x =stod(str);
 ```
 
 string → double。
@@ -604,11 +468,7 @@ string → double。
 invalid_argument
 ```
 
----
-
 # 14. 文件读取
-
----
 
 ## 打开文件
 
@@ -616,15 +476,11 @@ invalid_argument
 ifstream file(filename);
 ```
 
----
-
 ## 检查成功
 
 ```cpp
 if(!file)
 ```
-
----
 
 ## 读取一行
 
@@ -632,19 +488,13 @@ if(!file)
 getline(file,line);
 ```
 
----
-
 ## 读取单词
 
 ```cpp
 file>>word;
 ```
 
----
-
 # 15. cin / getline
-
----
 
 ## cin >>
 
@@ -654,8 +504,6 @@ cin>>x;
 
 遇空格停止。
 
----
-
 ## getline
 
 ```cpp
@@ -664,19 +512,13 @@ getline(cin,line);
 
 读整行。
 
----
-
 # 16. cout
-
----
 
 ## 输出
 
 ```cpp
 cout<<x;
 ```
-
----
 
 ## endl
 
@@ -686,8 +528,6 @@ cout<<endl;
 
 换行 + flush。
 
----
-
 ## 推荐
 
 ```cpp
@@ -696,19 +536,13 @@ cout<<endl;
 
 更快。
 
----
-
 ## 连续输出
 
 ```cpp
 cout<<a<<" "<<b<<endl;
 ```
 
----
-
 # 17. static_cast / dynamic_cast
-
----
 
 ## static_cast
 
@@ -717,8 +551,6 @@ cout<<a<<" "<<b<<endl;
 ```cpp
 static_cast<int>(x)
 ```
-
----
 
 ## dynamic_cast（继承）
 
@@ -731,8 +563,6 @@ dynamic_cast<Child*>(baseptr)
 ```cpp
 nullptr
 ```
-
----
 
 # 18. nullptr
 
@@ -749,11 +579,7 @@ NULL
 0
 ```
 
----
-
 # 19. 前置++ / 后置++
-
----
 
 ## 前置
 
@@ -765,8 +591,6 @@ NULL
 
 效率更高。
 
----
-
 ## 后置
 
 ```cpp
@@ -775,8 +599,6 @@ i++
 
 先用后加。
 
----
-
 例：
 
 ```cpp
@@ -784,8 +606,6 @@ ID_(NEXT_ID++)
 ```
 
 先赋值，再自增。
-
----
 
 # 20. make_shared
 
@@ -801,8 +621,6 @@ auto p =make_shared<Node>();
 shared_ptr<Node> p(newNode);
 ```
 
----
-
 优点：
 
 ```cpp
@@ -811,23 +629,17 @@ shared_ptr<Node> p(newNode);
 少一次分配
 ```
 
----
-
 # 21. shared_ptr
 
 自动释放内存。
 
 不用 delete。
 
----
-
 ## 创建
 
 ```cpp
 make_shared<T>()
 ```
-
----
 
 ## get()
 
@@ -836,8 +648,6 @@ ptr.get()
 ```
 
 得到裸指针。
-
----
 
 # 22. 初始化列表（重要）
 
@@ -858,8 +668,6 @@ Circle(intr)
 }
 ```
 
----
-
 ## 父类构造
 
 ```cpp
@@ -869,9 +677,7 @@ Student(...)
 }
 ```
 
----
-
-# 23. return *this
+# 23. return \*this
 
 ```cpp
 return *this;
@@ -885,42 +691,68 @@ return *this;
 operator=
 链式调用
 ```
+# 24. `ostream` / `ostream&`
 
----
+`cout`标准输出流，通常输出到屏幕。
 
-# 24. ostream
+```cpp
+cout << "Hello";
+```
 
----
+### `ostream& out`
 
-## cout
-
-标准输出。
-
----
-
-## ostream&
-
-任意输出流：
+表示：**把输出目标传进函数**。
 
 ```cpp
 void print(ostream& out)
+{
+    out << "Hello";
+}
 ```
 
-既能输出：
+传什么，就写到哪里：
 
 ```cpp
-cout
-文件
-stringstream
+print(cout);   // 写到屏幕
+
+ofstream file("a.txt");
+print(file);   // 写到文件
+
+ostringstream oss;
+print(oss);    // 写到字符串流
 ```
 
----
+```
+ostream& out = 任意可以用 << 写入的输出目标
+```
 
-# 25. ostringstream
+# 25. `ostringstream`
 
-字符串输出流。
+`ostringstream` 是**字符串输出流**。
 
----
+像 `cout` 一样用 `<<`，但内容存进字符串里。
+
+```cpp
+ostringstream oss;
+
+oss << "Name: " << "Robot1";
+oss << ", Battery: " << 80;
+
+string text = oss.str();
+```
+
+结果：
+
+```cpp
+text == "Name: Robot1, Battery: 80"
+```
+
+```
+cout          → 屏幕
+ofstream      → 文件
+ostringstream → 字符串
+ostream& out  → 任意输出流
+```
 
 ## 写入
 
@@ -937,20 +769,16 @@ oss << "The program uses:\n"
     << "  B: " << b << "\n";
 ```
 
----
-
 ## 获取字符串
 
 ```cpp
 oss.str()
 ```
 
----
-
 # 26. noexcept
 
 ```cpp
-void func()noexcept
+void func() noexcept
 ```
 
 表示：
@@ -958,8 +786,6 @@ void func()noexcept
 ```cpp
 不会抛异常
 ```
-
----
 
 # 27. setw / setfill
 
@@ -977,20 +803,14 @@ setfill('0')
 09
 ```
 
----
-
 # 28. erase-remove（超重要）
 
 删除 vector 元素标准写法：
 
 ```cpp
-v.erase(remove(v.begin(),
-v.end(),
-x),
-v.end());
+v.erase(remove(v.begin(),v.end(),x),
+        v.end());
 ```
-
----
 
 ## remove
 
@@ -1002,13 +822,9 @@ v.end());
 把保留元素前移
 ```
 
----
-
 ## erase
 
 真正删尾部垃圾。
-
----
 
 # 29. Circular List 思路
 
@@ -1018,8 +834,6 @@ v.end());
 last_->next 永远指向 first_
 ```
 
----
-
 ## 插入头
 
 ```cpp
@@ -1027,8 +841,6 @@ new->next =first_;
 first_ =new;
 last_->next =first_;
 ```
-
----
 
 ## 插入尾
 
@@ -1038,16 +850,12 @@ last_->next =new;
 last_ =new;
 ```
 
----
-
 ## 删除头
 
 ```cpp
 first_ =first_->next;
 last_->next =first_;
 ```
-
----
 
 ## 删除尾
 
@@ -1057,8 +865,6 @@ current->next =first_
 last_ =current
 ```
 
----
-
 # 30. 双向链表（Two Way List）
 
 每节点：
@@ -1067,8 +873,6 @@ last_ =current
 prev
 next
 ```
-
----
 
 ## 插入中间
 
@@ -1080,16 +884,12 @@ cur->prev->next =new;
 cur->prev =new;
 ```
 
----
-
 ## 删除中间
 
 ```cpp
 cur->prev->next =cur->next;
 cur->next->prev =cur->prev;
 ```
-
----
 
 ## 提前结束
 
@@ -1102,8 +902,6 @@ returnfalse;
 
 因为后面更大。
 
----
-
 ## 插入思路
 
 找到：
@@ -1114,11 +912,7 @@ returnfalse;
 
 插它前面。
 
----
-
 # 31. OOP 核心
-
----
 
 ## class
 
@@ -1126,19 +920,13 @@ returnfalse;
 数据 + 方法
 ```
 
----
-
 ## private
 
 隐藏实现。
 
----
-
 ## public
 
 外部接口。
-
----
 
 ## inheritance
 
@@ -1146,51 +934,33 @@ returnfalse;
 is-a
 ```
 
----
-
 ## polymorphism
 
 父类指针指向子类。
-
----
 
 ## virtual
 
 运行时动态绑定。
 
----
-
 # 32. STL 最常用
-
----
 
 ## vector
 
 动态数组。
 
----
-
 ## map
 
 key-value。
-
----
 
 ## set
 
 自动排序 + 不重复。
 
----
-
 ## list
 
 双向链表。
 
----
-
 # 33. 最推荐现代 C++ 写法
-
----
 
 ## 推荐
 
@@ -1201,8 +971,6 @@ make_shared
 range-for
 initializer list
 ```
-
----
 
 ## 少用
 
