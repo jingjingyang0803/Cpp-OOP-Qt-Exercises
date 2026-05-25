@@ -10,18 +10,13 @@ explicit MainWindow(QWidget* parent = nullptr);
 
 含义：
 
-- `explicit`
-    
-    防止隐式转换
-    
-- `QWidget* parent`
-    
-    父对象
-    
+- `explicit` 防止隐式转换
+
+- `QWidget* parent` 父对象
+
 - `= nullptr`
-    
-    默认无父对象
-    
+默认无父对象
+
 
 ### 析构函数
 
@@ -463,9 +458,7 @@ comboBox->blockSignals(false);
 
 ### 常见用途
 
-初始化默认值时：
-
-避免触发槽函数。
+初始化默认值时：避免触发槽函数。
 
 ## 12. 常见默认值设置
 
