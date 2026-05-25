@@ -241,13 +241,33 @@ virtual void foo();
 
 ## 构造与析构（继承场景）
 
-### 构造顺序
+### 构造期间
 
-Base → Derived
+对象逐层“长大”。
 
-### 析构顺序
+```
+Base constructor
+    ↓
+Base virtual calls → Base version
+    ↓
+Derived constructor
+    ↓
+Derived virtual calls → Derived version
+```
 
-Derived → Base
+### 析构期间
+
+对象逐层“缩小”。
+
+```
+Derived destructor
+    ↓
+Derived virtual calls → Derived version
+    ↓
+Base destructor
+    ↓
+Base virtual calls → Base version
+```
 
 ### 虚析构函数
 
@@ -278,6 +298,7 @@ virtual void speak() =0;
 # 六、抽象类（Abstract Class）
 
 ## 定义
+In the class hierarchy an abstract base class groups concrete classes together based on both common behaviour and common implementation.
 
 ```cpp
 virtual void foo() = 0;
