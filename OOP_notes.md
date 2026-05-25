@@ -1985,7 +1985,7 @@ Layout 更适合：
 
 ### Design Case
 
-I would define a base class called `Robot` for the shared concept of all robot types. It can contain truly shared data, such as name, battery level, position, and status. If a general robot is too abstract to be created directly, `Robot` can be designed as an abstract base class. It can define common operations such as `move()` and `performTask()` as pure virtual functions, so every concrete subclass must implement them. If a basic robot is meaningful in the system, then `Robot` could instead be a concrete base class and provide default implementations for these functions.
+I would define a base class called `Robot` for the shared concept of all robot types. It can contain truly shared data, such as name, battery level, position, and status. If a general robot is too abstract to be created directly, `Robot` can be designed as an abstract base class. It can define operations such as `performTask()` as pure virtual functions, so every concrete subclass must implement them. It may also provide default implementations for behavior that is common to most robots, such as `move()` or `printStatus()`. Therefore, the base class can be partly interface-like and partly shared implementation.
 
 `CleaningRobot`, `FightingRobot`, and `DeliveryRobot` inherit from `Robot` and override the virtual functions with their own behavior. For example, a cleaning robot cleans, a fighting robot attacks, and a delivery robot transports items.
 
