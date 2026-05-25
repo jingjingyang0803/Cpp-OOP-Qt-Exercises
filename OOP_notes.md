@@ -320,7 +320,7 @@ virtual void foo() = 0;
 Generics allow code to be parameterized by type.
 In C++, generics are implemented with templates.
 A template is not itself a class, but a pattern for generating classes or functions.
-For example, vector is a class template, and vector<int> is a concrete instantiation.
+For example, std::vector is a class template， std::vector<int> and std::vector<string> are concrete instantiations of that template.
 
 | 特性 | Templates | Virtual Polymorphism |
 | --- | --- | --- |
