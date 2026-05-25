@@ -1985,10 +1985,12 @@ Layout 更适合：
 
 ### Design Case
 
-I would define a base class called Robot for the shared concept. It can contain common data such as name, battery level, position, and status, and a common interface such as move() and performTask(). If a general robot should not be created directly, Robot should be abstract, and these functions can be pure virtual.
+I would define a base class called `Robot` for the shared concept of all robot types. It can contain truly shared data, such as name, battery level, position, and status. If a general robot is too abstract to be created directly, `Robot` can be designed as an abstract base class. It can define common operations such as `move()` and `performTask()` as pure virtual functions, so every concrete subclass must implement them. If a basic robot is meaningful in the system, then `Robot` could instead be a concrete base class and provide default implementations for these functions.
 
-CleaningRobot, FightingRobot, and DeliveryRobot inherit from Robot and override the virtual functions with their own behavior. For example, a cleaning robot cleans, a fighting robot attacks, and a delivery robot transports items.
+`CleaningRobot`, `FightingRobot`, and `DeliveryRobot` inherit from `Robot` and override the virtual functions with their own behavior. For example, a cleaning robot cleans, a fighting robot attacks, and a delivery robot transports items.
 
-This enables runtime polymorphism: the program can store robots using Robot* or Robot&, and when a virtual function is called, the implementation of the real object type is executed.
+This enables runtime polymorphism: the program can store robots using `Robot*` or `Robot&`, and when a virtual function is called, the implementation of the real object type is executed.
 
-Inheritance is suitable because each subclass is a robot. However, subclass-specific behavior should not be placed in the base class, and composition should be used for has-a relationships, such as a robot having a battery, sensor, or weapon. Constructors cannot be virtual, and the base class should have a virtual destructor if objects are deleted through base-class pointers.
+Inheritance is suitable because each subclass is a robot. However, inheritance should only be used when there is a clear **is-a** relationship. Subclass-specific behavior should not be placed in the base class. For example, `fireWeapon()` should not be in `Robot`, because not every robot has a weapon. Composition should be used for **has-a** relationships, such as a robot having a battery, sensor, or weapon.
+
+Another limitation is that the base class interface must be designed carefully. If the base class contains too many operations, subclasses may be forced to implement meaningless functions. Also, constructors cannot be virtual. If objects are deleted through base-class pointers, the base class should have a virtual destructor.
