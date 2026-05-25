@@ -96,10 +96,10 @@ b->a = a;  // ❌ 循环引用，引用计数无法归零
 class Document {};
 
 class Printer {
-public:
-	void print(Document& doc) {
-		// 使用 doc，用完结束
-	}
+	public:
+		void print(Document& doc) {
+			// 使用 doc，用完结束
+		}
 };
 ```
 
@@ -282,7 +282,7 @@ delete p;
 可以有实现：
 
 ```cpp
-virtualvoidspeak() {
+virtual void speak() {
 	cout<<"sound";
 }
 ```
