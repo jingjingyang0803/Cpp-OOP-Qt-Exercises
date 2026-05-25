@@ -1966,85 +1966,29 @@ Layout 更适合：
 - 更适合循环创建组件
 - 更容易动态修改界面
 - 更适合复杂程序
-## Design case
+  
+## OOP design considerations (C++)
 
-设计一个 spaceship 游戏时，可以使用继承（inheritance）和多态（polymorphism）。
+1. Define **a base class**, often abstract, for the shared concept.
+2. Put the common interface and truly shared data/implementation in the base class.
+3. Use **pure virtual functions** for behavior that every concrete subclass must implement.
+4. Use **normal virtual functions** when the base class can provide a default implementation.
+5. Subclasses override virtual functions to provide type-specific behavior.
+6. `virtual` enables runtime **polymorphism** through base-class pointers or references.
+7. `override` indicates that a derived class method is overriding a virtual base method and helps the compiler catch mistakes.
+8. Use **inheritance** only for is-a relationships; prefer **composition** for has-a relationships.
+9. Avoid putting subclass-specific behavior or data in the base class.
+10. Constructors cannot be virtual.
+11. If objects may be deleted through base-class pointers, make the base-class destructor virtual.
+12. `static` member functions cannot be virtual, because virtual dispatch requires an object.
+13. This design makes it easier to extend the system by adding new derived types without changing much existing code that uses the base-class interface.
 
-首先创建一个基类 `Spaceship`，里面包含所有飞船共有的属性，例如：
+### Design Case
 
-- health
-- speed
-- move()
-- attack()
+I would define a base class called Robot for the shared concept. It can contain common data such as name, battery level, position, and status, and a common interface such as move() and performTask(). If a general robot should not be created directly, Robot should be abstract, and these functions can be pure virtual.
 
-```cpp
-class Spaceship {
-public:
-    virtual void move() {
-        cout << "Spaceship moves\n";
-    }
+CleaningRobot, FightingRobot, and DeliveryRobot inherit from Robot and override the virtual functions with their own behavior. For example, a cleaning robot cleans, a fighting robot attacks, and a delivery robot transports items.
 
-    virtual void attack() {
-        cout << "Spaceship attacks\n";
-    }
+This enables runtime polymorphism: the program can store robots using Robot* or Robot&, and when a virtual function is called, the implementation of the real object type is executed.
 
-    virtual ~Spaceship() {}
-};
-```
-
-然后创建不同类型的飞船继承它：
-
-```cpp
-class BattleShip : public Spaceship {
-public:
-    void attack() override {
-        cout << "BattleShip fires weapons\n";
-    }
-};
-
-class TravelShip : public Spaceship {
-public:
-    void move() override {
-        cout << "TravelShip travels long distance\n";
-    }
-};
-
-class WormholeShip : public Spaceship {
-public:
-    void move() override {
-        cout << "Wormhole jump activated\n";
-    }
-};
-```
-
-`virtual` 的作用是实现多态（polymorphism）。
-
-例如：
-
-```cpp
-Spaceship* ship = new BattleShip();
-ship->attack();
-```
-
-因为 `attack()` 是 virtual，所以程序会调用 `BattleShip` 的 attack，而不是 `Spaceship` 的 attack。
-
-`override` 用来表示子类正在重写父类函数，可以帮助编译器检查错误。
-
-限制：
-
-1. 构造函数不能是 virtual
-    
-    ```cpp
-    virtual Spaceship(); // wrong
-    ```
-    
-2. 析构函数通常应该是 virtual
-    
-    ```cpp
-    virtual ~Spaceship() {}
-    ```
-    
-3. static 函数不能是 virtual
-4. virtual 通常通过指针或引用实现多态
-
-这个设计可以让游戏很容易扩展新的 spaceship 类型。
+Inheritance is suitable because each subclass is a robot. However, subclass-specific behavior should not be placed in the base class, and composition should be used for has-a relationships, such as a robot having a battery, sensor, or weapon. Constructors cannot be virtual, and the base class should have a virtual destructor if objects are deleted through base-class pointers.
