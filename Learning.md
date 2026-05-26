@@ -45,7 +45,11 @@
 * public → private
 * protected → private
 
-# 3. Doubly Linked List（Two-way Linked List）
+# 3. unique_ptr
+
+unique_ptr 只能通过 std::move 转移所有权；如果只是临时使用对象，传引用或原始指针，不要转移所有权。
+
+# 4. Doubly Linked List（Two-way Linked List）
 
 ## 结构
 
